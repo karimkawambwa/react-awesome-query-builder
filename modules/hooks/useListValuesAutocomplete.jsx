@@ -1,7 +1,7 @@
-import React from "react";
 import debounce from "lodash/debounce";
-import { mapListValues, listValuesToArray } from "../utils/stuff";
-import { mergeListValues, listValueToOption, getListValue } from "../utils/autocomplete";
+import React from "react";
+import { getListValue, listValueToOption, mergeListValues } from "../utils/autocomplete";
+import { listValuesToArray, mapListValues } from "../utils/stuff";
 
 
 const useListValuesAutocomplete = ({
@@ -156,7 +156,7 @@ const useListValuesAutocomplete = ({
     return knownSpecialValues.includes(specialValue);
   };
 
-  const onChange = async (_e, option) => {
+  const onChange = async (_e, option, reason) => {
     let specialValue = option?.specialValue || option?.value 
       || multiple && option.map(opt => opt?.specialValue || opt?.value).find(v => !!v);
     if (specialValue == "LOAD_MORE") {
@@ -168,20 +168,23 @@ const useListValuesAutocomplete = ({
       if (multiple) {
         const options = option;
         let newSelectedListValues = options.map(o =>
-          o.value != null ? o : getListValue(o, listValues)
+          !o?.value && allowCustomValues ? { 
+            value: o,
+            title: o 
+          } : getListValue(o, listValues)
         );
         let newSelectedValues = newSelectedListValues.map(o => o.value);
         if (!newSelectedValues.length)
           newSelectedValues = undefined; //not allow []
         setValue(newSelectedValues, newSelectedListValues);
       } else {
-        const v = option == null ? undefined : option.value;
+        const v = option?.value ? option.value : allowCustomValues ? option : undefined;
         setValue(v, [option]);
       }
     }
   };
 
-  const onInputChange = async (_e, newInputValue) => {
+  const onInputChange = async (_e, newInputValue, _o) => {
     const val = newInputValue;
     //const isTypeToSearch = e.type == 'change';
 
@@ -194,6 +197,7 @@ const useListValuesAutocomplete = ({
     if (allowCustomValues) {
       if (multiple) {
         //todo
+        console.log(_e, newInputValue, _o);
       } else {
         setValue(val, [val]);
       }

@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const MODE = process.env.NODE_ENV || "development";
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const lib_name = 'react-awesome-query-builder';
 const isProd = (MODE != "development");
 const isDev = (MODE == "development");
@@ -71,7 +71,7 @@ if (isDev) {
 
 const babel_options = {
     presets: [
-        '@babel/preset-env', 
+        '@babel/preset-env',
         '@babel/preset-react',
         '@babel/preset-typescript', // or can use 'ts-loader' instead
     ],
@@ -99,7 +99,7 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
         static: {
-          directory: path.join(__dirname, '/'),
+            directory: path.join(__dirname, '/'),
         },
     },
     entry: './index',
