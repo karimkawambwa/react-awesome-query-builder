@@ -1,18 +1,32 @@
+/** @format */
+
 import debounce from "lodash/debounce";
 import React from "react";
-import { getListValue, listValueToOption, mergeListValues } from "../utils/autocomplete";
-import { listValuesToArray, mapListValues } from "../utils/stuff";
+import {
+  getListValue,
+  listValueToOption,
+  mergeListValues,
+} from "react-awesome-query-builder-formatters/dist/utils/autocomplete";
+import {
+  listValuesToArray,
+  mapListValues,
+} from "react-awesome-query-builder-formatters/dist/utils/stuff";
 
-
-const useListValuesAutocomplete = ({
-  asyncFetch, useLoadMore, useAsyncSearch, forceAsyncSearch,
-  asyncListValues: selectedAsyncListValues,
-  listValues: staticListValues, allowCustomValues,
-  value: selectedValue, setValue, placeholder
-}, {
-  debounceTimeout,
-  multiple
-}) => {
+const useListValuesAutocomplete = (
+  {
+    asyncFetch,
+    useLoadMore,
+    useAsyncSearch,
+    forceAsyncSearch,
+    asyncListValues: selectedAsyncListValues,
+    listValues: staticListValues,
+    allowCustomValues,
+    value: selectedValue,
+    setValue,
+    placeholder,
+  },
+  { debounceTimeout, multiple }
+) => {
   const knownSpecialValues = ["LOAD_MORE", "LOADING_MORE"];
   const loadMoreTitle = "Load more...";
   const loadingMoreTitle = "Loading more...";
@@ -34,16 +48,25 @@ const useListValuesAutocomplete = ({
   // compute
   const nSelectedAsyncListValues = listValuesToArray(selectedAsyncListValues);
   const listValues = asyncFetch
-    ? (!allowCustomValues ? mergeListValues(asyncListValues, nSelectedAsyncListValues, true) : asyncListValues)
+    ? !allowCustomValues
+      ? mergeListValues(asyncListValues, nSelectedAsyncListValues, true)
+      : asyncListValues
     : staticListValues;
   //const isDirtyInitialListValues = asyncListValues == undefined && selectedAsyncListValues && selectedAsyncListValues.length && typeof selectedAsyncListValues[0] != "object";
   const isLoading = loadingCnt > 0;
-  const canInitialLoad = open && asyncFetch
-    && asyncListValues === undefined
-    && (forceAsyncSearch ? inputValue : true);
+  const canInitialLoad =
+    open &&
+    asyncFetch &&
+    asyncListValues === undefined &&
+    (forceAsyncSearch ? inputValue : true);
   const isInitialLoading = canInitialLoad && isLoading;
-  const canLoadMore = !isInitialLoading && listValues && listValues.length > 0
-    && asyncFetchMeta && asyncFetchMeta.hasMore && (asyncFetchMeta.filter || "") === inputValue;
+  const canLoadMore =
+    !isInitialLoading &&
+    listValues &&
+    listValues.length > 0 &&
+    asyncFetchMeta &&
+    asyncFetchMeta.hasMore &&
+    (asyncFetchMeta.filter || "") === inputValue;
   const canShowLoadMore = !isLoading && canLoadMore;
   const options = mapListValues(listValues, listValueToOption);
   const hasValue = selectedValue != null;
@@ -58,7 +81,8 @@ const useListValuesAutocomplete = ({
     }
 
     const offset = isLoadMore && asyncListValues ? asyncListValues.length : 0;
-    const meta = isLoadMore && asyncFetchMeta || !useLoadMore && { pageSize: 0 };
+    const meta =
+      (isLoadMore && asyncFetchMeta) || (!useLoadMore && { pageSize: 0 });
 
     const newAsyncFetchCnt = ++asyncFectchCnt.current;
     const res = await asyncFetch(filter, offset, meta);
@@ -67,7 +91,11 @@ const useListValuesAutocomplete = ({
       return null;
     }
 
-    const { values, hasMore, meta: newMeta } = res && res.values ? res : { values: res };
+    const {
+      values,
+      hasMore,
+      meta: newMeta,
+    } = res && res.values ? res : { values: res };
     const nValues = listValuesToArray(values);
     let assumeHasMore;
     let newValues;
@@ -82,12 +110,15 @@ const useListValuesAutocomplete = ({
     }
 
     // save new meta
-    const realNewMeta = hasMore != null || newMeta != null || assumeHasMore != null ? {
-      ...(assumeHasMore != null ? { hasMore: assumeHasMore } : {}),
-      ...(hasMore != null ? { hasMore } : {}),
-      ...(newMeta != null ? newMeta : {}),
-      filter
-    } : undefined;
+    const realNewMeta =
+      hasMore != null || newMeta != null || assumeHasMore != null
+        ? {
+            ...(assumeHasMore != null ? { hasMore: assumeHasMore } : {}),
+            ...(hasMore != null ? { hasMore } : {}),
+            ...(newMeta != null ? newMeta : {}),
+            filter,
+          }
+        : undefined;
     if (realNewMeta) {
       setAsyncFetchMeta(realNewMeta);
     }
@@ -96,7 +127,7 @@ const useListValuesAutocomplete = ({
   };
 
   const loadListValues = async (filter = null, isLoadMore = false) => {
-    setLoadingCnt(x => (x + 1));
+    setLoadingCnt((x) => x + 1);
     setIsLoadingMore(isLoadMore);
     const list = await fetchListValues(filter, isLoadMore);
     if (!componentIsMounted.current) {
@@ -106,10 +137,13 @@ const useListValuesAutocomplete = ({
       // tip: null can be used for reject (eg, if user don't want to filter by input)
       setAsyncListValues(list);
     }
-    setLoadingCnt(x => (x - 1));
+    setLoadingCnt((x) => x - 1);
     setIsLoadingMore(false);
   };
-  const loadListValuesDebounced = React.useCallback(debounce(loadListValues, debounceTimeout), []);
+  const loadListValuesDebounced = React.useCallback(
+    debounce(loadListValues, debounceTimeout),
+    []
+  );
 
   // Unmount
   React.useEffect(() => {
@@ -157,8 +191,11 @@ const useListValuesAutocomplete = ({
   };
 
   const onChange = async (_e, option, reason) => {
-    let specialValue = option?.specialValue || option?.value 
-      || multiple && option.map(opt => opt?.specialValue || opt?.value).find(v => !!v);
+    let specialValue =
+      option?.specialValue ||
+      option?.value ||
+      (multiple &&
+        option.map((opt) => opt?.specialValue || opt?.value).find((v) => !!v));
     if (specialValue == "LOAD_MORE") {
       isSelectedLoadMore.current = true;
       await loadListValues(inputValue, true);
@@ -167,18 +204,23 @@ const useListValuesAutocomplete = ({
     } else {
       if (multiple) {
         const options = option;
-        let newSelectedListValues = options.map(o =>
-          !o?.value && allowCustomValues ? { 
-            value: o,
-            title: o 
-          } : getListValue(o, listValues)
+        let newSelectedListValues = options.map((o) =>
+          !o?.value && allowCustomValues
+            ? {
+                value: o,
+                title: o,
+              }
+            : getListValue(o, listValues)
         );
-        let newSelectedValues = newSelectedListValues.map(o => o.value);
-        if (!newSelectedValues.length)
-          newSelectedValues = undefined; //not allow []
+        let newSelectedValues = newSelectedListValues.map((o) => o.value);
+        if (!newSelectedValues.length) newSelectedValues = undefined; //not allow []
         setValue(newSelectedValues, newSelectedListValues);
       } else {
-        const v = option?.value ? option.value : allowCustomValues ? option : undefined;
+        const v = option?.value
+          ? option.value
+          : allowCustomValues
+          ? option
+          : undefined;
         setValue(v, [option]);
       }
     }
@@ -233,7 +275,7 @@ const useListValuesAutocomplete = ({
         filtered.push({
           specialValue: "LOADING_MORE",
           title: loadingMoreTitle,
-          disabled: true
+          disabled: true,
         });
       }
     }
@@ -241,9 +283,9 @@ const useListValuesAutocomplete = ({
   };
 
   const getOptionSelected = (option, valueOrOption) => {
-    if (valueOrOption == null)
-      return null;
-    const selectedValue = valueOrOption.value != undefined ? valueOrOption.value : valueOrOption;
+    if (valueOrOption == null) return null;
+    const selectedValue =
+      valueOrOption.value != undefined ? valueOrOption.value : valueOrOption;
     return option.value === selectedValue;
   };
 
@@ -252,10 +294,11 @@ const useListValuesAutocomplete = ({
   };
 
   const getOptionLabel = (valueOrOption) => {
-    if (valueOrOption == null)
-      return null;
-    const option = valueOrOption.value != undefined ? valueOrOption
-      : listValueToOption(getListValue(valueOrOption, listValues));
+    if (valueOrOption == null) return null;
+    const option =
+      valueOrOption.value != undefined
+        ? valueOrOption
+        : listValueToOption(getListValue(valueOrOption, listValues));
     if (!option && valueOrOption.specialValue) {
       // special last 'Load more...' item
       return valueOrOption.title;
@@ -281,7 +324,7 @@ const useListValuesAutocomplete = ({
     onClose,
     onDropdownVisibleChange,
     onChange,
-    
+
     inputValue,
     onInputChange,
     onSearch,

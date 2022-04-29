@@ -1,7 +1,7 @@
-import MuiWidgets from "../../components/widgets/mui";
-import BasicConfig, {stringifyForDisplay} from "../basic";
 import React from "react";
-import {SqlString} from "../../utils/export";
+import { SqlString } from "react-awesome-query-builder-formatters/dist/utils/export";
+import BasicConfig, { stringifyForDisplay } from "..";
+import MuiWidgets from "../../components/widgets/mui";
 
 const {
   MuiBooleanWidget,
@@ -34,8 +34,8 @@ const {
 const settings = {
   ...BasicConfig.settings,
 
-  renderField: (props) => props?.customProps?.showSearch 
-    ? <MuiFieldAutocomplete {...props} /> 
+  renderField: (props) => props?.customProps?.showSearch
+    ? <MuiFieldAutocomplete {...props} />
     : <MuiFieldSelect {...props} />,
   renderOperator: (props) => <MuiFieldSelect {...props} />,
   renderFunc: (props) => <MuiFieldSelect {...props} />,
@@ -67,16 +67,16 @@ const widgets = {
   multiselect: {
     ...BasicConfig.widgets.multiselect,
     factory: (props) => {
-      return (props.asyncFetch || props.showSearch) 
-        ? <MuiAutocompleteWidget multiple {...props} /> 
+      return (props.asyncFetch || props.showSearch)
+        ? <MuiAutocompleteWidget multiple {...props} />
         : <MuiMultiSelectWidget {...props} />;
     },
   },
   select: {
     ...BasicConfig.widgets.select,
     factory: (props) => {
-      return (props.asyncFetch || props.showSearch) 
-        ? <MuiAutocompleteWidget {...props} /> 
+      return (props.asyncFetch || props.showSearch)
+        ? <MuiAutocompleteWidget {...props} />
         : <MuiSelectWidget {...props} />;
     },
   },
@@ -100,7 +100,6 @@ const widgets = {
     ...BasicConfig.widgets.datetime,
     factory: (props) => <MuiDateTimeWidget {...props} />,
   },
-
   rangeslider: {
     type: "number",
     jsType: "number",

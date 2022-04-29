@@ -1,14 +1,16 @@
-import React from "react";
-import PropTypes from "prop-types";
-import GroupContainer from "../containers/GroupContainer";
-import Draggable from "../containers/Draggable";
-import {BasicGroup} from "./Group";
-import {GroupActions} from "./GroupActions";
-import {useOnPropsChanged} from "../../utils/reactUtils";
-import {Col, dummyFn, ConfirmFn} from "../utils";
-import Widget from "../rule/Widget";
-const classNames = require("classnames");
+/** @format */
 
+import PropTypes from "prop-types";
+import React from "react";
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+import Draggable from "../containers/Draggable";
+import GroupContainer from "../containers/GroupContainer";
+import Widget from "../rule/Widget";
+import { Col, ConfirmFn, dummyFn } from "../utils";
+import { BasicGroup } from "./Group";
+import { GroupActions } from "./GroupActions";
+
+const classNames = require("classnames");
 
 @GroupContainer
 @Draggable("group case_group")
@@ -27,8 +29,7 @@ class CaseGroup extends BasicGroup {
     this.onPropsChanged(props);
   }
 
-  onPropsChanged(nextProps) {
-  }
+  onPropsChanged(nextProps) {}
 
   isDefaultCase() {
     return this.props.children1 == undefined;
@@ -41,8 +42,7 @@ class CaseGroup extends BasicGroup {
 
   reordableNodesCntForItem(_item) {
     // `reordableNodesCnt` is number of nodes is current case
-    if (this.props.isLocked)
-      return 0;
+    if (this.props.isLocked) return 0;
     return this.props.reordableNodesCnt;
   }
 
@@ -53,23 +53,27 @@ class CaseGroup extends BasicGroup {
 
   showDragIcon() {
     // default impl of `showDragIcon()` uses `this.reordableNodesCnt()`
-    if (this.isDefaultCase())
-      return false;
+    if (this.isDefaultCase()) return false;
     return super.showDragIcon();
   }
 
   childrenClassName = () => "case_group--children";
-  
+
   renderFooterWrapper = () => null;
 
   renderHeaderWrapper() {
     return (
-      <div key="group-header" className={classNames(
-        "group--header", 
-        this.isOneChild() ? "one--child" : "",
-        this.showDragIcon() ? "with--drag" : "hide--drag",
-        this.showConjs() && (!this.isOneChild() || this.showNot()) ? "with--conjs" : "hide--conjs"
-      )}>
+      <div
+        key="group-header"
+        className={classNames(
+          "group--header",
+          this.isOneChild() ? "one--child" : "",
+          this.showDragIcon() ? "with--drag" : "hide--drag",
+          this.showConjs() && (!this.isOneChild() || this.showNot())
+            ? "with--conjs"
+            : "hide--conjs"
+        )}
+      >
         {this.renderHeaderLeft()}
         {this.renderHeaderCenter()}
         {this.renderActions()}
@@ -78,8 +82,7 @@ class CaseGroup extends BasicGroup {
   }
 
   renderChildrenWrapper() {
-    if (this.isDefaultCase())
-      return null;
+    if (this.isDefaultCase()) return null;
     // body has 2 columns: condition & value
     return (
       <div className={"case_group--body"}>
@@ -104,27 +107,22 @@ class CaseGroup extends BasicGroup {
   }
 
   renderCondition() {
-    if (this.isDefaultCase())
-      return null;
+    if (this.isDefaultCase()) return null;
     return super.renderChildrenWrapper();
   }
 
   renderHeaderCenter() {
-    if (this.isDefaultCase())
-      return this.renderValue();
-    else
-      return null;
+    if (this.isDefaultCase()) return this.renderValue();
+    else return null;
   }
 
   canAddGroup() {
-    if (this.isDefaultCase())
-      return false;
+    if (this.isDefaultCase()) return false;
     return super.canAddGroup();
   }
 
   canAddRule() {
-    if (this.isDefaultCase())
-      return false;
+    if (this.isDefaultCase()) return false;
     return super.canAddRule();
   }
 
@@ -132,55 +130,56 @@ class CaseGroup extends BasicGroup {
     const { config, isLocked, value, setValue, id } = this.props;
     const { immutableValuesMode } = config.settings;
 
-    const widget = <Widget
-      key="values"
-      isCaseValue={true}
-      field={"!case_value"}
-      operator={null}
-      value={value}
-      valueSrc={"value"}
-      valueError={null}
-      config={config}
-      setValue={!immutableValuesMode ? setValue : dummyFn}
-      setValueSrc={dummyFn}
-      readonly={immutableValuesMode || isLocked}
-      id={id}
-      groupId={null}
-    />;
-
-    return (
-      <Col className="case_group--value">
-        {widget}
-      </Col>
+    const widget = (
+      <Widget
+        key="values"
+        isCaseValue={true}
+        field={"!case_value"}
+        operator={null}
+        value={value}
+        valueSrc={"value"}
+        valueError={null}
+        config={config}
+        setValue={!immutableValuesMode ? setValue : dummyFn}
+        setValueSrc={dummyFn}
+        readonly={immutableValuesMode || isLocked}
+        id={id}
+        groupId={null}
+      />
     );
+
+    return <Col className="case_group--value">{widget}</Col>;
   }
 
   renderActions() {
-    const {config, addGroup, addRule, isLocked, isTrueLocked, id} = this.props;
-    return <GroupActions
-      config={config}
-      addGroup={addGroup}
-      addRule={addRule}
-      canAddRule={this.canAddRule()}
-      canAddGroup={this.canAddGroup()}
-      canDeleteGroup={this.canDeleteGroup()}
-      removeSelf={this.removeSelf}
-      setLock={this.setLock}
-      isLocked={isLocked}
-      isTrueLocked={isTrueLocked}
-      id={id}
-    />;
+    const { config, addGroup, addRule, isLocked, isTrueLocked, id } =
+      this.props;
+    return (
+      <GroupActions
+        config={config}
+        addGroup={addGroup}
+        addRule={addRule}
+        canAddRule={this.canAddRule()}
+        canAddGroup={this.canAddGroup()}
+        canDeleteGroup={this.canDeleteGroup()}
+        removeSelf={this.removeSelf}
+        setLock={this.setLock}
+        isLocked={isLocked}
+        isTrueLocked={isTrueLocked}
+        id={id}
+      />
+    );
   }
 
   isEmptyCurrentGroup() {
     // used to confirm self-deletion
     const { value } = this.props;
     const oneValue = value && value.size ? value.get(0) : null;
-    const hasValue = oneValue != null && (Array.isArray(oneValue) ? oneValue.length > 0 : true);
+    const hasValue =
+      oneValue != null &&
+      (Array.isArray(oneValue) ? oneValue.length > 0 : true);
     return super.isEmptyCurrentGroup() && !hasValue;
   }
-
 }
-
 
 export default CaseGroup;

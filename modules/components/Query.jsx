@@ -1,18 +1,21 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import * as actions from "../actions";
-import {fixPathsInTree} from "../utils/treeUtils";
-import {immutableEqual} from "../utils/stuff";
-import {useOnPropsChanged, bindActionCreators} from "../utils/reactUtils";
-import {validateTree} from "../utils/validation";
+/** @format */
 
+import PropTypes from "prop-types";
+import { PureComponent } from "react";
+import {
+  bindActionCreators,
+  useOnPropsChanged,
+} from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+import { immutableEqual } from "react-awesome-query-builder-formatters/dist/utils/stuff";
+import { fixPathsInTree } from "react-awesome-query-builder-formatters/dist/utils/treeUtils";
+import { validateTree } from "react-awesome-query-builder-formatters/dist/utils/validation";
+import * as actions from "../actions";
 
 export const validateAndFixTree = (newTree, _oldTree, newConfig, oldConfig) => {
   let tree = validateTree(newTree, _oldTree, newConfig, oldConfig);
   tree = fixPathsInTree(tree);
   return tree;
 };
-
 
 export default class Query extends PureComponent {
   static propTypes = {
@@ -33,17 +36,26 @@ export default class Query extends PureComponent {
     //props.onChange && props.onChange(this.validatedTree, props.config);
   }
 
-  validateTree (props, oldProps) {
-    return validateAndFixTree(props.tree, oldProps.tree, props.config, oldProps.config);
+  validateTree(props, oldProps) {
+    return validateAndFixTree(
+      props.tree,
+      oldProps.tree,
+      props.config,
+      oldProps.config
+    );
   }
 
-  _updateActions (props) {
-    const {config, dispatch} = props;
-    this.actions = bindActionCreators({...actions.tree, ...actions.group, ...actions.rule}, config, dispatch);
+  _updateActions(props) {
+    const { config, dispatch } = props;
+    this.actions = bindActionCreators(
+      { ...actions.tree, ...actions.group, ...actions.rule },
+      config,
+      dispatch
+    );
   }
 
   onPropsChanged(nextProps) {
-    const {onChange} = nextProps;
+    const { onChange } = nextProps;
     const oldConfig = this.props.config;
     const newTree = nextProps.tree;
     const newConfig = nextProps.config;
@@ -55,20 +67,25 @@ export default class Query extends PureComponent {
       this.validatedTree = this.validateTree(nextProps, this.props);
     }
 
-    const validatedTreeChanged = !immutableEqual(this.validatedTree, oldValidatedTree);
+    const validatedTreeChanged = !immutableEqual(
+      this.validatedTree,
+      oldValidatedTree
+    );
     if (validatedTreeChanged) {
-      onChange && onChange(this.validatedTree, newConfig, nextProps.__lastAction);
+      onChange &&
+        onChange(this.validatedTree, newConfig, nextProps.__lastAction);
     }
   }
 
   render() {
-    const {config, renderBuilder, dispatch, __isInternalValueChange} = this.props;
+    const { config, renderBuilder, dispatch, __isInternalValueChange } =
+      this.props;
     const builderProps = {
       tree: this.validatedTree,
       actions: this.actions,
       config: config,
       dispatch: dispatch,
-      __isInternalValueChange
+      __isInternalValueChange,
     };
 
     return renderBuilder(builderProps);

@@ -1,11 +1,11 @@
-import BootstrapWidgets from "../../components/widgets/bootstrap";
-import BasicConfig from "../basic";
 import React from "react";
+import BasicConfig from "..";
+import BootstrapWidgets from "../../components/widgets/bootstrap";
 
 const {
   BootstrapBooleanWidget,
   BootstrapTextWidget,
-  BootstrapTextAreaWidget, 
+  BootstrapTextAreaWidget,
   BootstrapDateWidget,
   BootstrapTimeWidget,
   BootstrapDateTimeWidget,

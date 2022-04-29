@@ -1,12 +1,15 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Immutable, {Map} from "immutable";
-import { Item } from "./item/Item";
-import SortableContainer from "./containers/SortableContainer";
-import {getTotalReordableNodesCountInTree, getTotalRulesCountInTree} from "../utils/treeUtils";
-import uuid from "../utils/uuid";
-import {pureShouldComponentUpdate} from "../utils/reactUtils";
+/** @format */
 
+import Immutable, { Map } from "immutable";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { pureShouldComponentUpdate } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+import {
+  getTotalReordableNodesCountInTree,
+  getTotalRulesCountInTree,
+} from "react-awesome-query-builder-formatters/dist/utils/treeUtils";
+import SortableContainer from "./containers/SortableContainer";
+import { Item } from "./item/Item";
 
 @SortableContainer
 export default class Builder extends Component {
@@ -23,15 +26,18 @@ export default class Builder extends Component {
     if (should) {
       let chs = [];
       for (let k in nextProps) {
-        let changed = (nextProps[k] !== prevProps[k]);
+        let changed = nextProps[k] !== prevProps[k];
         if (changed && k != "__isInternalValueChange") {
           chs.push(k);
         }
       }
-      if (!chs.length)
-        should = false;
+      if (!chs.length) should = false;
       //optimize render
-      if (chs.length == 1 && chs[0] == "tree" && nextProps.__isInternalValueChange)
+      if (
+        chs.length == 1 &&
+        chs[0] == "tree" &&
+        nextProps.__isInternalValueChange
+      )
         should = false;
     }
     return should;
@@ -43,7 +49,7 @@ export default class Builder extends Component {
     this._updPath(props);
   }
 
-  _updPath (props) {
+  _updPath(props) {
     const id = props.tree.get("id");
     this.path = Immutable.List.of(id);
   }
@@ -52,11 +58,13 @@ export default class Builder extends Component {
     const tree = this.props.tree;
     const rootType = tree.get("type");
     const isTernary = rootType == "switch_group";
-    const reordableNodesCnt = isTernary ? null : getTotalReordableNodesCountInTree(tree);
+    const reordableNodesCnt = isTernary
+      ? null
+      : getTotalReordableNodesCountInTree(tree);
     const totalRulesCnt = isTernary ? null : getTotalRulesCountInTree(tree);
     const id = tree.get("id");
     return (
-      <Item 
+      <Item
         key={id}
         id={id}
         path={this.path}

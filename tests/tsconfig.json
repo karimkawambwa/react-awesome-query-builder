@@ -3,10 +3,7 @@
     "target": "es6",
     "module": "esnext",
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "dom.iterable"
-    ],
+    "lib": ["dom", "dom.iterable"],
     "experimentalDecorators": true,
     "allowJs": true,
     "outDir": "ts_out",
@@ -23,8 +20,5 @@
       "react-awesome-query-builder/*": ["modules/*"]
     }
   },
-  "include": [
-    "specs/**/*",
-    "support/**/*"
-  ]
+  "include": ["specs/**/*", "support/**/*"]
 }

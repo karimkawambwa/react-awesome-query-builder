@@ -1,20 +1,34 @@
-import React, { Component, PureComponent } from "react";
-import PropTypes from "prop-types";
-import createTreeStore from "../stores/tree";
-import context from "../stores/context";
-import {createStore} from "redux";
-import {connect, Provider} from "react-redux";
-import * as actions from "../actions";
-import {extendConfig} from "../utils/configUtils";
-import {shallowEqual, immutableEqual} from "../utils/stuff";
-import {defaultRoot} from "../utils/defaultUtils";
-import {liteShouldComponentUpdate, useOnPropsChanged} from "../utils/reactUtils";
+/** @format */
+
 import pick from "lodash/pick";
-import Query, {validateAndFixTree} from "./Query";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { extendConfig } from "react-awesome-query-builder-formatters/dist/utils/configUtils";
+import { defaultRoot } from "react-awesome-query-builder-formatters/dist/utils/defaultUtils";
+import {
+  liteShouldComponentUpdate,
+  useOnPropsChanged,
+} from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+import {
+  immutableEqual,
+  shallowEqual,
+} from "react-awesome-query-builder-formatters/dist/utils/stuff";
+import { connect, Provider } from "react-redux";
+import { createStore } from "redux";
+import * as actions from "../actions";
+import context from "../stores/context";
+import createTreeStore from "../stores/tree";
+import Query, { validateAndFixTree } from "./Query";
 
-
-const configKeys = ["conjunctions", "fields", "types", "operators", "widgets", "settings", "funcs"];
-
+const configKeys = [
+  "conjunctions",
+  "fields",
+  "types",
+  "operators",
+  "widgets",
+  "settings",
+  "funcs",
+];
 
 const ConnectedQuery = connect(
   (state) => {
@@ -27,11 +41,10 @@ const ConnectedQuery = connect(
   null,
   null,
   {
-    context
+    context,
   }
 )(Query);
 ConnectedQuery.displayName = "ConnectedQuery";
-
 
 export default class QueryContainer extends Component {
   static propTypes = {
@@ -55,9 +68,11 @@ export default class QueryContainer extends Component {
     const config = pick(props, configKeys);
     const extendedConfig = extendConfig(config);
     const tree = props.value;
-    const validatedTree = tree ? validateAndFixTree(tree, null, config, config) : null;
+    const validatedTree = tree
+      ? validateAndFixTree(tree, null, config, config)
+      : null;
 
-    const store = createTreeStore({...config, tree: validatedTree});
+    const store = createTreeStore({ ...config, tree: validatedTree });
 
     this.state = {
       store: createStore(store),
@@ -66,7 +81,9 @@ export default class QueryContainer extends Component {
   }
 
   shouldComponentUpdate = liteShouldComponentUpdate(this, {
-    value: (nextValue, prevValue, state) => { return false; }
+    value: (nextValue, prevValue, state) => {
+      return false;
+    },
   });
 
   onPropsChanged(nextProps) {
@@ -76,15 +93,23 @@ export default class QueryContainer extends Component {
     const isConfigChanged = !shallowEqual(oldConfig, nextConfig, true);
     if (isConfigChanged) {
       nextConfig = extendConfig(nextConfig);
-      this.setState({config: nextConfig});
+      this.setState({ config: nextConfig });
     }
-    
+
     // compare trees
     const storeValue = this.state.store.getState().tree;
-    const isTreeChanged = !immutableEqual(nextProps.value, this.props.value) && !immutableEqual(nextProps.value, storeValue);
+    const isTreeChanged =
+      !immutableEqual(nextProps.value, this.props.value) &&
+      !immutableEqual(nextProps.value, storeValue);
     if (isTreeChanged) {
-      const nextTree = nextProps.value || defaultRoot({ ...nextProps, tree: null });
-      const validatedTree = validateAndFixTree(nextTree, null, nextConfig, oldConfig);
+      const nextTree =
+        nextProps.value || defaultRoot({ ...nextProps, tree: null });
+      const validatedTree = validateAndFixTree(
+        nextTree,
+        null,
+        nextConfig,
+        oldConfig
+      );
       return Promise.resolve().then(() => {
         this.state.store.dispatch(
           actions.tree.setTree(nextProps, validatedTree)
@@ -95,9 +120,9 @@ export default class QueryContainer extends Component {
 
   render() {
     // `get_children` is deprecated!
-    const {renderBuilder, get_children, onChange, settings} = this.props;
-    const {config, store} = this.state;
-    const {renderProvider: QueryWrapper} = settings;
+    const { renderBuilder, get_children, onChange, settings } = this.props;
+    const { config, store } = this.state;
+    const { renderProvider: QueryWrapper } = settings;
 
     return (
       <QueryWrapper config={config}>

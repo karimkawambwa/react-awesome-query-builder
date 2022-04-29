@@ -1,11 +1,13 @@
+/** @format */
+
 import React, { useState } from "react";
+import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff";
 import {
   Dropdown,
+  DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  DropdownItem,
 } from "reactstrap";
-import { mapListValues } from "../../../../utils/stuff";
 
 export default ({
   listValues,
@@ -15,9 +17,8 @@ export default ({
   readonly,
   placeholder,
 }) => {
-  const onChange = e => {
-    if (e.target.value === undefined)
-      return;
+  const onChange = (e) => {
+    if (e.target.value === undefined) return;
     setValue(e.target.value);
   };
 
@@ -36,16 +37,15 @@ export default ({
     });
 
   const renderValue = (selectedValue) => {
-    if (!readonly && selectedValue == null)
-      return placeholder;
+    if (!readonly && selectedValue == null) return placeholder;
     return getListValueTitle(selectedValue);
   };
 
-  const getListValueTitle = (selectedValue) => 
-    mapListValues(listValues, ({title, value}) => 
-      (value === selectedValue ? title : null)
+  const getListValueTitle = (selectedValue) =>
+    mapListValues(listValues, ({ title, value }) =>
+      value === selectedValue ? title : null
     )
-      .filter(v => v !== null)
+      .filter((v) => v !== null)
       .shift();
 
   const hasValue = selectedValue != null;
@@ -54,7 +54,7 @@ export default ({
   const stylesDropdownWrapper = {
     lineHeight: "105%",
     minHeight: "1.7rem",
-    paddingBottom: "0.45rem"
+    paddingBottom: "0.45rem",
   };
 
   const stylesDropdownMenuWrapper = {
@@ -76,10 +76,7 @@ export default ({
       >
         {hasValue ? renderValue(selectedValue) : <span>&nbsp;</span>}
       </DropdownToggle>
-      <DropdownMenu
-        container="body"
-        style={stylesDropdownMenuWrapper}
-      >
+      <DropdownMenu container="body" style={stylesDropdownMenuWrapper}>
         {!hasValue && <DropdownItem disabled value={""}></DropdownItem>}
         {renderOptions()}
       </DropdownMenu>

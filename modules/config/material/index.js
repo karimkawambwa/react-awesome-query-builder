@@ -1,7 +1,7 @@
-import MaterialWidgets from "../../components/widgets/material";
-import BasicConfig, {stringifyForDisplay} from "../basic";
 import React from "react";
-import {SqlString, spelEscape} from "../../utils/export";
+import { spelEscape, SqlString } from "react-awesome-query-builder-formatters/dist/utils/export";
+import BasicConfig, { stringifyForDisplay } from "..";
+import MaterialWidgets from "../../components/widgets/material";
 
 
 const {
@@ -35,8 +35,8 @@ const {
 const settings = {
   ...BasicConfig.settings,
 
-  renderField: (props) => props?.customProps?.showSearch 
-    ? <MaterialFieldAutocomplete {...props} /> 
+  renderField: (props) => props?.customProps?.showSearch
+    ? <MaterialFieldAutocomplete {...props} />
     : <MaterialFieldSelect {...props} />,
   renderOperator: (props) => <MaterialFieldSelect {...props} />,
   renderFunc: (props) => <MaterialFieldSelect {...props} />,
@@ -68,16 +68,16 @@ const widgets = {
   multiselect: {
     ...BasicConfig.widgets.multiselect,
     factory: (props) => {
-      return (props.asyncFetch || props.showSearch) 
-        ? <MaterialAutocompleteWidget multiple {...props} /> 
+      return (props.asyncFetch || props.showSearch)
+        ? <MaterialAutocompleteWidget multiple {...props} />
         : <MaterialMultiSelectWidget {...props} />;
     },
   },
   select: {
     ...BasicConfig.widgets.select,
     factory: (props) => {
-      return (props.asyncFetch || props.showSearch) 
-        ? <MaterialAutocompleteWidget {...props} /> 
+      return (props.asyncFetch || props.showSearch)
+        ? <MaterialAutocompleteWidget {...props} />
         : <MaterialSelectWidget {...props} />;
     },
   },

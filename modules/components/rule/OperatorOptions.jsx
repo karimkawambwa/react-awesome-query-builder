@@ -1,6 +1,8 @@
-import React, { PureComponent } from "react";
+/** @format */
+
 import PropTypes from "prop-types";
-import {getOperatorConfig} from "../../utils/configUtils";
+import React, { PureComponent } from "react";
+import { getOperatorConfig } from "react-awesome-query-builder-formatters/dist/utils/configUtils";
 
 export default class OperatorOptions extends PureComponent {
   static propTypes = {
@@ -14,14 +16,18 @@ export default class OperatorOptions extends PureComponent {
   };
 
   render() {
-    if (!this.props.selectedOperator)
-      return null;
-    const operatorDefinitions = getOperatorConfig(this.props.config, this.props.selectedOperator, this.props.selectedField);
+    if (!this.props.selectedOperator) return null;
+    const operatorDefinitions = getOperatorConfig(
+      this.props.config,
+      this.props.selectedOperator,
+      this.props.selectedField
+    );
     if (typeof operatorDefinitions.options === "undefined") {
       return null;
     }
 
-    const { factory: optionsFactory, ...basicOptionsProps } = operatorDefinitions.options;
+    const { factory: optionsFactory, ...basicOptionsProps } =
+      operatorDefinitions.options;
     const optionsProps = Object.assign({}, basicOptionsProps, {
       config: this.props.config,
       field: this.props.selectedField,

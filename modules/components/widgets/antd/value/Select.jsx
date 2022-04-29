@@ -1,10 +1,15 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import {calcTextWidth, SELECT_WIDTH_OFFSET_RIGHT} from "../../../../utils/domUtils";
-import {mapListValues} from "../../../../utils/stuff";
-import {useOnPropsChanged} from "../../../../utils/reactUtils";
+/** @format */
+
 import { Select } from "antd";
 import omit from "lodash/omit";
+import PropTypes from "prop-types";
+import React, { PureComponent } from "react";
+import {
+  calcTextWidth,
+  SELECT_WIDTH_OFFSET_RIGHT,
+} from "react-awesome-query-builder-formatters/dist/utils/domUtils";
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff";
 const Option = Select.Option;
 
 export default class SelectWidget extends PureComponent {
@@ -26,17 +31,21 @@ export default class SelectWidget extends PureComponent {
     this.onPropsChanged(props);
   }
 
-  onPropsChanged (props) {
-    const {listValues} = props;
+  onPropsChanged(props) {
+    const { listValues } = props;
 
     let optionsMaxWidth = 0;
-    mapListValues(listValues, ({title, value}) => {
+    mapListValues(listValues, ({ title, value }) => {
       optionsMaxWidth = Math.max(optionsMaxWidth, calcTextWidth(title, null));
     });
     this.optionsMaxWidth = optionsMaxWidth;
 
-    this.options = mapListValues(listValues, ({title, value}) => {
-      return (<Option key={value+""} value={value+""}>{title}</Option>);
+    this.options = mapListValues(listValues, ({ title, value }) => {
+      return (
+        <Option key={value + ""} value={value + ""}>
+          {title}
+        </Option>
+      );
     });
   }
 
@@ -50,12 +59,14 @@ export default class SelectWidget extends PureComponent {
   };
 
   render() {
-    const {config, placeholder, customProps, value, readonly} = this.props;
-    const {renderSize} = config.settings;
+    const { config, placeholder, customProps, value, readonly } = this.props;
+    const { renderSize } = config.settings;
     const placeholderWidth = calcTextWidth(placeholder);
     const dropdownWidth = this.optionsMaxWidth + SELECT_WIDTH_OFFSET_RIGHT;
-    const width = value ? dropdownWidth : placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT;
-    const aValue = value != undefined ? value+"" : undefined;
+    const width = value
+      ? dropdownWidth
+      : placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT;
+    const aValue = value != undefined ? value + "" : undefined;
     const customSelectProps = omit(customProps, [""]);
 
     return (
@@ -70,7 +81,8 @@ export default class SelectWidget extends PureComponent {
         onChange={this.handleChange}
         filterOption={this.filterOption}
         {...customSelectProps}
-      >{this.options}
+      >
+        {this.options}
       </Select>
     );
   }

@@ -1,17 +1,23 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import RuleContainer from "../containers/RuleContainer";
-import Draggable from "../containers/Draggable";
-import OperatorWrapper from "../rule/OperatorWrapper";
-import FieldWrapper from "../rule/FieldWrapper";
-import Widget from "../rule/Widget";
-import OperatorOptions from "../rule/OperatorOptions";
-import {getFieldConfig, getOperatorConfig, getFieldWidgetConfig} from "../../utils/configUtils";
-import {getFieldPathLabels, getValueSourcesForFieldOp} from "../../utils/ruleUtils";
-import {useOnPropsChanged} from "../../utils/reactUtils";
-import {Col, DragIcon, dummyFn, ConfirmFn} from "../utils";
-const classNames = require("classnames");
+/** @format */
 
+import PropTypes from "prop-types";
+import React, { PureComponent } from "react";
+import {
+  getFieldConfig,
+  getFieldWidgetConfig,
+  getOperatorConfig,
+} from "react-awesome-query-builder-formatters/dist/utils/configUtils";
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+import { getFieldPathLabels } from "react-awesome-query-builder-formatters/dist/utils/ruleUtils";
+import Draggable from "../containers/Draggable";
+import RuleContainer from "../containers/RuleContainer";
+import FieldWrapper from "../rule/FieldWrapper";
+import OperatorOptions from "../rule/OperatorOptions";
+import OperatorWrapper from "../rule/OperatorWrapper";
+import Widget from "../rule/Widget";
+import { Col, ConfirmFn, DragIcon, dummyFn } from "../utils";
+
+const classNames = require("classnames");
 
 @RuleContainer
 @Draggable("rule")
@@ -57,33 +63,66 @@ class Rule extends PureComponent {
 
   onPropsChanged(nextProps) {
     const prevProps = this.props;
-    const keysForMeta = ["selectedField", "selectedOperator", "config", "reordableNodesCnt", "isLocked"];
-    const needUpdateMeta = !this.meta || keysForMeta.map(k => (nextProps[k] !== prevProps[k])).filter(ch => ch).length > 0;
+    const keysForMeta = [
+      "selectedField",
+      "selectedOperator",
+      "config",
+      "reordableNodesCnt",
+      "isLocked",
+    ];
+    const needUpdateMeta =
+      !this.meta ||
+      keysForMeta.map((k) => nextProps[k] !== prevProps[k]).filter((ch) => ch)
+        .length > 0;
 
     if (needUpdateMeta) {
       this.meta = this.getMeta(nextProps);
     }
   }
 
-  getMeta({selectedField, selectedOperator, config, reordableNodesCnt, isLocked}) {
+  getMeta({
+    selectedField,
+    selectedOperator,
+    config,
+    reordableNodesCnt,
+    isLocked,
+  }) {
     const selectedFieldPartsLabels = getFieldPathLabels(selectedField, config);
     const selectedFieldConfig = getFieldConfig(config, selectedField);
-    const isSelectedGroup = selectedFieldConfig && selectedFieldConfig.type == "!struct";
-    const isFieldAndOpSelected = selectedField && selectedOperator && !isSelectedGroup;
-    const selectedOperatorConfig = getOperatorConfig(config, selectedOperator, selectedField);
-    const selectedOperatorHasOptions = selectedOperatorConfig && selectedOperatorConfig.options != null;
-    const selectedFieldWidgetConfig = getFieldWidgetConfig(config, selectedField, selectedOperator) || {};
+    const isSelectedGroup =
+      selectedFieldConfig && selectedFieldConfig.type == "!struct";
+    const isFieldAndOpSelected =
+      selectedField && selectedOperator && !isSelectedGroup;
+    const selectedOperatorConfig = getOperatorConfig(
+      config,
+      selectedOperator,
+      selectedField
+    );
+    const selectedOperatorHasOptions =
+      selectedOperatorConfig && selectedOperatorConfig.options != null;
+    const selectedFieldWidgetConfig =
+      getFieldWidgetConfig(config, selectedField, selectedOperator) || {};
     const hideOperator = selectedFieldWidgetConfig.hideOperator;
 
-    const showDragIcon = config.settings.canReorder && reordableNodesCnt > 1 && !isLocked;
+    const showDragIcon =
+      config.settings.canReorder && reordableNodesCnt > 1 && !isLocked;
     const showOperator = selectedField && !hideOperator;
-    const showOperatorLabel = selectedField && hideOperator && selectedFieldWidgetConfig.operatorInlineLabel;
+    const showOperatorLabel =
+      selectedField &&
+      hideOperator &&
+      selectedFieldWidgetConfig.operatorInlineLabel;
     const showWidget = isFieldAndOpSelected;
-    const showOperatorOptions = isFieldAndOpSelected && selectedOperatorHasOptions;
+    const showOperatorOptions =
+      isFieldAndOpSelected && selectedOperatorHasOptions;
 
     return {
-      selectedFieldPartsLabels, selectedFieldWidgetConfig,
-      showDragIcon, showOperator, showOperatorLabel, showWidget, showOperatorOptions
+      selectedFieldPartsLabels,
+      selectedFieldWidgetConfig,
+      showDragIcon,
+      showOperator,
+      showOperatorLabel,
+      showWidget,
+      showOperatorOptions,
     };
   }
 
@@ -92,16 +131,18 @@ class Rule extends PureComponent {
   }
 
   removeSelf() {
-    const {confirmFn} = this.props;
-    const {renderConfirm, removeRuleConfirmOptions: confirmOptions} = this.props.config.settings;
+    const { confirmFn } = this.props;
+    const { renderConfirm, removeRuleConfirmOptions: confirmOptions } =
+      this.props.config.settings;
     const doRemove = () => {
       this.props.removeSelf();
     };
     if (confirmOptions && !this.isEmptyCurrentRule()) {
-      renderConfirm({...confirmOptions,
+      renderConfirm({
+        ...confirmOptions,
         onOk: doRemove,
         onCancel: null,
-        confirmFn: confirmFn
+        confirmFn: confirmFn,
       });
     } else {
       doRemove();
@@ -110,178 +151,252 @@ class Rule extends PureComponent {
 
   isEmptyCurrentRule() {
     return !(
-      this.props.selectedField !== null
-            && this.props.selectedOperator !== null
-            && this.props.value.filter((val) => val !== undefined).size > 0
+      this.props.selectedField !== null &&
+      this.props.selectedOperator !== null &&
+      this.props.value.filter((val) => val !== undefined).size > 0
     );
   }
 
   renderField() {
-    const {config, isLocked} = this.props;
+    const { config, isLocked } = this.props;
     const { immutableFieldsMode } = config.settings;
 
-    return <FieldWrapper
-      key="field"
-      classname={"rule--field"}
-      config={config}
-      selectedField={this.props.selectedField}
-      setField={!immutableFieldsMode ? this.props.setField : dummyFn}
-      parentField={this.props.parentField}
-      readonly={immutableFieldsMode || isLocked}
-      id={this.props.id}
-      groupId={this.props.groupId}
-    />;
+    return (
+      <FieldWrapper
+        key="field"
+        classname={"rule--field"}
+        config={config}
+        selectedField={this.props.selectedField}
+        setField={!immutableFieldsMode ? this.props.setField : dummyFn}
+        parentField={this.props.parentField}
+        readonly={immutableFieldsMode || isLocked}
+        id={this.props.id}
+        groupId={this.props.groupId}
+      />
+    );
   }
 
-  renderOperator () {
-    const {config, isLocked} = this.props;
+  renderOperator() {
+    const { config, isLocked } = this.props;
     const {
-      selectedFieldPartsLabels, selectedFieldWidgetConfig, showOperator, showOperatorLabel
+      selectedFieldPartsLabels,
+      selectedFieldWidgetConfig,
+      showOperator,
+      showOperatorLabel,
     } = this.meta;
     const { immutableOpsMode } = config.settings;
 
-    return <OperatorWrapper
-      key="operator"
-      config={config}
-      selectedField={this.props.selectedField}
-      selectedOperator={this.props.selectedOperator}
-      setOperator={!immutableOpsMode ? this.props.setOperator : dummyFn}
-      selectedFieldPartsLabels={selectedFieldPartsLabels}
-      showOperator={showOperator}
-      showOperatorLabel={showOperatorLabel}
-      selectedFieldWidgetConfig={selectedFieldWidgetConfig}
-      readonly={immutableOpsMode || isLocked}
-      id={this.props.id}
-      groupId={this.props.groupId}
-    />;
+    return (
+      <OperatorWrapper
+        key="operator"
+        config={config}
+        selectedField={this.props.selectedField}
+        selectedOperator={this.props.selectedOperator}
+        setOperator={!immutableOpsMode ? this.props.setOperator : dummyFn}
+        selectedFieldPartsLabels={selectedFieldPartsLabels}
+        showOperator={showOperator}
+        showOperatorLabel={showOperatorLabel}
+        selectedFieldWidgetConfig={selectedFieldWidgetConfig}
+        readonly={immutableOpsMode || isLocked}
+        id={this.props.id}
+        groupId={this.props.groupId}
+      />
+    );
   }
 
   renderWidget() {
-    const {config, valueError, isLocked} = this.props;
+    const { config, valueError, isLocked } = this.props;
     const { showWidget } = this.meta;
     const { immutableValuesMode } = config.settings;
     if (!showWidget) return null;
 
-    const widget = <Widget
-      key="values"
-      field={this.props.selectedField}
-      parentField={this.props.parentField}
-      operator={this.props.selectedOperator}
-      value={this.props.value}
-      valueSrc={this.props.valueSrc}
-      asyncListValues={this.props.asyncListValues}
-      valueError={valueError}
-      config={config}
-      setValue={!immutableValuesMode ? this.props.setValue : dummyFn}
-      setValueSrc={!immutableValuesMode ? this.props.setValueSrc : dummyFn}
-      readonly={immutableValuesMode || isLocked}
-      id={this.props.id}
-      groupId={this.props.groupId}
-    />;
+    const widget = (
+      <Widget
+        key="values"
+        field={this.props.selectedField}
+        parentField={this.props.parentField}
+        operator={this.props.selectedOperator}
+        value={this.props.value}
+        valueSrc={this.props.valueSrc}
+        asyncListValues={this.props.asyncListValues}
+        valueError={valueError}
+        config={config}
+        setValue={!immutableValuesMode ? this.props.setValue : dummyFn}
+        setValueSrc={!immutableValuesMode ? this.props.setValueSrc : dummyFn}
+        readonly={immutableValuesMode || isLocked}
+        id={this.props.id}
+        groupId={this.props.groupId}
+      />
+    );
 
     return (
-      <Col key={"widget-for-"+this.props.selectedOperator} className="rule--value">
+      <Col
+        key={"widget-for-" + this.props.selectedOperator}
+        className="rule--value"
+      >
         {widget}
       </Col>
     );
   }
 
   renderOperatorOptions() {
-    const {config} = this.props;
+    const { config } = this.props;
     const { showOperatorOptions } = this.meta;
     const { immutableOpsMode, immutableValuesMode } = config.settings;
     if (!showOperatorOptions) return null;
 
-    const opOpts = <OperatorOptions
-      key="operatorOptions"
-      selectedField={this.props.selectedField}
-      selectedOperator={this.props.selectedOperator}
-      operatorOptions={this.props.operatorOptions}
-      setOperatorOption={!immutableOpsMode ? this.props.setOperatorOption : dummyFn}
-      config={config}
-      readonly={immutableValuesMode}
-    />;
+    const opOpts = (
+      <OperatorOptions
+        key="operatorOptions"
+        selectedField={this.props.selectedField}
+        selectedOperator={this.props.selectedOperator}
+        operatorOptions={this.props.operatorOptions}
+        setOperatorOption={
+          !immutableOpsMode ? this.props.setOperatorOption : dummyFn
+        }
+        config={config}
+        readonly={immutableValuesMode}
+      />
+    );
 
     return (
-      <Col key={"op-options-for-"+this.props.selectedOperator} className="rule--operator-options">
+      <Col
+        key={"op-options-for-" + this.props.selectedOperator}
+        className="rule--operator-options"
+      >
         {opOpts}
       </Col>
     );
   }
 
   renderBeforeWidget() {
-    const {config} = this.props;
+    const { config } = this.props;
     const { renderBeforeWidget } = config.settings;
-    return renderBeforeWidget 
-        && <Col key={"before-widget-for-" +this.props.selectedOperator} className="rule--before-widget">
-          {typeof renderBeforeWidget === "function" ? renderBeforeWidget(this.props) : renderBeforeWidget}
-        </Col>;
+    return (
+      renderBeforeWidget && (
+        <Col
+          key={"before-widget-for-" + this.props.selectedOperator}
+          className="rule--before-widget"
+        >
+          {typeof renderBeforeWidget === "function"
+            ? renderBeforeWidget(this.props)
+            : renderBeforeWidget}
+        </Col>
+      )
+    );
   }
 
   renderAfterWidget() {
-    const {config} = this.props;
+    const { config } = this.props;
     const { renderAfterWidget } = config.settings;
-    return renderAfterWidget 
-        && <Col key={"after-widget-for-" +this.props.selectedOperator} className="rule--after-widget">
-          {typeof renderAfterWidget === "function" ? renderAfterWidget(this.props) : renderAfterWidget}
-        </Col>;
+    return (
+      renderAfterWidget && (
+        <Col
+          key={"after-widget-for-" + this.props.selectedOperator}
+          className="rule--after-widget"
+        >
+          {typeof renderAfterWidget === "function"
+            ? renderAfterWidget(this.props)
+            : renderAfterWidget}
+        </Col>
+      )
+    );
   }
 
   renderError() {
-    const {config, valueError} = this.props;
+    const { config, valueError } = this.props;
     const { renderRuleError, showErrorMessage } = config.settings;
-    const oneValueError = valueError && valueError.toArray().filter(e => !!e).shift() || null;
-    return showErrorMessage && oneValueError 
-        && <div className="rule--error">
-          {renderRuleError ? renderRuleError({error: oneValueError}) : oneValueError}
-        </div>;
+    const oneValueError =
+      (valueError &&
+        valueError
+          .toArray()
+          .filter((e) => !!e)
+          .shift()) ||
+      null;
+    return (
+      showErrorMessage &&
+      oneValueError && (
+        <div className="rule--error">
+          {renderRuleError
+            ? renderRuleError({ error: oneValueError })
+            : oneValueError}
+        </div>
+      )
+    );
   }
 
   renderDrag() {
     const { showDragIcon } = this.meta;
 
-    return showDragIcon
-        && <span
+    return (
+      showDragIcon && (
+        <span
           key="rule-drag-icon"
           className={"qb-drag-handler rule--drag-handler"}
           onMouseDown={this.props.handleDraggerMouseDown}
-        ><DragIcon /> </span>;
+        >
+          <DragIcon />{" "}
+        </span>
+      )
+    );
   }
 
   renderDel() {
-    const {config, isLocked} = this.props;
+    const { config, isLocked } = this.props;
     const {
-      deleteLabel, 
-      immutableGroupsMode, 
+      deleteLabel,
+      immutableGroupsMode,
       renderButton: Btn,
-      canDeleteLocked
+      canDeleteLocked,
     } = config.settings;
 
-    return !immutableGroupsMode && (!isLocked || isLocked && canDeleteLocked) && (
-      <Btn 
-        type="delRule" onClick={this.removeSelf} label={deleteLabel} config={config}
-      />
+    return (
+      !immutableGroupsMode &&
+      (!isLocked || (isLocked && canDeleteLocked)) && (
+        <Btn
+          type="delRule"
+          onClick={this.removeSelf}
+          label={deleteLabel}
+          config={config}
+        />
+      )
     );
   }
 
   renderLock() {
-    const {config, isLocked, isTrueLocked, id} = this.props;
+    const { config, isLocked, isTrueLocked, id } = this.props;
     const {
-      lockLabel, lockedLabel, showLock,
-      renderSwitch: Switch
+      lockLabel,
+      lockedLabel,
+      showLock,
+      renderSwitch: Switch,
     } = config.settings;
-      
-    return showLock && !(isLocked && !isTrueLocked) && (
-      <Switch 
-        type="lock" id={id} value={isLocked} setValue={this.setLock} label={lockLabel} checkedLabel={lockedLabel} hideLabel={true} config={config}
-      />
+
+    return (
+      showLock &&
+      !(isLocked && !isTrueLocked) && (
+        <Switch
+          type="lock"
+          id={id}
+          value={isLocked}
+          setValue={this.setLock}
+          label={lockLabel}
+          checkedLabel={lockedLabel}
+          hideLabel={true}
+          config={config}
+        />
+      )
     );
   }
 
-  render () {
+  render() {
     const { showOperatorOptions, selectedFieldWidgetConfig } = this.meta;
     const { valueSrc, value, config } = this.props;
-    const canShrinkValue = valueSrc.first() == "value" && !showOperatorOptions && value.size == 1 && selectedFieldWidgetConfig.fullWidth;
+    const canShrinkValue =
+      valueSrc.first() == "value" &&
+      !showOperatorOptions &&
+      value.size == 1 &&
+      selectedFieldWidgetConfig.fullWidth;
     const { renderButtonGroup: BtnGrp } = config.settings;
 
     const parts = [
@@ -292,18 +407,29 @@ class Rule extends PureComponent {
       this.renderAfterWidget(),
       this.renderOperatorOptions(),
     ];
-    const body = <div key="rule-body" className={classNames("rule--body", canShrinkValue && "can--shrink--value")}>{parts}</div>;
+    const body = (
+      <div
+        key="rule-body"
+        className={classNames(
+          "rule--body",
+          canShrinkValue && "can--shrink--value"
+        )}
+      >
+        {parts}
+      </div>
+    );
 
     const error = this.renderError();
     const drag = this.renderDrag();
     const lock = this.renderLock();
     const del = this.renderDel();
-      
+
     return (
       <>
         {drag}
         <div className="rule--body--wrapper">
-          {body}{error}
+          {body}
+          {error}
         </div>
         <div className="rule--header">
           <BtnGrp config={config}>
@@ -314,8 +440,6 @@ class Rule extends PureComponent {
       </>
     );
   }
-
 }
-
 
 export default Rule;

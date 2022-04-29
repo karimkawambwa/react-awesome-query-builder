@@ -1,15 +1,25 @@
-import React from "react";
-import {mapListValues} from "../../../../utils/stuff";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import Checkbox from "@mui/material/Checkbox";
-import ListItemText from "@mui/material/ListItemText";
-import omit from "lodash/omit";
+/** @format */
 
-export default ({listValues, value, setValue, allowCustomValues, readonly, placeholder, customProps}) => {
-  const renderOptions = (selectedValues) => 
-    mapListValues(listValues, ({title, value}) => {
+import Checkbox from "@mui/material/Checkbox";
+import FormControl from "@mui/material/FormControl";
+import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import omit from "lodash/omit";
+import React from "react";
+import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff";
+
+export default ({
+  listValues,
+  value,
+  setValue,
+  allowCustomValues,
+  readonly,
+  placeholder,
+  customProps,
+}) => {
+  const renderOptions = (selectedValues) =>
+    mapListValues(listValues, ({ title, value }) => {
       return (
         <MenuItem key={value} value={value}>
           <Checkbox checked={selectedValues.indexOf(value) > -1} />
@@ -19,25 +29,24 @@ export default ({listValues, value, setValue, allowCustomValues, readonly, place
     });
 
   const renderValue = (selectedValues) => {
-    if (!readonly && !selectedValues.length)
-      return placeholder;
-    const selectedTitles = mapListValues(listValues, ({title, value}) => (
+    if (!readonly && !selectedValues.length) return placeholder;
+    const selectedTitles = mapListValues(listValues, ({ title, value }) =>
       selectedValues.indexOf(value) > -1 ? title : null
-    )).filter(v => v !== null);
+    ).filter((v) => v !== null);
     return selectedTitles.join(", ");
   };
 
   const hasValue = value != null && value.length > 0;
 
-  const onChange = e => {
-    if (e.target.value === undefined)
-      return;
+  const onChange = (e) => {
+    if (e.target.value === undefined) return;
     setValue(e.target.value);
   };
 
   return (
     <FormControl>
-      <Select multiple
+      <Select
+        multiple
         variant="standard"
         autoWidth
         displayEmpty

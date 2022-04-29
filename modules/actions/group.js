@@ -1,5 +1,6 @@
+import { toImmutableList } from "react-awesome-query-builder-formatters/dist/utils/stuff";
 import * as constants from "../constants";
-import {toImmutableList} from "../utils/stuff";
+
 
 /**
  * @param {object} config

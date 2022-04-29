@@ -1,20 +1,28 @@
+/** @format */
+
 import React, { useState } from "react";
+import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff";
 import {
   Dropdown,
+  DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  DropdownItem,
 } from "reactstrap";
-import { mapListValues } from "../../../../utils/stuff";
 
-export default ({listValues, value, setValue, allowCustomValues, placeholder, readonly}) => {
+export default ({
+  listValues,
+  value,
+  setValue,
+  allowCustomValues,
+  placeholder,
+  readonly,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValues, setSelectedValues] = useState(value ?? []);
 
-  const onChange = e => {
+  const onChange = (e) => {
     let value = getMultiSelectValues(e.target.value, listValues);
-    if (value.length == 0)
-      value = undefined;
+    if (value.length == 0) value = undefined;
     setValue(value);
   };
 
@@ -25,7 +33,7 @@ export default ({listValues, value, setValue, allowCustomValues, placeholder, re
           key={value}
           onClick={onChange}
           value={value}
-          active={selectedValues.some(x => x === value)}
+          active={selectedValues.some((x) => x === value)}
         >
           {title}
         </DropdownItem>
@@ -35,20 +43,18 @@ export default ({listValues, value, setValue, allowCustomValues, placeholder, re
   const stylesDropdownWrapper = {
     lineHeight: "105%",
     minHeight: "1.7rem",
-    paddingBottom: "0.45rem"
+    paddingBottom: "0.45rem",
   };
-  
+
   const stylesDropdownMenuWrapper = {
     //minWidth: "100%"
   };
 
-
   const renderValue = (selectedValues) => {
-    if (!readonly && !selectedValues.length)
-      return placeholder;
-    const selectedTitles = mapListValues(listValues, ({title, value}) => (
+    if (!readonly && !selectedValues.length) return placeholder;
+    const selectedTitles = mapListValues(listValues, ({ title, value }) =>
       selectedValues.indexOf(value) > -1 ? title : null
-    )).filter(v => v !== null);
+    ).filter((v) => v !== null);
     return selectedTitles.join(", ");
   };
 
@@ -57,18 +63,17 @@ export default ({listValues, value, setValue, allowCustomValues, placeholder, re
 
     let isNewSelection = !selectedValues.includes(value);
     let newSelectedValues = [];
-    
+
     if (isNewSelection) {
       newSelectedValues = [...selectedValues, value];
       setSelectedValues(newSelectedValues);
-    }
-    else {
-      newSelectedValues = selectedValues.filter(x => x !== value);
+    } else {
+      newSelectedValues = selectedValues.filter((x) => x !== value);
       setSelectedValues(newSelectedValues);
     }
-    
+
     return newSelectedValues;
-  };  
+  };
 
   return (
     <Dropdown
@@ -83,12 +88,13 @@ export default ({listValues, value, setValue, allowCustomValues, placeholder, re
         style={stylesDropdownWrapper}
         color={"transparent"}
       >
-        {selectedValues.length ? renderValue(selectedValues) : <span>&nbsp;</span>}
+        {selectedValues.length ? (
+          renderValue(selectedValues)
+        ) : (
+          <span>&nbsp;</span>
+        )}
       </DropdownToggle>
-      <DropdownMenu
-        container="body"
-        style={stylesDropdownMenuWrapper}
-      >
+      <DropdownMenu container="body" style={stylesDropdownMenuWrapper}>
         {renderOptions()}
       </DropdownMenu>
     </Dropdown>

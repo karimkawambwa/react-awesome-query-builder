@@ -1,13 +1,17 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+/** @format */
+
 import mapValues from "lodash/mapValues";
+import PropTypes from "prop-types";
+import React, { Component } from "react";
+import { defaultGroupConjunction } from "react-awesome-query-builder-formatters/dist/utils/defaultUtils";
+import {
+  pureShouldComponentUpdate,
+  useOnPropsChanged,
+} from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+import { connect } from "react-redux";
 import context from "../../stores/context";
-import {pureShouldComponentUpdate, useOnPropsChanged} from "../../utils/reactUtils";
-import {connect} from "react-redux";
-import {defaultGroupConjunction} from "../../utils/defaultUtils";
 
-
-const createGroupContainer = (Group) => 
+const createGroupContainer = (Group) =>
   class GroupContainer extends Component {
     static propTypes = {
       //tree: PropTypes.instanceOf(Immutable.Map).isRequired,
@@ -46,11 +50,11 @@ const createGroupContainer = (Group) =>
       let should = pureShouldComponentUpdate(this)(nextProps, nextState);
       if (should) {
         if (prevState == nextState && prevProps != nextProps) {
-          const draggingId = (nextProps.dragging.id || prevProps.dragging.id);
+          const draggingId = nextProps.dragging.id || prevProps.dragging.id;
           const isDraggingMe = draggingId == nextProps.id;
           let chs = [];
           for (let k in nextProps) {
-            let changed = (nextProps[k] != prevProps[k]);
+            let changed = nextProps[k] != prevProps[k];
             if (k == "dragging" && !isDraggingMe) {
               changed = false; //dragging another item -> ignore
             }
@@ -58,15 +62,14 @@ const createGroupContainer = (Group) =>
               chs.push(k);
             }
           }
-          if (!chs.length)
-            should = false;
+          if (!chs.length) should = false;
         }
       }
       return should;
     }
 
     onPropsChanged(nextProps) {
-      const {config, id, conjunction} = nextProps;
+      const { config, id, conjunction } = nextProps;
       const oldConfig = this.props.config;
       const oldConjunction = this.props.conjunction;
       if (oldConfig != config || oldConjunction != conjunction) {
@@ -75,7 +78,7 @@ const createGroupContainer = (Group) =>
       }
     }
 
-    _getConjunctionOptions (props) {
+    _getConjunctionOptions(props) {
       return mapValues(props.config.conjunctions, (item, index) => ({
         id: `conjunction-${props.id}-${index}`,
         name: `conjunction[${props.id}]`,
@@ -87,7 +90,9 @@ const createGroupContainer = (Group) =>
 
     _selectedConjunction = (props) => {
       props = props || this.props;
-      return props.conjunction || defaultGroupConjunction(props.config, props.field);
+      return (
+        props.conjunction || defaultGroupConjunction(props.config, props.field)
+      );
     };
 
     setConjunction = (conj = null) => {
@@ -146,7 +151,8 @@ const createGroupContainer = (Group) =>
 
       // Don't allow nesting further than the maximum configured depth and don't
       // allow removal of the root group.
-      const allowFurtherNesting = typeof maxNesting === "undefined" || currentNesting < maxNesting;
+      const allowFurtherNesting =
+        typeof maxNesting === "undefined" || currentNesting < maxNesting;
       const isRoot = currentNesting == 1;
       return (
         <div
@@ -154,44 +160,45 @@ const createGroupContainer = (Group) =>
           data-id={this.props.id}
         >
           {[
-            isDraggingMe ? <Group
-              key={"dragging"}
-              id={this.props.id}
-              groupId={this.props.groupId}
-              isDraggingMe={true}
-              isDraggingTempo={true}
-              dragging={this.props.dragging}
-              isRoot={isRoot}
-              allowFurtherNesting={allowFurtherNesting}
-              conjunctionOptions={this.conjunctionOptions}
-              not={this.props.not}
-              selectedConjunction={this.selectedConjunction}
-              setConjunction={this.dummyFn}
-              setNot={this.dummyFn}
-              setLock={this.dummyFn}
-              removeSelf={this.dummyFn}
-              addGroup={this.dummyFn}
-              addCaseGroup={this.dummyFn}
-              addDefaultCaseGroup={this.dummyFn}
-              addRule={this.dummyFn}
-              setField={this.dummyFn}
-              setOperator={this.dummyFn}
-              setValue={this.dummyFn}
-              value={this.props.value || null}
-              config={this.props.config}
-              children1={this.props.children1}
-              actions={this.props.actions}
-              //tree={this.props.tree}
-              reordableNodesCnt={this.props.reordableNodesCnt}
-              totalRulesCnt={this.props.totalRulesCnt}
-              selectedField={this.props.field || null}
-              parentField={this.props.parentField || null}
-              selectedOperator={this.props.operator || null}
-              isLocked={this.props.isLocked}
-              isTrueLocked={this.props.isTrueLocked}
-              parentReordableNodesCnt={this.props.parentReordableNodesCnt}
-            /> : null
-            ,
+            isDraggingMe ? (
+              <Group
+                key={"dragging"}
+                id={this.props.id}
+                groupId={this.props.groupId}
+                isDraggingMe={true}
+                isDraggingTempo={true}
+                dragging={this.props.dragging}
+                isRoot={isRoot}
+                allowFurtherNesting={allowFurtherNesting}
+                conjunctionOptions={this.conjunctionOptions}
+                not={this.props.not}
+                selectedConjunction={this.selectedConjunction}
+                setConjunction={this.dummyFn}
+                setNot={this.dummyFn}
+                setLock={this.dummyFn}
+                removeSelf={this.dummyFn}
+                addGroup={this.dummyFn}
+                addCaseGroup={this.dummyFn}
+                addDefaultCaseGroup={this.dummyFn}
+                addRule={this.dummyFn}
+                setField={this.dummyFn}
+                setOperator={this.dummyFn}
+                setValue={this.dummyFn}
+                value={this.props.value || null}
+                config={this.props.config}
+                children1={this.props.children1}
+                actions={this.props.actions}
+                //tree={this.props.tree}
+                reordableNodesCnt={this.props.reordableNodesCnt}
+                totalRulesCnt={this.props.totalRulesCnt}
+                selectedField={this.props.field || null}
+                parentField={this.props.parentField || null}
+                selectedOperator={this.props.operator || null}
+                isLocked={this.props.isLocked}
+                isTrueLocked={this.props.isTrueLocked}
+                parentReordableNodesCnt={this.props.parentReordableNodesCnt}
+              />
+            ) : null,
             <Group
               key={this.props.id}
               id={this.props.id}
@@ -204,13 +211,19 @@ const createGroupContainer = (Group) =>
               conjunctionOptions={this.conjunctionOptions}
               not={this.props.not}
               selectedConjunction={this.selectedConjunction}
-              setConjunction={isInDraggingTempo ? this.dummyFn : this.setConjunction}
+              setConjunction={
+                isInDraggingTempo ? this.dummyFn : this.setConjunction
+              }
               setNot={isInDraggingTempo ? this.dummyFn : this.setNot}
               setLock={isInDraggingTempo ? this.dummyFn : this.setLock}
               removeSelf={isInDraggingTempo ? this.dummyFn : this.removeSelf}
               addGroup={isInDraggingTempo ? this.dummyFn : this.addGroup}
-              addCaseGroup={isInDraggingTempo ? this.dummyFn : this.addCaseGroup}
-              addDefaultCaseGroup={isInDraggingTempo ? this.dummyFn : this.addDefaultCaseGroup}
+              addCaseGroup={
+                isInDraggingTempo ? this.dummyFn : this.addCaseGroup
+              }
+              addDefaultCaseGroup={
+                isInDraggingTempo ? this.dummyFn : this.addDefaultCaseGroup
+              }
               addRule={isInDraggingTempo ? this.dummyFn : this.addRule}
               setField={isInDraggingTempo ? this.dummyFn : this.setField}
               setOperator={isInDraggingTempo ? this.dummyFn : this.setOperator}
@@ -228,14 +241,12 @@ const createGroupContainer = (Group) =>
               isLocked={this.props.isLocked}
               isTrueLocked={this.props.isTrueLocked}
               parentReordableNodesCnt={this.props.parentReordableNodesCnt}
-            />
+            />,
           ]}
         </div>
       );
     }
-
   };
-
 
 export default (Group) => {
   const ConnectedGroupContainer = connect(
@@ -247,7 +258,7 @@ export default (Group) => {
     null,
     null,
     {
-      context
+      context,
     }
   )(createGroupContainer(Group));
   ConnectedGroupContainer.displayName = "ConnectedGroupContainer";

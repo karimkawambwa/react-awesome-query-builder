@@ -1,16 +1,26 @@
-import React, { PureComponent } from "react";
-import Field from "./Field";
-import {Col} from "../utils";
+/** @format */
 
+import React, { PureComponent } from "react";
+import { Col } from "../utils";
+import Field from "./Field";
 
 export default class FieldWrapper extends PureComponent {
   render() {
-    const {config, selectedField, setField, parentField, classname, readonly, id, groupId} = this.props;
+    const {
+      config,
+      selectedField,
+      setField,
+      parentField,
+      classname,
+      readonly,
+      id,
+      groupId,
+    } = this.props;
     return (
       <Col className={classname}>
-        { config.settings.showLabels
-                    && <label className="rule--label">{config.settings.fieldLabel}</label>
-        }
+        {config.settings.showLabels && (
+          <label className="rule--label">{config.settings.fieldLabel}</label>
+        )}
         <Field
           config={config}
           selectedField={selectedField}

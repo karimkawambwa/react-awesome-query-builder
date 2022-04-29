@@ -1,14 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
-import GroupContainer from "../containers/GroupContainer";
-import Draggable from "../containers/Draggable";
-import {BasicGroup} from "./Group";
-import {SwitchGroupActions} from "./SwitchGroupActions";
-import {useOnPropsChanged} from "../../utils/reactUtils";
-import {Col, dummyFn, ConfirmFn} from "../utils";
-import {getTotalReordableNodesCountInTree, getTotalRulesCountInTree} from "../../utils/treeUtils";
-const classNames = require("classnames");
+/** @format */
 
+import React from "react";
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+import {
+  getTotalReordableNodesCountInTree,
+  getTotalRulesCountInTree,
+} from "react-awesome-query-builder-formatters/dist/utils/treeUtils";
+import Draggable from "../containers/Draggable";
+import GroupContainer from "../containers/GroupContainer";
+import { ConfirmFn } from "../utils";
+import { BasicGroup } from "./Group";
+import { SwitchGroupActions } from "./SwitchGroupActions";
+
+const classNames = require("classnames");
 
 @GroupContainer
 @Draggable("group switch_group")
@@ -24,14 +28,16 @@ class SwitchGroup extends BasicGroup {
     this.onPropsChanged(props);
   }
 
-  onPropsChanged(nextProps) {
-  }
+  onPropsChanged(nextProps) {}
 
   childrenClassName = () => "switch_group--children";
-  
+
   renderFooterWrapper = () => null;
   hasDefaultCase = () => {
-    return this.props.children1.size && this.props.children1.filter(c => c.get("children1") == null).size > 0;
+    return (
+      this.props.children1.size &&
+      this.props.children1.filter((c) => c.get("children1") == null).size > 0
+    );
   };
   canAddGroup() {
     const { maxNumberOfCases } = this.props.config.settings;
@@ -60,8 +66,7 @@ class SwitchGroup extends BasicGroup {
   }
 
   reordableNodesCntForItem(item) {
-    if (this.props.isLocked)
-      return 0;
+    if (this.props.isLocked) return 0;
     const { canLeaveEmptyCase, canRegroupCases } = this.props.config.settings;
 
     const totalCasesCnt = this.props.children1.size;
@@ -79,12 +84,17 @@ class SwitchGroup extends BasicGroup {
 
   renderHeaderWrapper() {
     return (
-      <div key="group-header" className={classNames(
-        "group--header", 
-        this.isOneChild() ? "one--child" : "",
-        this.showDragIcon() ? "with--drag" : "hide--drag",
-        this.showConjs() && (!this.isOneChild() || this.showNot()) ? "with--conjs" : "hide--conjs"
-      )}>
+      <div
+        key="group-header"
+        className={classNames(
+          "group--header",
+          this.isOneChild() ? "one--child" : "",
+          this.showDragIcon() ? "with--drag" : "hide--drag",
+          this.showConjs() && (!this.isOneChild() || this.showNot())
+            ? "with--conjs"
+            : "hide--conjs"
+        )}
+      >
         {this.renderHeader()}
         {this.renderActions()}
       </div>
@@ -109,24 +119,30 @@ class SwitchGroup extends BasicGroup {
     return false;
   }
 
-
   renderActions() {
-    const {config, addCaseGroup, addDefaultCaseGroup, isLocked, isTrueLocked, id} = this.props;
+    const {
+      config,
+      addCaseGroup,
+      addDefaultCaseGroup,
+      isLocked,
+      isTrueLocked,
+      id,
+    } = this.props;
 
-    return <SwitchGroupActions
-      config={config}
-      addCaseGroup={addCaseGroup}
-      addDefaultCaseGroup={addDefaultCaseGroup}
-      canAddDefault={!this.hasDefaultCase()}
-      canAddGroup={this.canAddGroup()}
-      setLock={this.setLock}
-      isLocked={isLocked}
-      isTrueLocked={isTrueLocked}
-      id={id}
-    />;
+    return (
+      <SwitchGroupActions
+        config={config}
+        addCaseGroup={addCaseGroup}
+        addDefaultCaseGroup={addDefaultCaseGroup}
+        canAddDefault={!this.hasDefaultCase()}
+        canAddGroup={this.canAddGroup()}
+        setLock={this.setLock}
+        isLocked={isLocked}
+        isTrueLocked={isTrueLocked}
+        id={id}
+      />
+    );
   }
-
 }
-
 
 export default SwitchGroup;

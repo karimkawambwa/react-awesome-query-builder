@@ -1,9 +1,18 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
+/** @format */
+
 import { TreeSelect } from "antd";
-import { calcTextWidth, SELECT_WIDTH_OFFSET_RIGHT } from "../../../../utils/domUtils";
-import { defaultTreeDataMap, mapListValues, getTitleInListValues } from "../../../../utils/stuff";
-import { useOnPropsChanged } from "../../../../utils/reactUtils";
+import PropTypes from "prop-types";
+import React, { PureComponent } from "react";
+import {
+  calcTextWidth,
+  SELECT_WIDTH_OFFSET_RIGHT,
+} from "react-awesome-query-builder-formatters/dist/utils/domUtils";
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+import {
+  defaultTreeDataMap,
+  getTitleInListValues,
+  mapListValues,
+} from "react-awesome-query-builder-formatters/dist/utils/stuff";
 
 export default class TreeSelectWidget extends PureComponent {
   static propTypes = {
@@ -23,19 +32,23 @@ export default class TreeSelectWidget extends PureComponent {
   constructor(props) {
     super(props);
     useOnPropsChanged(this);
-    this.onPropsChanged(props);  
+    this.onPropsChanged(props);
   }
 
   onPropsChanged(props) {
     const { listValues, treeMultiple } = props;
 
     let optionsMaxWidth = 0;
-    const initialOffset = (treeMultiple ? (24 + 22) : 24); // arrow + checkbox for leftmost item
+    const initialOffset = treeMultiple ? 24 + 22 : 24; // arrow + checkbox for leftmost item
     const offset = 20;
     const padding = 5 * 2;
-    mapListValues(listValues, ({title, value, path}) => {
-      optionsMaxWidth = Math.max(optionsMaxWidth, 
-        calcTextWidth(title, null) + padding + (path ? path.length : 0) * offset + initialOffset
+    mapListValues(listValues, ({ title, value, path }) => {
+      optionsMaxWidth = Math.max(
+        optionsMaxWidth,
+        calcTextWidth(title, null) +
+          padding +
+          (path ? path.length : 0) * offset +
+          initialOffset
       );
     });
     this.optionsMaxWidth = optionsMaxWidth;
@@ -52,7 +65,7 @@ export default class TreeSelectWidget extends PureComponent {
     }
     if (typeof val[0] == "object" && val[0].value !== undefined) {
       //`treeCheckStrictly` is on
-      val = val.map(v => v.value);
+      val = val.map((v) => v.value);
     }
     this.props.setValue(val);
   };
@@ -61,7 +74,6 @@ export default class TreeSelectWidget extends PureComponent {
     const dataForFilter = option.title;
     return dataForFilter.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   };
-
 
   render() {
     const {
@@ -72,7 +84,7 @@ export default class TreeSelectWidget extends PureComponent {
       treeMultiple,
       listValues,
       treeExpandAll,
-      readonly
+      readonly,
     } = this.props;
     const treeCheckStrictly = customProps.treeCheckStrictly || false;
     const { renderSize } = config.settings;
@@ -80,16 +92,22 @@ export default class TreeSelectWidget extends PureComponent {
     let aValue = value != undefined ? value : undefined;
     if (treeCheckStrictly && aValue !== undefined) {
       if (treeMultiple) {
-        aValue = aValue.map(v => ({value: v, label: getTitleInListValues(listValues, v)}));
+        aValue = aValue.map((v) => ({
+          value: v,
+          label: getTitleInListValues(listValues, v),
+        }));
       }
     }
     const width = aValue ? null : placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT;
     const dropdownMinWidth = 100;
     const dropdownMaxWidth = 800;
     const useAutoWidth = true; //tip: "auto" is good, but width will jump on expand/collapse
-    const dropdownWidth = Math.max(dropdownMinWidth, Math.min(dropdownMaxWidth, this.optionsMaxWidth));
+    const dropdownWidth = Math.max(
+      dropdownMinWidth,
+      Math.min(dropdownMaxWidth, this.optionsMaxWidth)
+    );
 
-    return (      
+    return (
       <TreeSelect
         disabled={readonly}
         style={{
@@ -98,7 +116,7 @@ export default class TreeSelectWidget extends PureComponent {
         }}
         dropdownStyle={{
           width: useAutoWidth ? "auto" : dropdownWidth + 10,
-          paddingRight: "10px"
+          paddingRight: "10px",
         }}
         multiple={treeMultiple}
         treeCheckable={treeMultiple}

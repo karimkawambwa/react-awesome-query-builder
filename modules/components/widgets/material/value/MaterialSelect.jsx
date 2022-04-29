@@ -1,35 +1,47 @@
-import React from "react";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
-import {mapListValues} from "../../../../utils/stuff";
-import FormControl from "@material-ui/core/FormControl";
-import omit from "lodash/omit";
+/** @format */
 
-export default ({listValues, value, setValue, allowCustomValues, readonly, placeholder, customProps}) => {
+import FormControl from "@material-ui/core/FormControl";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import omit from "lodash/omit";
+import React from "react";
+import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff";
+
+export default ({
+  listValues,
+  value,
+  setValue,
+  allowCustomValues,
+  readonly,
+  placeholder,
+  customProps,
+}) => {
   const renderOptions = () =>
-    mapListValues(listValues, ({title, value}) => {
-      return <MenuItem key={value} value={value}>{title}</MenuItem>;
+    mapListValues(listValues, ({ title, value }) => {
+      return (
+        <MenuItem key={value} value={value}>
+          {title}
+        </MenuItem>
+      );
     });
 
-  const onChange = e => {
-    if (e.target.value === undefined)
-      return;
+  const onChange = (e) => {
+    if (e.target.value === undefined) return;
     setValue(e.target.value);
   };
 
   const renderValue = (selectedValue) => {
-    if (!readonly && selectedValue == null)
-      return placeholder;
+    if (!readonly && selectedValue == null) return placeholder;
     return getListValueTitle(selectedValue);
   };
 
-  const getListValueTitle = (selectedValue) => 
-    mapListValues(listValues, ({title, value}) => 
-      (value === selectedValue ? title : null)
+  const getListValueTitle = (selectedValue) =>
+    mapListValues(listValues, ({ title, value }) =>
+      value === selectedValue ? title : null
     )
-      .filter(v => v !== null)
+      .filter((v) => v !== null)
       .shift();
-  
+
   const hasValue = value != null;
 
   return (

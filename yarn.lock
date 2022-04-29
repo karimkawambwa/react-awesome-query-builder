@@ -5330,7 +5330,7 @@ moment-locales-webpack-plugin@^1.2.0:
   dependencies:
     lodash.difference "^4.5.0"
 
-moment@^2.24.0, moment@^2.25.3, moment@^2.29.1:
+moment@^2.24.0, moment@^2.25.3, moment@^2.29.1, moment@^2.29.3:
   version "2.29.3"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.3.tgz#edd47411c322413999f7a5940d526de183c031f3"
   integrity sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==
@@ -6357,6 +6357,14 @@ rc-virtual-list@^3.2.0, rc-virtual-list@^3.4.2:
     rc-resize-observer "^1.0.0"
     rc-util "^5.15.0"
 
+"react-awesome-query-builder-formatters@file:.yalc/react-awesome-query-builder-formatters":
+  version "1.0.0"
+  dependencies:
+    immutable "^4.0.0"
+    lodash "^4.17.21"
+    moment "^2.29.3"
+    sqlstring "^2.3.3"
+
 react-dom@^17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
@@ -7028,17 +7036,12 @@ spdy@^4.0.2:
     select-hose "^2.0.0"
     spdy-transport "^3.0.0"
 
-spel2js@^0.2.8:
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/spel2js/-/spel2js-0.2.8.tgz#3ba3b291e5c6bae5c9f703e839294969b61fc691"
-  integrity sha512-dzYq+v4YV7SPIdNrmvFAUjc0HcgI7b0yoMw7kzOBmlj/GjdOb/+8dVn1I7nLuOS5X2SW+LK3tf2SVkXRjCkWBA==
-
 sprintf-js@~1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
 
-sqlstring@^2.3.2:
+sqlstring@^2.3.3:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/sqlstring/-/sqlstring-2.3.3.tgz#2ddc21f03bce2c387ed60680e739922c65751d0c"
   integrity sha512-qC9iz2FlN7DQl3+wjwn3802RTyjCx7sDvfQEXchwa6CWOx07/WVfh91gBmQ9fahw8snwGEWU3xGzOt4tFyHLxg==

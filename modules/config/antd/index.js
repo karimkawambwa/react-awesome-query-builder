@@ -1,9 +1,9 @@
 import en_US from "antd/lib/locale-provider/en_US";
-import AntdWidgets from "../../components/widgets/antd";
-import BasicConfig, { stringifyForDisplay } from "../basic";
-import { getTitleInListValues } from "../../utils/stuff";
-import { SqlString, spelEscape } from "../../utils/export";
 import React from "react";
+import { spelEscape, SqlString } from "react-awesome-query-builder-formatters/dist/utils/export";
+import { getTitleInListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff";
+import BasicConfig, { stringifyForDisplay } from "..";
+import AntdWidgets from "../../components/widgets/antd";
 
 
 const {

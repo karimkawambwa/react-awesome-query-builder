@@ -1,17 +1,22 @@
-import React from "react";
+/** @format */
+
 import PropTypes from "prop-types";
-import GroupContainer from "../containers/GroupContainer";
+import React from "react";
+import {
+  getFieldConfig,
+  getFieldWidgetConfig,
+} from "react-awesome-query-builder-formatters/dist/utils/configUtils";
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
 import Draggable from "../containers/Draggable";
-import {BasicGroup} from "./Group";
-import {RuleGroupExtActions} from "./RuleGroupExtActions";
+import GroupContainer from "../containers/GroupContainer";
 import FieldWrapper from "../rule/FieldWrapper";
 import OperatorWrapper from "../rule/OperatorWrapper";
-import {useOnPropsChanged} from "../../utils/reactUtils";
-import {Col, dummyFn, ConfirmFn} from "../utils";
-import {getFieldWidgetConfig, getFieldConfig} from "../../utils/configUtils";
 import Widget from "../rule/Widget";
-const classNames = require("classnames");
+import { Col, ConfirmFn, dummyFn } from "../utils";
+import { BasicGroup } from "./Group";
+import { RuleGroupExtActions } from "./RuleGroupExtActions";
 
+const classNames = require("classnames");
 
 @GroupContainer
 @Draggable("group rule_group_ext")
@@ -34,11 +39,10 @@ class RuleGroupExt extends BasicGroup {
     this.onPropsChanged(props);
   }
 
-  onPropsChanged(nextProps) {
-  }
+  onPropsChanged(nextProps) {}
 
   childrenClassName = () => "rule_group_ext--children";
-  
+
   renderFooterWrapper = () => null;
   canAddGroup = () => false;
   canAddRule = () => true;
@@ -46,12 +50,17 @@ class RuleGroupExt extends BasicGroup {
 
   renderHeaderWrapper() {
     return (
-      <div key="group-header" className={classNames(
-        "group--header", 
-        this.isOneChild() ? "one--child" : "",
-        this.showDragIcon() ? "with--drag" : "hide--drag",
-        this.showConjs() && (!this.isOneChild() || this.showNot()) ? "with--conjs" : "hide--conjs"
-      )}>
+      <div
+        key="group-header"
+        className={classNames(
+          "group--header",
+          this.isOneChild() ? "one--child" : "",
+          this.showDragIcon() ? "with--drag" : "hide--drag",
+          this.showConjs() && (!this.isOneChild() || this.showNot())
+            ? "with--conjs"
+            : "hide--conjs"
+        )}
+      >
         {this.renderHeader()}
         {this.renderGroupField()}
         {this.renderActions()}
@@ -79,13 +88,15 @@ class RuleGroupExt extends BasicGroup {
   }
 
   showNot() {
-    const {config, selectedField, selectedOperator} = this.props;
+    const { config, selectedField, selectedOperator } = this.props;
     const selectedFieldConfig = getFieldConfig(config, selectedField) || {};
-    return selectedFieldConfig.showNot != undefined ? selectedFieldConfig.showNot : config.settings.showNot;
+    return selectedFieldConfig.showNot != undefined
+      ? selectedFieldConfig.showNot
+      : config.settings.showNot;
   }
 
   conjunctionOptions() {
-    const {config, selectedField, selectedOperator} = this.props;
+    const { config, selectedField, selectedOperator } = this.props;
     const selectedFieldConfig = getFieldConfig(config, selectedField) || {};
     let conjunctionOptions = super.conjunctionOptions();
     if (selectedFieldConfig.conjunctions) {
@@ -99,106 +110,134 @@ class RuleGroupExt extends BasicGroup {
   }
 
   renderField() {
-    const { config, selectedField, setField, parentField, id, groupId, isLocked } = this.props;
+    const {
+      config,
+      selectedField,
+      setField,
+      parentField,
+      id,
+      groupId,
+      isLocked,
+    } = this.props;
     const { immutableFieldsMode } = config.settings;
-    return <FieldWrapper
-      key="field"
-      classname={"rule--field"}
-      config={config}
-      selectedField={selectedField}
-      setField={setField}
-      parentField={parentField}
-      readonly={immutableFieldsMode || isLocked}
-      id={id}
-      groupId={groupId}
-    />;
+    return (
+      <FieldWrapper
+        key="field"
+        classname={"rule--field"}
+        config={config}
+        selectedField={selectedField}
+        setField={setField}
+        parentField={parentField}
+        readonly={immutableFieldsMode || isLocked}
+        id={id}
+        groupId={groupId}
+      />
+    );
   }
 
   renderOperator() {
-    const {config, selectedField, selectedOperator, setField, setOperator, isLocked} = this.props;
+    const {
+      config,
+      selectedField,
+      selectedOperator,
+      setField,
+      setOperator,
+      isLocked,
+    } = this.props;
     const { immutableFieldsMode } = config.settings;
-    const selectedFieldWidgetConfig = getFieldWidgetConfig(config, selectedField, selectedOperator) || {};
+    const selectedFieldWidgetConfig =
+      getFieldWidgetConfig(config, selectedField, selectedOperator) || {};
     const hideOperator = selectedFieldWidgetConfig.hideOperator;
-    const showOperatorLabel = selectedField && hideOperator && selectedFieldWidgetConfig.operatorInlineLabel;
+    const showOperatorLabel =
+      selectedField &&
+      hideOperator &&
+      selectedFieldWidgetConfig.operatorInlineLabel;
     const showOperator = selectedField && !hideOperator;
 
-    return <OperatorWrapper
-      key="operator"
-      classname={"group--operator"}
-      config={config}
-      selectedField={selectedField}
-      selectedOperator={selectedOperator}
-      setField={setField}
-      setOperator={setOperator}
-      selectedFieldPartsLabels={["group"]}
-      showOperator={showOperator}
-      showOperatorLabel={showOperatorLabel}
-      selectedFieldWidgetConfig={selectedFieldWidgetConfig}
-      readonly={immutableFieldsMode || isLocked}
-      id={this.props.id}
-      groupId={this.props.groupId}
-    />;
+    return (
+      <OperatorWrapper
+        key="operator"
+        classname={"group--operator"}
+        config={config}
+        selectedField={selectedField}
+        selectedOperator={selectedOperator}
+        setField={setField}
+        setOperator={setOperator}
+        selectedFieldPartsLabels={["group"]}
+        showOperator={showOperator}
+        showOperatorLabel={showOperatorLabel}
+        selectedFieldWidgetConfig={selectedFieldWidgetConfig}
+        readonly={immutableFieldsMode || isLocked}
+        id={this.props.id}
+        groupId={this.props.groupId}
+      />
+    );
   }
 
   renderWidget() {
-    const {config, selectedField, selectedOperator, isLocked} = this.props;
+    const { config, selectedField, selectedOperator, isLocked } = this.props;
     const { immutableValuesMode } = config.settings;
     const isFieldAndOpSelected = selectedField && selectedOperator;
     const showWidget = isFieldAndOpSelected;
     if (!showWidget) return null;
 
-    const widget = <Widget
-      key="values"
-      isForRuleGruop={true}
-      field={this.props.selectedField}
-      operator={this.props.selectedOperator}
-      value={this.props.value}
-      valueSrc={"value"}
-      valueError={null}
-      config={config}
-      setValue={!immutableValuesMode ? this.props.setValue : dummyFn}
-      setValueSrc={dummyFn}
-      readonly={immutableValuesMode || isLocked}
-      id={this.props.id}
-      groupId={this.props.groupId}
-    />;
+    const widget = (
+      <Widget
+        key="values"
+        isForRuleGruop={true}
+        field={this.props.selectedField}
+        operator={this.props.selectedOperator}
+        value={this.props.value}
+        valueSrc={"value"}
+        valueError={null}
+        config={config}
+        setValue={!immutableValuesMode ? this.props.setValue : dummyFn}
+        setValueSrc={dummyFn}
+        readonly={immutableValuesMode || isLocked}
+        id={this.props.id}
+        groupId={this.props.groupId}
+      />
+    );
 
     return (
-      <Col key={"widget-for-"+this.props.selectedOperator} className="rule--value">
+      <Col
+        key={"widget-for-" + this.props.selectedOperator}
+        className="rule--value"
+      >
         {widget}
       </Col>
     );
   }
 
   renderActions() {
-    const {config, addRule, isLocked, isTrueLocked, id} = this.props;
+    const { config, addRule, isLocked, isTrueLocked, id } = this.props;
 
-    return <RuleGroupExtActions
-      config={config}
-      addRule={addRule}
-      canAddRule={this.canAddRule()}
-      canDeleteGroup={this.canDeleteGroup()}
-      removeSelf={this.removeSelf}
-      setLock={this.setLock}
-      isLocked={isLocked}
-      isTrueLocked={isTrueLocked}
-      id={id}
-    />;
+    return (
+      <RuleGroupExtActions
+        config={config}
+        addRule={addRule}
+        canAddRule={this.canAddRule()}
+        canDeleteGroup={this.canDeleteGroup()}
+        removeSelf={this.removeSelf}
+        setLock={this.setLock}
+        isLocked={isLocked}
+        isTrueLocked={isTrueLocked}
+        id={id}
+      />
+    );
   }
 
   reordableNodesCntForItem(_item) {
-    if (this.props.isLocked)
-      return 0;
-    const {children1} = this.props;
+    if (this.props.isLocked) return 0;
+    const { children1 } = this.props;
     return children1.size;
   }
 
   extraPropsForItem(_item) {
     return {
-      parentField: this.props.selectedField
+      parentField: this.props.selectedField,
     };
   }
 }
-
 
 export default RuleGroupExt;

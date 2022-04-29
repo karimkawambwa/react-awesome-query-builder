@@ -1,10 +1,8 @@
-import uuid from "../utils/uuid";
-import {toImmutableList} from "../utils/stuff";
-import {defaultRuleProperties, defaultGroupProperties} from "../utils/defaultUtils";
-import * as constants from "../constants";
 import Immutable from "immutable";
-
-
+import { defaultGroupProperties, defaultRuleProperties } from "react-awesome-query-builder-formatters/dist/utils/defaultUtils";
+import { toImmutableList } from "react-awesome-query-builder-formatters/dist/utils/stuff";
+import uuid from "react-awesome-query-builder-formatters/dist/utils/uuid";
+import * as constants from "../constants";
 
 /**
  * @param {object} config
