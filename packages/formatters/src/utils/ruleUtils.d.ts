@@ -1,0 +1,15 @@
+export function getNewValueForFieldOp(config: object, oldConfig: object | undefined, current: Immutable.Map<any, any>, newField: string, newOperator: string, changedProp?: string, canFix?: boolean): object;
+export function getFirstField(config: any, parentRuleGroupPath?: null): any;
+export function getOperatorsForField(config: any, field: any): any;
+export function getFirstOperator(config: any, field: any): any;
+export function getFieldPath(field: any, config: any, onlyKeys?: boolean): any;
+export function getFuncPathLabels(field: any, config: any, parentField?: null): any;
+export function getFieldPathLabels(field: any, config: any, parentField?: null, fieldsKey?: string, subfieldsKey?: string): any;
+export function getFieldPartsConfigs(field: any, config: any, parentField?: null): any;
+export function getValueLabel(config: any, field: any, operator: any, delta: any, valueSrc?: null, isSpecialRange?: boolean): any;
+export function getWidgetsForFieldOp(config: any, field: any, operator: any, valueSrc?: null): any[];
+export function filterValueSourcesForField(config: any, valueSrcs: any, fieldDefinition: any): any;
+export function getValueSourcesForFieldOp(config: any, field: any, operator: any, fieldDefinition?: null, leftFieldForFunc?: null): any;
+export function getWidgetForFieldOp(config: any, field: any, operator: any, valueSrc?: null): any;
+export function formatFieldName(field: any, config: any, meta: any, parentField?: null): any;
+import Immutable from "immutable";

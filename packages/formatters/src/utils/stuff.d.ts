@@ -1,0 +1,30 @@
+export function sleep(delay: any): Promise<any>;
+export function applyToJS(v: any): any;
+export function toImmutableList(v: any): any;
+export function mergeArraysSmart(arr1: any, arr2: any): any;
+export function defaultValue(value: any, _default: any): any;
+export function truncateString(str: any, n: any, useWordBoundary: any): any;
+export function immutableEqual(v1: any, v2: any): any;
+export function deepEqual(v1: any, v2: any): boolean;
+export function eqSet(as: any, bs: any): boolean;
+export function eqArrSet(arr1: any, arr2: any): boolean;
+export function shallowEqual(a: any, b: any, deep?: boolean): boolean;
+export function escapeRegExp(string: any): any;
+export function listValuesToArray(listValuesObj: any): any;
+export function getItemInListValues(listValues: any, value: any): any;
+export function getTitleInListValues(listValues: any, value: any): any;
+export function getValueInListValues(listValues: any, value: any): any;
+export function mapListValues(listValues: any, mapFn: any): any[];
+export namespace defaultTreeDataMap {
+    const id: string;
+    const pId: string;
+    const rootPId: undefined;
+}
+export function flatizeTreeData(treeData: any): any;
+export function normalizeListValues(listValues: any, type: any, fieldSettings: any): any;
+export function removePrefixPath(selectedPath: any, parentPath: any): any;
+export function isJsonLogic(logic: any): boolean;
+export function isImmutable(v: any): boolean;
+export function getLogger(devMode?: boolean): any;
+export function getFirstDefined(arr?: any[]): any;
+export const logger: any;

@@ -1,0 +1,16 @@
+export function expandTreePath(path: Immutable.List<any>, ...suffix: string[]): Immutable.List<any>;
+export function expandTreeSubpath(path: Immutable.List<any>, ...suffix: string[]): Immutable.List<any>;
+export function getItemByPath(tree: any, path: Immutable.Map<any, any>): Immutable.Map<any, any>;
+export function removePathsInTree(tree: Immutable.Map<any, any>): Immutable.Map<any, any>;
+export function removeIsLockedInTree(tree: Immutable.Map<any, any>): Immutable.Map<any, any>;
+export function fixPathsInTree(tree: Immutable.Map<any, any>): Immutable.Map<any, any>;
+export function fixEmptyGroupsInTree(tree: any): any;
+export function getFlatTree(tree: Immutable.Map<any, any>): Object;
+export function getTotalReordableNodesCountInTree(tree: Immutable.Map<any, any>): Integer;
+export function getTotalRulesCountInTree(tree: Immutable.Map<any, any>): Integer;
+export function getTreeBadFields(tree: any): any[];
+export function getLightTree(tree: any, children1AsArray?: boolean): any;
+export function getSwitchValues(tree: any): any[];
+export function isEmptyTree(tree: any): boolean;
+export function hasChildren(tree: any, path: any): boolean;
+import Immutable from "immutable";
