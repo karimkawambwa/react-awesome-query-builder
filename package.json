@@ -31,7 +31,7 @@
     "for-npm": "sh ./scripts/for-npm.sh",
     "for-gpr": "sh ./scripts/for-gpr.sh",
     "build": "tsc",
-    "watch": "tsc-watch --onSuccess \"yalc push\""
+    "watch": "npx tsc-watch --onSuccess \"npx yalc push\""
   },
   "repository": {
     "type": "git",
