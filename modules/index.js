@@ -8,6 +8,3 @@ export { default as Query } from "./components/QueryContainer";
 export * as Widgets from "./components/widgets";
 export { default as BasicConfig } from "./config";
 
-export const Utils = { ...BasicUtils, ...Export, ...Import };
-
-

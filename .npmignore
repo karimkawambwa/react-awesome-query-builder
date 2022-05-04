@@ -18,3 +18,5 @@ npm-debug.log
 .circleci
 .travis.yml
 *.log
+
+modules
