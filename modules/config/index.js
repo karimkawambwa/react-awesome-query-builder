@@ -46,7 +46,6 @@ const settings = {
   renderSwitchPrefix: () => <>{"Conditions"}</>,
 };
 
-
 const widgets = {
   ...BasicConfig.widgets,
   text: {
@@ -89,13 +88,6 @@ const widgets = {
     ...BasicConfig.widgets.datetime,
     factory: (props) => <VanillaDateTimeWidget {...props} />,
   },
-  proximity: {
-    ...BasicConfig.widgets.proximity,
-    options: {
-      ...BasicConfig.widgets.proximity.options,
-      factory: (props) => <ProximityOperator {...props} />,
-    }
-  },
   field: {
     ...BasicConfig.widgets.field,
     factory: (props) => <ValueFieldWidget {...props} />
@@ -133,8 +125,20 @@ const types = {
   },
 };
 
+const operators = {
+  ...BasicConfig.operators,
+  proximity: {
+    ...BasicConfig.operators.proximity,
+    options: {
+      ...BasicConfig.operators.proximity.options,
+      factory: (props) => <ProximityOperator {...props} />,
+    }
+  },
+}
+
 export default {
   ...BasicConfig,
+  operators,
   types,
   widgets,
   settings,
