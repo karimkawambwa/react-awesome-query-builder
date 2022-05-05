@@ -1,7 +1,7 @@
 /** @format */
 
-import React from "react";
-import uuid from "react-awesome-query-builder-formatters/dist/utils/uuid";
+import React from "react"
+import uuid from "react-awesome-query-builder-formatters/dist/utils/uuid"
 
 export default (props) => {
   const {
@@ -12,14 +12,14 @@ export default (props) => {
     labelNo,
     readonly,
     customProps = {},
-  } = props;
-  const customRadioYesProps = customProps.radioYes || {};
-  const customRadioNoProps = customProps.radioNo || {};
+  } = props
+  const customRadioYesProps = customProps.radioYes || {}
+  const customRadioNoProps = customProps.radioNo || {}
 
-  const onCheckboxChange = (e) => setValue(e.target.checked);
-  const onRadioChange = (e) => setValue(e.target.value == "true");
+  const onCheckboxChange = (e) => setValue(e.target.checked)
+  const onRadioChange = (e) => setValue(e.target.value == "true")
   const id = uuid(),
-    id2 = uuid();
+    id2 = uuid()
 
   // return <>
   //     <input key={id}  type="checkbox" id={id} checked={!!value} disabled={readonly} onChange={onCheckboxChange} />
@@ -55,5 +55,5 @@ export default (props) => {
         {labelNo}
       </label>
     </>
-  );
-};
+  )
+}

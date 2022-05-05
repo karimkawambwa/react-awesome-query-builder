@@ -1,15 +1,15 @@
 /** @format */
 
-import Immutable, { Map } from "immutable";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { pureShouldComponentUpdate } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+import Immutable, { Map } from "immutable"
+import PropTypes from "prop-types"
+import React, { Component } from "react"
+import { pureShouldComponentUpdate } from "react-awesome-query-builder-formatters/dist/utils/reactUtils"
 import {
   getTotalReordableNodesCountInTree,
   getTotalRulesCountInTree,
-} from "react-awesome-query-builder-formatters/dist/utils/treeUtils";
-import SortableContainer from "./containers/SortableContainer";
-import { Item } from "./item/Item";
+} from "react-awesome-query-builder-formatters/dist/utils/treeUtils"
+import SortableContainer from "./containers/SortableContainer"
+import { Item } from "./item/Item"
 
 @SortableContainer
 export default class Builder extends Component {
@@ -18,51 +18,51 @@ export default class Builder extends Component {
     config: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     onDragStart: PropTypes.func,
-  };
+  }
 
   shouldComponentUpdate(nextProps, nextState) {
-    const prevProps = this.props;
-    let should = pureShouldComponentUpdate(this)(nextProps, nextState);
+    const prevProps = this.props
+    let should = pureShouldComponentUpdate(this)(nextProps, nextState)
     if (should) {
-      let chs = [];
+      let chs = []
       for (let k in nextProps) {
-        let changed = nextProps[k] !== prevProps[k];
+        let changed = nextProps[k] !== prevProps[k]
         if (changed && k != "__isInternalValueChange") {
-          chs.push(k);
+          chs.push(k)
         }
       }
-      if (!chs.length) should = false;
+      if (!chs.length) should = false
       //optimize render
       if (
         chs.length == 1 &&
         chs[0] == "tree" &&
         nextProps.__isInternalValueChange
       )
-        should = false;
+        should = false
     }
-    return should;
+    return should
   }
 
   constructor(props) {
-    super(props);
+    super(props)
 
-    this._updPath(props);
+    this._updPath(props)
   }
 
   _updPath(props) {
-    const id = props.tree.get("id");
-    this.path = Immutable.List.of(id);
+    const id = props.tree.get("id")
+    this.path = Immutable.List.of(id)
   }
 
   render() {
-    const tree = this.props.tree;
-    const rootType = tree.get("type");
-    const isTernary = rootType == "switch_group";
+    const tree = this.props.tree
+    const rootType = tree.get("type")
+    const isTernary = rootType == "switch_group"
     const reordableNodesCnt = isTernary
       ? null
-      : getTotalReordableNodesCountInTree(tree);
-    const totalRulesCnt = isTernary ? null : getTotalRulesCountInTree(tree);
-    const id = tree.get("id");
+      : getTotalReordableNodesCountInTree(tree)
+    const totalRulesCnt = isTernary ? null : getTotalRulesCountInTree(tree)
+    const id = tree.get("id")
     return (
       <Item
         key={id}
@@ -79,6 +79,6 @@ export default class Builder extends Component {
         parentReordableNodesCnt={0}
         onDragStart={this.props.onDragStart}
       />
-    );
+    )
   }
 }

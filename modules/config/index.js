@@ -1,7 +1,7 @@
-import React from "react";
-import BasicConfig from "react-awesome-query-builder-formatters";
-import * as Operators from "../components/operators";
-import * as VanillaWidgets from "../components/widgets";
+import React from "react"
+import BasicConfig from "react-awesome-query-builder-formatters"
+import * as Operators from "../components/operators"
+import * as VanillaWidgets from "../components/widgets"
 
 const {
   //vanilla
@@ -26,10 +26,9 @@ const {
 
   //common
   ValueFieldWidget,
-  FuncWidget
-} = VanillaWidgets;
-const { ProximityOperator } = Operators;
-
+  FuncWidget,
+} = VanillaWidgets
+const { ProximityOperator } = Operators
 
 const settings = {
   ...BasicConfig.settings,
@@ -44,7 +43,7 @@ const settings = {
   renderValueSources: (props) => <VanillaValueSources {...props} />,
   renderConfirm: vanillaConfirm,
   renderSwitchPrefix: () => <>{"Conditions"}</>,
-};
+}
 
 const widgets = {
   ...BasicConfig.widgets,
@@ -90,14 +89,13 @@ const widgets = {
   },
   field: {
     ...BasicConfig.widgets.field,
-    factory: (props) => <ValueFieldWidget {...props} />
+    factory: (props) => <ValueFieldWidget {...props} />,
   },
   func: {
     ...BasicConfig.widgets.func,
-    factory: (props) => <FuncWidget {...props} />
+    factory: (props) => <FuncWidget {...props} />,
   },
-};
-
+}
 
 const types = {
   ...BasicConfig.types,
@@ -112,18 +110,13 @@ const types = {
           },
           not_between: {
             isSpecialRange: true,
-          }
+          },
         },
-        operators: [
-          "between",
-          "not_between",
-          "is_empty",
-          "is_not_empty",
-        ],
-      }
+        operators: ["between", "not_between", "is_empty", "is_not_empty"],
+      },
     },
   },
-};
+}
 
 const operators = {
   ...BasicConfig.operators,
@@ -132,7 +125,7 @@ const operators = {
     options: {
       ...BasicConfig.operators.proximity.options,
       factory: (props) => <ProximityOperator {...props} />,
-    }
+    },
   },
 }
 
@@ -142,4 +135,4 @@ export default {
   types,
   widgets,
   settings,
-};
+}

@@ -1,24 +1,24 @@
 /** @format */
 
-import pick from "lodash/pick";
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { extendConfig } from "react-awesome-query-builder-formatters/dist/utils/configUtils";
-import { defaultRoot } from "react-awesome-query-builder-formatters/dist/utils/defaultUtils";
+import pick from "lodash/pick"
+import PropTypes from "prop-types"
+import React, { Component } from "react"
+import { extendConfig } from "react-awesome-query-builder-formatters/dist/utils/configUtils"
+import { defaultRoot } from "react-awesome-query-builder-formatters/dist/utils/defaultUtils"
 import {
   liteShouldComponentUpdate,
   useOnPropsChanged,
-} from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+} from "react-awesome-query-builder-formatters/dist/utils/reactUtils"
 import {
   immutableEqual,
   shallowEqual,
-} from "react-awesome-query-builder-formatters/dist/utils/stuff";
-import { connect, Provider } from "react-redux";
-import { createStore } from "redux";
-import * as actions from "../actions";
-import context from "../stores/context";
-import createTreeStore from "../stores/tree";
-import Query, { validateAndFixTree } from "./Query";
+} from "react-awesome-query-builder-formatters/dist/utils/stuff"
+import { connect, Provider } from "react-redux"
+import { createStore } from "redux"
+import * as actions from "../actions"
+import context from "../stores/context"
+import createTreeStore from "../stores/tree"
+import Query, { validateAndFixTree } from "./Query"
 
 const configKeys = [
   "conjunctions",
@@ -28,7 +28,7 @@ const configKeys = [
   "widgets",
   "settings",
   "funcs",
-];
+]
 
 const ConnectedQuery = connect(
   (state) => {
@@ -36,15 +36,15 @@ const ConnectedQuery = connect(
       tree: state.tree,
       __isInternalValueChange: state.__isInternalValueChange,
       __lastAction: state.__lastAction,
-    };
+    }
   },
   null,
   null,
   {
     context,
   }
-)(Query);
-ConnectedQuery.displayName = "ConnectedQuery";
+)(Query)
+ConnectedQuery.displayName = "ConnectedQuery"
 
 export default class QueryContainer extends Component {
   static propTypes = {
@@ -59,70 +59,70 @@ export default class QueryContainer extends Component {
     onChange: PropTypes.func,
     renderBuilder: PropTypes.func,
     value: PropTypes.any, //instanceOf(Immutable.Map)
-  };
+  }
 
   constructor(props, context) {
-    super(props, context);
-    useOnPropsChanged(this);
+    super(props, context)
+    useOnPropsChanged(this)
 
-    const config = pick(props, configKeys);
-    const extendedConfig = extendConfig(config);
-    const tree = props.value;
+    const config = pick(props, configKeys)
+    const extendedConfig = extendConfig(config)
+    const tree = props.value
     const validatedTree = tree
       ? validateAndFixTree(tree, null, config, config)
-      : null;
+      : null
 
-    const store = createTreeStore({ ...config, tree: validatedTree });
+    const store = createTreeStore({ ...config, tree: validatedTree })
 
     this.state = {
       store: createStore(store),
       config: extendedConfig,
-    };
+    }
   }
 
   shouldComponentUpdate = liteShouldComponentUpdate(this, {
     value: (nextValue, prevValue, state) => {
-      return false;
+      return false
     },
-  });
+  })
 
   onPropsChanged(nextProps) {
     // compare configs
-    const oldConfig = pick(this.props, configKeys);
-    let nextConfig = pick(nextProps, configKeys);
-    const isConfigChanged = !shallowEqual(oldConfig, nextConfig, true);
+    const oldConfig = pick(this.props, configKeys)
+    let nextConfig = pick(nextProps, configKeys)
+    const isConfigChanged = !shallowEqual(oldConfig, nextConfig, true)
     if (isConfigChanged) {
-      nextConfig = extendConfig(nextConfig);
-      this.setState({ config: nextConfig });
+      nextConfig = extendConfig(nextConfig)
+      this.setState({ config: nextConfig })
     }
 
     // compare trees
-    const storeValue = this.state.store.getState().tree;
+    const storeValue = this.state.store.getState().tree
     const isTreeChanged =
       !immutableEqual(nextProps.value, this.props.value) &&
-      !immutableEqual(nextProps.value, storeValue);
+      !immutableEqual(nextProps.value, storeValue)
     if (isTreeChanged) {
       const nextTree =
-        nextProps.value || defaultRoot({ ...nextProps, tree: null });
+        nextProps.value || defaultRoot({ ...nextProps, tree: null })
       const validatedTree = validateAndFixTree(
         nextTree,
         null,
         nextConfig,
         oldConfig
-      );
+      )
       return Promise.resolve().then(() => {
         this.state.store.dispatch(
           actions.tree.setTree(nextProps, validatedTree)
-        );
-      });
+        )
+      })
     }
   }
 
   render() {
     // `get_children` is deprecated!
-    const { renderBuilder, get_children, onChange, settings } = this.props;
-    const { config, store } = this.state;
-    const { renderProvider: QueryWrapper } = settings;
+    const { renderBuilder, get_children, onChange, settings } = this.props
+    const { config, store } = this.state
+    const { renderProvider: QueryWrapper } = settings
 
     return (
       <QueryWrapper config={config}>
@@ -135,6 +135,6 @@ export default class QueryContainer extends Component {
           />
         </Provider>
       </QueryWrapper>
-    );
+    )
   }
 }

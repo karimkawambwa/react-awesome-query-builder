@@ -1,6 +1,5 @@
-import { toImmutableList } from "react-awesome-query-builder-formatters/dist/utils/stuff";
-import * as constants from "../constants";
-
+import { toImmutableList } from "react-awesome-query-builder-formatters/dist/utils/stuff"
+import * as constants from "../constants"
 
 /**
  * @param {object} config
@@ -10,8 +9,8 @@ import * as constants from "../constants";
 export const setConjunction = (config, path, conjunction) => ({
   type: constants.SET_CONJUNCTION,
   path: toImmutableList(path),
-  conjunction: conjunction
-});
+  conjunction: conjunction,
+})
 
 /**
  * @param {object} config
@@ -21,8 +20,8 @@ export const setConjunction = (config, path, conjunction) => ({
 export const setNot = (config, path, not) => ({
   type: constants.SET_NOT,
   path: toImmutableList(path),
-  not: not
-});
+  not: not,
+})
 
 /**
  * @param {object} config
@@ -32,5 +31,5 @@ export const setNot = (config, path, not) => ({
 export const setLock = (config, path, lock) => ({
   type: constants.SET_LOCK,
   path: toImmutableList(path),
-  lock: lock
-});
+  lock: lock,
+})

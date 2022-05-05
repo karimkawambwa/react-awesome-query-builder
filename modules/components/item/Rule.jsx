@@ -1,23 +1,23 @@
 /** @format */
 
-import PropTypes from "prop-types";
-import React, { PureComponent } from "react";
+import PropTypes from "prop-types"
+import React, { PureComponent } from "react"
 import {
   getFieldConfig,
   getFieldWidgetConfig,
   getOperatorConfig,
-} from "react-awesome-query-builder-formatters/dist/utils/configUtils";
-import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
-import { getFieldPathLabels } from "react-awesome-query-builder-formatters/dist/utils/ruleUtils";
-import Draggable from "../containers/Draggable";
-import RuleContainer from "../containers/RuleContainer";
-import FieldWrapper from "../rule/FieldWrapper";
-import OperatorOptions from "../rule/OperatorOptions";
-import OperatorWrapper from "../rule/OperatorWrapper";
-import Widget from "../rule/Widget";
-import { Col, ConfirmFn, DragIcon, dummyFn } from "../utils";
+} from "react-awesome-query-builder-formatters/dist/utils/configUtils"
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils"
+import { getFieldPathLabels } from "react-awesome-query-builder-formatters/dist/utils/ruleUtils"
+import Draggable from "../containers/Draggable"
+import RuleContainer from "../containers/RuleContainer"
+import FieldWrapper from "../rule/FieldWrapper"
+import OperatorOptions from "../rule/OperatorOptions"
+import OperatorWrapper from "../rule/OperatorWrapper"
+import Widget from "../rule/Widget"
+import { Col, ConfirmFn, DragIcon, dummyFn } from "../utils"
 
-const classNames = require("classnames");
+const classNames = require("classnames")
 
 @RuleContainer
 @Draggable("rule")
@@ -50,33 +50,33 @@ class Rule extends PureComponent {
     setValue: PropTypes.func,
     setValueSrc: PropTypes.func,
     reordableNodesCnt: PropTypes.number,
-  };
+  }
 
   constructor(props) {
-    super(props);
-    useOnPropsChanged(this);
-    this.removeSelf = this.removeSelf.bind(this);
-    this.setLock = this.setLock.bind(this);
+    super(props)
+    useOnPropsChanged(this)
+    this.removeSelf = this.removeSelf.bind(this)
+    this.setLock = this.setLock.bind(this)
 
-    this.onPropsChanged(props);
+    this.onPropsChanged(props)
   }
 
   onPropsChanged(nextProps) {
-    const prevProps = this.props;
+    const prevProps = this.props
     const keysForMeta = [
       "selectedField",
       "selectedOperator",
       "config",
       "reordableNodesCnt",
       "isLocked",
-    ];
+    ]
     const needUpdateMeta =
       !this.meta ||
       keysForMeta.map((k) => nextProps[k] !== prevProps[k]).filter((ch) => ch)
-        .length > 0;
+        .length > 0
 
     if (needUpdateMeta) {
-      this.meta = this.getMeta(nextProps);
+      this.meta = this.getMeta(nextProps)
     }
   }
 
@@ -87,33 +87,33 @@ class Rule extends PureComponent {
     reordableNodesCnt,
     isLocked,
   }) {
-    const selectedFieldPartsLabels = getFieldPathLabels(selectedField, config);
-    const selectedFieldConfig = getFieldConfig(config, selectedField);
+    const selectedFieldPartsLabels = getFieldPathLabels(selectedField, config)
+    const selectedFieldConfig = getFieldConfig(config, selectedField)
     const isSelectedGroup =
-      selectedFieldConfig && selectedFieldConfig.type == "!struct";
+      selectedFieldConfig && selectedFieldConfig.type == "!struct"
     const isFieldAndOpSelected =
-      selectedField && selectedOperator && !isSelectedGroup;
+      selectedField && selectedOperator && !isSelectedGroup
     const selectedOperatorConfig = getOperatorConfig(
       config,
       selectedOperator,
       selectedField
-    );
+    )
     const selectedOperatorHasOptions =
-      selectedOperatorConfig && selectedOperatorConfig.options != null;
+      selectedOperatorConfig && selectedOperatorConfig.options != null
     const selectedFieldWidgetConfig =
-      getFieldWidgetConfig(config, selectedField, selectedOperator) || {};
-    const hideOperator = selectedFieldWidgetConfig.hideOperator;
+      getFieldWidgetConfig(config, selectedField, selectedOperator) || {}
+    const hideOperator = selectedFieldWidgetConfig.hideOperator
 
     const showDragIcon =
-      config.settings.canReorder && reordableNodesCnt > 1 && !isLocked;
-    const showOperator = selectedField && !hideOperator;
+      config.settings.canReorder && reordableNodesCnt > 1 && !isLocked
+    const showOperator = selectedField && !hideOperator
     const showOperatorLabel =
       selectedField &&
       hideOperator &&
-      selectedFieldWidgetConfig.operatorInlineLabel;
-    const showWidget = isFieldAndOpSelected;
+      selectedFieldWidgetConfig.operatorInlineLabel
+    const showWidget = isFieldAndOpSelected
     const showOperatorOptions =
-      isFieldAndOpSelected && selectedOperatorHasOptions;
+      isFieldAndOpSelected && selectedOperatorHasOptions
 
     return {
       selectedFieldPartsLabels,
@@ -123,29 +123,29 @@ class Rule extends PureComponent {
       showOperatorLabel,
       showWidget,
       showOperatorOptions,
-    };
+    }
   }
 
   setLock(lock) {
-    this.props.setLock(lock);
+    this.props.setLock(lock)
   }
 
   removeSelf() {
-    const { confirmFn } = this.props;
+    const { confirmFn } = this.props
     const { renderConfirm, removeRuleConfirmOptions: confirmOptions } =
-      this.props.config.settings;
+      this.props.config.settings
     const doRemove = () => {
-      this.props.removeSelf();
-    };
+      this.props.removeSelf()
+    }
     if (confirmOptions && !this.isEmptyCurrentRule()) {
       renderConfirm({
         ...confirmOptions,
         onOk: doRemove,
         onCancel: null,
         confirmFn: confirmFn,
-      });
+      })
     } else {
-      doRemove();
+      doRemove()
     }
   }
 
@@ -154,12 +154,12 @@ class Rule extends PureComponent {
       this.props.selectedField !== null &&
       this.props.selectedOperator !== null &&
       this.props.value.filter((val) => val !== undefined).size > 0
-    );
+    )
   }
 
   renderField() {
-    const { config, isLocked } = this.props;
-    const { immutableFieldsMode } = config.settings;
+    const { config, isLocked } = this.props
+    const { immutableFieldsMode } = config.settings
 
     return (
       <FieldWrapper
@@ -173,18 +173,18 @@ class Rule extends PureComponent {
         id={this.props.id}
         groupId={this.props.groupId}
       />
-    );
+    )
   }
 
   renderOperator() {
-    const { config, isLocked } = this.props;
+    const { config, isLocked } = this.props
     const {
       selectedFieldPartsLabels,
       selectedFieldWidgetConfig,
       showOperator,
       showOperatorLabel,
-    } = this.meta;
-    const { immutableOpsMode } = config.settings;
+    } = this.meta
+    const { immutableOpsMode } = config.settings
 
     return (
       <OperatorWrapper
@@ -201,14 +201,14 @@ class Rule extends PureComponent {
         id={this.props.id}
         groupId={this.props.groupId}
       />
-    );
+    )
   }
 
   renderWidget() {
-    const { config, valueError, isLocked } = this.props;
-    const { showWidget } = this.meta;
-    const { immutableValuesMode } = config.settings;
-    if (!showWidget) return null;
+    const { config, valueError, isLocked } = this.props
+    const { showWidget } = this.meta
+    const { immutableValuesMode } = config.settings
+    if (!showWidget) return null
 
     const widget = (
       <Widget
@@ -227,7 +227,7 @@ class Rule extends PureComponent {
         id={this.props.id}
         groupId={this.props.groupId}
       />
-    );
+    )
 
     return (
       <Col
@@ -236,14 +236,14 @@ class Rule extends PureComponent {
       >
         {widget}
       </Col>
-    );
+    )
   }
 
   renderOperatorOptions() {
-    const { config } = this.props;
-    const { showOperatorOptions } = this.meta;
-    const { immutableOpsMode, immutableValuesMode } = config.settings;
-    if (!showOperatorOptions) return null;
+    const { config } = this.props
+    const { showOperatorOptions } = this.meta
+    const { immutableOpsMode, immutableValuesMode } = config.settings
+    if (!showOperatorOptions) return null
 
     const opOpts = (
       <OperatorOptions
@@ -257,7 +257,7 @@ class Rule extends PureComponent {
         config={config}
         readonly={immutableValuesMode}
       />
-    );
+    )
 
     return (
       <Col
@@ -266,12 +266,12 @@ class Rule extends PureComponent {
       >
         {opOpts}
       </Col>
-    );
+    )
   }
 
   renderBeforeWidget() {
-    const { config } = this.props;
-    const { renderBeforeWidget } = config.settings;
+    const { config } = this.props
+    const { renderBeforeWidget } = config.settings
     return (
       renderBeforeWidget && (
         <Col
@@ -283,12 +283,12 @@ class Rule extends PureComponent {
             : renderBeforeWidget}
         </Col>
       )
-    );
+    )
   }
 
   renderAfterWidget() {
-    const { config } = this.props;
-    const { renderAfterWidget } = config.settings;
+    const { config } = this.props
+    const { renderAfterWidget } = config.settings
     return (
       renderAfterWidget && (
         <Col
@@ -300,19 +300,19 @@ class Rule extends PureComponent {
             : renderAfterWidget}
         </Col>
       )
-    );
+    )
   }
 
   renderError() {
-    const { config, valueError } = this.props;
-    const { renderRuleError, showErrorMessage } = config.settings;
+    const { config, valueError } = this.props
+    const { renderRuleError, showErrorMessage } = config.settings
     const oneValueError =
       (valueError &&
         valueError
           .toArray()
           .filter((e) => !!e)
           .shift()) ||
-      null;
+      null
     return (
       showErrorMessage &&
       oneValueError && (
@@ -322,11 +322,11 @@ class Rule extends PureComponent {
             : oneValueError}
         </div>
       )
-    );
+    )
   }
 
   renderDrag() {
-    const { showDragIcon } = this.meta;
+    const { showDragIcon } = this.meta
 
     return (
       showDragIcon && (
@@ -338,17 +338,17 @@ class Rule extends PureComponent {
           <DragIcon />{" "}
         </span>
       )
-    );
+    )
   }
 
   renderDel() {
-    const { config, isLocked } = this.props;
+    const { config, isLocked } = this.props
     const {
       deleteLabel,
       immutableGroupsMode,
       renderButton: Btn,
       canDeleteLocked,
-    } = config.settings;
+    } = config.settings
 
     return (
       !immutableGroupsMode &&
@@ -360,17 +360,17 @@ class Rule extends PureComponent {
           config={config}
         />
       )
-    );
+    )
   }
 
   renderLock() {
-    const { config, isLocked, isTrueLocked, id } = this.props;
+    const { config, isLocked, isTrueLocked, id } = this.props
     const {
       lockLabel,
       lockedLabel,
       showLock,
       renderSwitch: Switch,
-    } = config.settings;
+    } = config.settings
 
     return (
       showLock &&
@@ -386,18 +386,18 @@ class Rule extends PureComponent {
           config={config}
         />
       )
-    );
+    )
   }
 
   render() {
-    const { showOperatorOptions, selectedFieldWidgetConfig } = this.meta;
-    const { valueSrc, value, config } = this.props;
+    const { showOperatorOptions, selectedFieldWidgetConfig } = this.meta
+    const { valueSrc, value, config } = this.props
     const canShrinkValue =
       valueSrc.first() == "value" &&
       !showOperatorOptions &&
       value.size == 1 &&
-      selectedFieldWidgetConfig.fullWidth;
-    const { renderButtonGroup: BtnGrp } = config.settings;
+      selectedFieldWidgetConfig.fullWidth
+    const { renderButtonGroup: BtnGrp } = config.settings
 
     const parts = [
       this.renderField(),
@@ -406,7 +406,7 @@ class Rule extends PureComponent {
       this.renderWidget(),
       this.renderAfterWidget(),
       this.renderOperatorOptions(),
-    ];
+    ]
     const body = (
       <div
         key="rule-body"
@@ -417,12 +417,12 @@ class Rule extends PureComponent {
       >
         {parts}
       </div>
-    );
+    )
 
-    const error = this.renderError();
-    const drag = this.renderDrag();
-    const lock = this.renderLock();
-    const del = this.renderDel();
+    const error = this.renderError()
+    const drag = this.renderDrag()
+    const lock = this.renderLock()
+    const del = this.renderDel()
 
     return (
       <>
@@ -438,8 +438,8 @@ class Rule extends PureComponent {
           </BtnGrp>
         </div>
       </>
-    );
+    )
   }
 }
 
-export default Rule;
+export default Rule

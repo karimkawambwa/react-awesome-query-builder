@@ -1,6 +1,6 @@
 /** @format */
 
-import { getTitleInListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff";
+import { getTitleInListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff"
 
 export default ({
   delta,
@@ -26,32 +26,32 @@ export default ({
   id,
   groupId,
 }) => {
-  const { factory: widgetFactory, ...fieldWidgetProps } = widgetDefinition;
+  const { factory: widgetFactory, ...fieldWidgetProps } = widgetDefinition
   const isConst =
     isFuncArg &&
     fieldDefinition.valueSources &&
     fieldDefinition.valueSources.length == 1 &&
-    fieldDefinition.valueSources[0] == "const";
-  const defaultValue = fieldDefinition.defaultValue;
+    fieldDefinition.valueSources[0] == "const"
+  const defaultValue = fieldDefinition.defaultValue
 
   if (!widgetFactory) {
-    return "?";
+    return "?"
   }
 
   let value = isSpecialRange
     ? [immValue.get(0), immValue.get(1)]
     : immValue
     ? immValue.get(delta)
-    : undefined;
+    : undefined
   const valueError =
     (immValueError &&
       (isSpecialRange
         ? [immValueError.get(0), immValueError.get(1)]
         : immValueError.get(delta))) ||
-    null;
+    null
   if (isSpecialRange && value[0] === undefined && value[1] === undefined)
-    value = undefined;
-  const { fieldSettings } = fieldDefinition || {};
+    value = undefined
+  const { fieldSettings } = fieldDefinition || {}
   const widgetProps = Object.assign({}, fieldWidgetProps, fieldSettings, {
     config: config,
     field: field,
@@ -73,7 +73,7 @@ export default ({
     asyncListValues: asyncListValues,
     id,
     groupId,
-  });
+  })
 
   if (widget == "field") {
     //
@@ -83,20 +83,20 @@ export default ({
     if (typeof defaultValue == "boolean") {
       return defaultValue
         ? widgetProps.labelYes || "YES"
-        : widgetProps.labelNo || "NO";
+        : widgetProps.labelNo || "NO"
     } else if (fieldSettings.listValues) {
       if (Array.isArray(defaultValue))
         return defaultValue
           .map((v) => getTitleInListValues(fieldSettings.listValues, v) || v)
-          .join(", ");
+          .join(", ")
       else
         return (
           getTitleInListValues(fieldSettings.listValues, defaultValue) ||
           defaultValue
-        );
+        )
     }
-    return "" + defaultValue;
+    return "" + defaultValue
   }
 
-  return widgetFactory(widgetProps);
-};
+  return widgetFactory(widgetProps)
+}

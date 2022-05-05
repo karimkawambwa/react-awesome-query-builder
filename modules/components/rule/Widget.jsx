@@ -1,27 +1,27 @@
 /** @format */
 
-import Immutable from "immutable";
-import pick from "lodash/pick";
-import range from "lodash/range";
-import PropTypes from "prop-types";
-import React, { PureComponent } from "react";
+import Immutable from "immutable"
+import pick from "lodash/pick"
+import range from "lodash/range"
+import PropTypes from "prop-types"
+import React, { PureComponent } from "react"
 import {
   getFieldConfig,
   getFieldWidgetConfig,
   getOperatorConfig,
-} from "react-awesome-query-builder-formatters/dist/utils/configUtils";
-import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+} from "react-awesome-query-builder-formatters/dist/utils/configUtils"
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils"
 import {
   getValueLabel,
   getValueSourcesForFieldOp,
   getWidgetForFieldOp,
   getWidgetsForFieldOp,
-} from "react-awesome-query-builder-formatters/dist/utils/ruleUtils";
-import { defaultValue } from "react-awesome-query-builder-formatters/dist/utils/stuff";
-import { Col } from "../utils";
-import WidgetFactory from "./WidgetFactory";
+} from "react-awesome-query-builder-formatters/dist/utils/ruleUtils"
+import { defaultValue } from "react-awesome-query-builder-formatters/dist/utils/stuff"
+import { Col } from "../utils"
+import WidgetFactory from "./WidgetFactory"
 
-const funcArgDummyOpDef = { cardinality: 1 };
+const funcArgDummyOpDef = { cardinality: 1 }
 
 export default class Widget extends PureComponent {
   static propTypes = {
@@ -50,17 +50,17 @@ export default class Widget extends PureComponent {
     parentFuncs: PropTypes.array,
     // for case_value
     isCaseValue: PropTypes.bool,
-  };
+  }
 
   constructor(props) {
-    super(props);
-    useOnPropsChanged(this);
+    super(props)
+    useOnPropsChanged(this)
 
-    this.onPropsChanged(props);
+    this.onPropsChanged(props)
   }
 
   onPropsChanged(nextProps) {
-    const prevProps = this.props;
+    const prevProps = this.props
     const keysForMeta = [
       "config",
       "field",
@@ -71,7 +71,7 @@ export default class Widget extends PureComponent {
       "valueSrc",
       "isFuncArg",
       "asyncListValues",
-    ];
+    ]
     const needUpdateMeta =
       !this.meta ||
       keysForMeta
@@ -83,10 +83,10 @@ export default class Widget extends PureComponent {
               nextProps["isFuncArg"] &&
               nextProps["value"] !== prevProps["value"])
         )
-        .filter((ch) => ch).length > 0;
+        .filter((ch) => ch).length > 0
 
     if (needUpdateMeta) {
-      this.meta = this.getMeta(nextProps);
+      this.meta = this.getMeta(nextProps)
     }
   }
 
@@ -99,7 +99,7 @@ export default class Widget extends PureComponent {
     __isInternal
   ) => {
     if (isSpecialRange && Array.isArray(value)) {
-      const oldRange = [this.props.value.get(0), this.props.value.get(1)];
+      const oldRange = [this.props.value.get(0), this.props.value.get(1)]
       if (oldRange[0] != value[0])
         this.props.setValue(
           0,
@@ -107,7 +107,7 @@ export default class Widget extends PureComponent {
           widgetType,
           asyncListValues,
           __isInternal
-        );
+        )
       if (oldRange[1] != value[1])
         this.props.setValue(
           1,
@@ -115,7 +115,7 @@ export default class Widget extends PureComponent {
           widgetType,
           asyncListValues,
           __isInternal
-        );
+        )
     } else {
       this.props.setValue(
         delta,
@@ -123,13 +123,13 @@ export default class Widget extends PureComponent {
         widgetType,
         asyncListValues,
         __isInternal
-      );
+      )
     }
-  };
+  }
 
   _onChangeValueSrc = (delta, srcKey) => {
-    this.props.setValueSrc(delta, srcKey);
-  };
+    this.props.setValueSrc(delta, srcKey)
+  }
 
   getMeta({
     config,
@@ -145,36 +145,36 @@ export default class Widget extends PureComponent {
     leftField,
     asyncListValues,
   }) {
-    const field = isFuncArg ? { func: fieldFunc, arg: fieldArg } : simpleField;
-    let iValueSrcs = valueSrcs;
-    let iValues = values;
+    const field = isFuncArg ? { func: fieldFunc, arg: fieldArg } : simpleField
+    let iValueSrcs = valueSrcs
+    let iValues = values
     if (isFuncArg || isForRuleGruop || isCaseValue) {
-      iValueSrcs = Immutable.List([valueSrcs]);
-      iValues = Immutable.List([values]);
+      iValueSrcs = Immutable.List([valueSrcs])
+      iValues = Immutable.List([values])
     }
 
-    const fieldDefinition = getFieldConfig(config, field);
-    const defaultWidget = getWidgetForFieldOp(config, field, operator);
-    const _widgets = getWidgetsForFieldOp(config, field, operator);
+    const fieldDefinition = getFieldConfig(config, field)
+    const defaultWidget = getWidgetForFieldOp(config, field, operator)
+    const _widgets = getWidgetsForFieldOp(config, field, operator)
     const operatorDefinition = isFuncArg
       ? funcArgDummyOpDef
-      : getOperatorConfig(config, operator, field);
+      : getOperatorConfig(config, operator, field)
     if (
       (fieldDefinition == null || operatorDefinition == null) &&
       !isCaseValue
     ) {
-      return null;
+      return null
     }
-    const isSpecialRange = operatorDefinition?.isSpecialRange;
+    const isSpecialRange = operatorDefinition?.isSpecialRange
     const isSpecialRangeForSrcField =
       isSpecialRange &&
-      (iValueSrcs.get(0) == "field" || iValueSrcs.get(1) == "field");
-    const isTrueSpecialRange = isSpecialRange && !isSpecialRangeForSrcField;
+      (iValueSrcs.get(0) == "field" || iValueSrcs.get(1) == "field")
+    const isTrueSpecialRange = isSpecialRange && !isSpecialRangeForSrcField
     const cardinality = isTrueSpecialRange
       ? 1
-      : defaultValue(operatorDefinition?.cardinality, 1);
+      : defaultValue(operatorDefinition?.cardinality, 1)
     if (cardinality === 0) {
-      return null;
+      return null
     }
 
     const valueSources = getValueSourcesForFieldOp(
@@ -183,29 +183,29 @@ export default class Widget extends PureComponent {
       operator,
       fieldDefinition,
       isFuncArg ? leftField : null
-    );
+    )
 
     const widgets = range(0, cardinality).map((delta) => {
-      const valueSrc = iValueSrcs.get(delta) || null;
-      let widget = getWidgetForFieldOp(config, field, operator, valueSrc);
+      const valueSrc = iValueSrcs.get(delta) || null
+      let widget = getWidgetForFieldOp(config, field, operator, valueSrc)
       let widgetDefinition = getFieldWidgetConfig(
         config,
         field,
         operator,
         widget,
         valueSrc
-      );
+      )
       if (isSpecialRangeForSrcField) {
-        widget = widgetDefinition.singleWidget;
+        widget = widgetDefinition.singleWidget
         widgetDefinition = getFieldWidgetConfig(
           config,
           field,
           operator,
           widget,
           valueSrc
-        );
+        )
       }
-      const widgetType = widgetDefinition?.type;
+      const widgetType = widgetDefinition?.type
       const valueLabel = getValueLabel(
         config,
         field,
@@ -213,7 +213,7 @@ export default class Widget extends PureComponent {
         delta,
         valueSrc,
         isTrueSpecialRange
-      );
+      )
       const widgetValueLabel = getValueLabel(
         config,
         field,
@@ -221,24 +221,24 @@ export default class Widget extends PureComponent {
         delta,
         null,
         isTrueSpecialRange
-      );
+      )
       const sepText = operatorDefinition?.textSeparators
         ? operatorDefinition?.textSeparators[delta]
-        : null;
-      const setValueSrcHandler = this._onChangeValueSrc.bind(this, delta);
+        : null
+      const setValueSrcHandler = this._onChangeValueSrc.bind(this, delta)
 
-      let valueLabels = null;
-      let textSeparators = null;
+      let valueLabels = null
+      let textSeparators = null
       if (isSpecialRange) {
         valueLabels = [
           getValueLabel(config, field, operator, 0),
           getValueLabel(config, field, operator, 1),
-        ];
+        ]
         valueLabels = {
           placeholder: [valueLabels[0].placeholder, valueLabels[1].placeholder],
           label: [valueLabels[0].label, valueLabels[1].label],
-        };
-        textSeparators = operatorDefinition?.textSeparators;
+        }
+        textSeparators = operatorDefinition?.textSeparators
       }
 
       const setValueHandler = this._setValue.bind(
@@ -246,7 +246,7 @@ export default class Widget extends PureComponent {
         isSpecialRange,
         delta,
         widgetType
-      );
+      )
 
       return {
         valueSrc,
@@ -259,8 +259,8 @@ export default class Widget extends PureComponent {
         valueLabels,
         textSeparators,
         setValueHandler,
-      };
-    });
+      }
+    })
 
     return {
       defaultWidget,
@@ -273,7 +273,7 @@ export default class Widget extends PureComponent {
       iValues, //correct for isFuncArg
       aField: field, //correct for isFuncArg
       asyncListValues,
-    };
+    }
   }
 
   renderWidget = (delta, meta, props) => {
@@ -289,16 +289,16 @@ export default class Widget extends PureComponent {
       parentFuncs,
       id,
       groupId,
-    } = props;
-    const { settings } = config;
-    const { widgets, iValues, aField } = meta;
-    const value = isFuncArg ? iValues : values;
-    const field = isFuncArg ? leftField : aField;
-    const { valueSrc, valueLabel } = widgets[delta];
+    } = props
+    const { settings } = config
+    const { widgets, iValues, aField } = meta
+    const value = isFuncArg ? iValues : values
+    const field = isFuncArg ? leftField : aField
+    const { valueSrc, valueLabel } = widgets[delta]
 
     const widgetLabel = settings.showLabels ? (
       <label className="rule--label">{valueLabel.label}</label>
-    ) : null;
+    ) : null
 
     return (
       <div key={"widget-" + field + "-" + delta} className="widget--widget">
@@ -332,26 +332,26 @@ export default class Widget extends PureComponent {
           readonly={readonly}
         />
       </div>
-    );
-  };
+    )
+  }
 
   renderValueSources = (delta, meta, props) => {
-    const { config, isFuncArg, leftField, operator, readonly } = props;
-    const { settings } = config;
-    const { valueSources, widgets, aField } = meta;
-    const field = isFuncArg ? leftField : aField;
-    const { valueSrc, setValueSrcHandler } = widgets[delta];
-    const { valueSourcesInfo, renderValueSources: ValueSources } = settings;
+    const { config, isFuncArg, leftField, operator, readonly } = props
+    const { settings } = config
+    const { valueSources, widgets, aField } = meta
+    const field = isFuncArg ? leftField : aField
+    const { valueSrc, setValueSrcHandler } = widgets[delta]
+    const { valueSourcesInfo, renderValueSources: ValueSources } = settings
     const valueSourcesOptions = valueSources.map((srcKey) => [
       srcKey,
       {
         label: valueSourcesInfo[srcKey].label,
       },
-    ]);
+    ])
 
     const sourceLabel = settings.showLabels ? (
       <label className="rule--label">&nbsp;</label>
-    ) : null;
+    ) : null
 
     return (
       valueSources.length > 1 &&
@@ -375,18 +375,18 @@ export default class Widget extends PureComponent {
           />
         </div>
       )
-    );
-  };
+    )
+  }
 
   renderSep = (delta, meta, props) => {
-    const { config } = props;
-    const { widgets } = meta;
-    const { settings } = config;
-    const { sepText } = widgets[delta];
+    const { config } = props
+    const { widgets } = meta
+    const { settings } = config
+    const { sepText } = widgets[delta]
 
     const sepLabel = settings.showLabels ? (
       <label className="rule--label">&nbsp;</label>
-    ) : null;
+    ) : null
 
     return (
       sepText && (
@@ -395,22 +395,22 @@ export default class Widget extends PureComponent {
           <span>{sepText}</span>
         </div>
       )
-    );
-  };
+    )
+  }
 
   renderWidgetDelta = (delta) => {
-    const sep = this.renderSep(delta, this.meta, this.props);
-    const sources = this.renderValueSources(delta, this.meta, this.props);
-    const widgetCmp = this.renderWidget(delta, this.meta, this.props);
+    const sep = this.renderSep(delta, this.meta, this.props)
+    const sources = this.renderValueSources(delta, this.meta, this.props)
+    const widgetCmp = this.renderWidget(delta, this.meta, this.props)
 
-    return [sep, sources, widgetCmp];
-  };
+    return [sep, sources, widgetCmp]
+  }
 
   render() {
-    if (!this.meta) return null;
-    const { defaultWidget, cardinality } = this.meta;
-    if (!defaultWidget) return null;
-    const name = defaultWidget;
+    if (!this.meta) return null
+    const { defaultWidget, cardinality } = this.meta
+    if (!defaultWidget) return null
+    const name = defaultWidget
 
     return (
       <Col
@@ -419,6 +419,6 @@ export default class Widget extends PureComponent {
       >
         {range(0, cardinality).map(this.renderWidgetDelta)}
       </Col>
-    );
+    )
   }
 }

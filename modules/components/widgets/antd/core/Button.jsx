@@ -1,35 +1,39 @@
-import React from "react";
-import { Button } from "antd";
-import { PlusOutlined, PlusCircleOutlined, DeleteFilled } from "@ant-design/icons";
+import React from "react"
+import { Button } from "antd"
+import {
+  PlusOutlined,
+  PlusCircleOutlined,
+  DeleteFilled,
+} from "@ant-design/icons"
 
-export default ({type, onClick, label, readonly, config: {settings}}) => {
+export default ({ type, onClick, label, readonly, config: { settings } }) => {
   const typeToIcon = {
-    "addRule": <PlusOutlined />,
-    "addGroup": <PlusCircleOutlined />,
-    "delRule": <DeleteFilled />, //?
-    "delGroup": <DeleteFilled />,
-    "delRuleGroup": <DeleteFilled />,
-    "addRuleGroup": <PlusOutlined />,
-  };
+    addRule: <PlusOutlined />,
+    addGroup: <PlusCircleOutlined />,
+    delRule: <DeleteFilled />, //?
+    delGroup: <DeleteFilled />,
+    delRuleGroup: <DeleteFilled />,
+    addRuleGroup: <PlusOutlined />,
+  }
 
   const typeToClass = {
-    "addRule": "action action--ADD-RULE",
-    "addGroup": "action action--ADD-GROUP",
-    "delRule": "action action--DELETE", //?
-    "delGroup": "action action--DELETE",
-    "delRuleGroup": "action action--DELETE",
-    "addRuleGroup": <PlusOutlined />,
-  };
+    addRule: "action action--ADD-RULE",
+    addGroup: "action action--ADD-GROUP",
+    delRule: "action action--DELETE", //?
+    delGroup: "action action--DELETE",
+    delRuleGroup: "action action--DELETE",
+    addRuleGroup: <PlusOutlined />,
+  }
 
   const typeToType = {
-    "delRule": "danger",
-    "delGroup": "danger",
-    "delRuleGroup": "danger",
-  };
+    delRule: "danger",
+    delGroup: "danger",
+    delRuleGroup: "danger",
+  }
 
-  const {renderSize} = settings;
+  const { renderSize } = settings
 
-  const btnLabel = type == "addRuleGroup" ? "" : label;
+  const btnLabel = type == "addRuleGroup" ? "" : label
 
   return (
     <Button
@@ -40,6 +44,8 @@ export default ({type, onClick, label, readonly, config: {settings}}) => {
       onClick={onClick}
       size={renderSize}
       disabled={readonly}
-    >{btnLabel}</Button>
-  );
-};
+    >
+      {btnLabel}
+    </Button>
+  )
+}

@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, ButtonGroup } from "reactstrap";
+import React from "react"
+import { Button, ButtonGroup } from "reactstrap"
 
 export default ({
   id,
@@ -13,17 +13,16 @@ export default ({
   showNot,
   notLabel,
 }) => {
-  
-  const conjsCount = Object.keys(conjunctionOptions).length;
-  const lessThenTwo = disabled;
-  const { forceShowConj } = config.settings;
-  const showConj = forceShowConj || (conjsCount > 1 && !lessThenTwo);
+  const conjsCount = Object.keys(conjunctionOptions).length
+  const lessThenTwo = disabled
+  const { forceShowConj } = config.settings
+  const showConj = forceShowConj || (conjsCount > 1 && !lessThenTwo)
 
   const renderOptions = () =>
     Object.keys(conjunctionOptions).map((key) => {
-      const { id, name, label, checked } = conjunctionOptions[key];
-      let postfix = setConjunction.isDummyFn ? "__dummy" : "";
-      if ((readonly || disabled) && !checked) return null;
+      const { id, name, label, checked } = conjunctionOptions[key]
+      let postfix = setConjunction.isDummyFn ? "__dummy" : ""
+      if ((readonly || disabled) && !checked) return null
       return (
         <Button
           key={id + postfix}
@@ -36,11 +35,11 @@ export default ({
         >
           {label}
         </Button>
-      );
-    });
+      )
+    })
 
   const renderNot = () => {
-    if (readonly && !not) return null;
+    if (readonly && !not) return null
     return (
       <Button
         key={id}
@@ -52,16 +51,16 @@ export default ({
       >
         {notLabel || "NOT"}
       </Button>
-    );
-  };
+    )
+  }
 
-  const onClick = (value) => setConjunction(value);
-  const onNotClick = (checked) => setNot(checked);
+  const onClick = (value) => setConjunction(value)
+  const onNotClick = (checked) => setNot(checked)
 
   return (
     <ButtonGroup size="sm" disabled={readonly}>
       {showNot && renderNot()}
       {showConj && renderOptions()}
     </ButtonGroup>
-  );
-};
+  )
+}

@@ -1,3 +1,3 @@
-import {BasicConfig} from "../..";
-declare const MuiConfig: BasicConfig;
-export default MuiConfig;
+import { BasicConfig } from "../.."
+declare const MuiConfig: BasicConfig
+export default MuiConfig

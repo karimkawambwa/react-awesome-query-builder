@@ -1,14 +1,14 @@
 /** @format */
 
-import PropTypes from "prop-types";
-import React from "react";
-import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
-import Draggable from "../containers/Draggable";
-import GroupContainer from "../containers/GroupContainer";
-import FieldWrapper from "../rule/FieldWrapper";
-import { ConfirmFn } from "../utils";
-import { BasicGroup } from "./Group";
-import { RuleGroupActions } from "./RuleGroupActions";
+import PropTypes from "prop-types"
+import React from "react"
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils"
+import Draggable from "../containers/Draggable"
+import GroupContainer from "../containers/GroupContainer"
+import FieldWrapper from "../rule/FieldWrapper"
+import { ConfirmFn } from "../utils"
+import { BasicGroup } from "./Group"
+import { RuleGroupActions } from "./RuleGroupActions"
 
 @GroupContainer
 @Draggable("group rule_group")
@@ -19,29 +19,29 @@ class RuleGroup extends BasicGroup {
     selectedField: PropTypes.string,
     parentField: PropTypes.string,
     setField: PropTypes.func,
-  };
+  }
 
   constructor(props) {
-    super(props);
-    useOnPropsChanged(this);
-    this.onPropsChanged(props);
+    super(props)
+    useOnPropsChanged(this)
+    this.onPropsChanged(props)
   }
 
   onPropsChanged(nextProps) {}
 
-  childrenClassName = () => "rule_group--children";
+  childrenClassName = () => "rule_group--children"
 
-  renderHeaderWrapper = () => null;
-  renderFooterWrapper = () => null;
-  renderConjs = () => null;
-  canAddGroup = () => false;
-  canAddRule = () => true;
-  canDeleteGroup = () => false;
+  renderHeaderWrapper = () => null
+  renderFooterWrapper = () => null
+  renderConjs = () => null
+  canAddGroup = () => false
+  canAddRule = () => true
+  canDeleteGroup = () => false
 
   reordableNodesCntForItem(_item) {
-    if (this.props.isLocked) return 0;
-    const { children1 } = this.props;
-    return children1.size;
+    if (this.props.isLocked) return 0
+    const { children1 } = this.props
+    return children1.size
   }
 
   renderChildrenWrapper() {
@@ -52,7 +52,7 @@ class RuleGroup extends BasicGroup {
         {this.renderActions()}
         {super.renderChildrenWrapper()}
       </>
-    );
+    )
   }
 
   renderField() {
@@ -64,8 +64,8 @@ class RuleGroup extends BasicGroup {
       id,
       groupId,
       isLocked,
-    } = this.props;
-    const { immutableFieldsMode } = config.settings;
+    } = this.props
+    const { immutableFieldsMode } = config.settings
     return (
       <FieldWrapper
         key="field"
@@ -78,11 +78,11 @@ class RuleGroup extends BasicGroup {
         id={id}
         groupId={groupId}
       />
-    );
+    )
   }
 
   renderActions() {
-    const { config, addRule, isLocked, isTrueLocked, id } = this.props;
+    const { config, addRule, isLocked, isTrueLocked, id } = this.props
 
     return (
       <RuleGroupActions
@@ -96,14 +96,14 @@ class RuleGroup extends BasicGroup {
         isTrueLocked={isTrueLocked}
         id={id}
       />
-    );
+    )
   }
 
   extraPropsForItem(_item) {
     return {
       parentField: this.props.selectedField,
-    };
+    }
   }
 }
 
-export default RuleGroup;
+export default RuleGroup

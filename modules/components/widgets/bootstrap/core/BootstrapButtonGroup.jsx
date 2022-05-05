@@ -1,6 +1,6 @@
-import React from "react";
-import { ButtonGroup } from "reactstrap";
+import React from "react"
+import { ButtonGroup } from "reactstrap"
 
-export default ({children, config}) => {
-  return <ButtonGroup>{children}</ButtonGroup>;
-};
+export default ({ children, config }) => {
+  return <ButtonGroup>{children}</ButtonGroup>
+}

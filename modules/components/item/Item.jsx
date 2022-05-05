@@ -1,31 +1,25 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import Rule from "./Rule";
-import Group from "./Group";
-import RuleGroup from "./RuleGroup";
-import RuleGroupExt from "./RuleGroupExt";
-import SwitchGroup from "./SwitchGroup";
-import CaseGroup from "./CaseGroup";
+import React, { PureComponent } from "react"
+import PropTypes from "prop-types"
+import Rule from "./Rule"
+import Group from "./Group"
+import RuleGroup from "./RuleGroup"
+import RuleGroupExt from "./RuleGroupExt"
+import SwitchGroup from "./SwitchGroup"
+import CaseGroup from "./CaseGroup"
 
-const types = [
-  "rule",
-  "group",
-  "rule_group",
-  "switch_group",
-  "case_group"
-];
+const types = ["rule", "group", "rule_group", "switch_group", "case_group"]
 
 const getProperties = (props) => {
-  const properties = props.properties.toObject();
-  const result = {...properties};
+  const properties = props.properties.toObject()
+  const result = { ...properties }
   if (props.isParentLocked) {
-    result.isLocked = true;
+    result.isLocked = true
   }
   if (properties.isLocked) {
-    result.isTrueLocked = true;
+    result.isTrueLocked = true
   }
-  return result;
-};
+  return result
+}
 
 const typeMap = {
   rule: (props) => (
@@ -45,7 +39,7 @@ const typeMap = {
     />
   ),
   group: (props) => (
-    <Group 
+    <Group
       {...getProperties(props)}
       id={props.id}
       groupId={props.groupId}
@@ -63,7 +57,7 @@ const typeMap = {
     />
   ),
   rule_group: (props) => (
-    <RuleGroup 
+    <RuleGroup
       {...getProperties(props)}
       id={props.id}
       groupId={props.groupId}
@@ -81,7 +75,7 @@ const typeMap = {
     />
   ),
   rule_group_ext: (props) => (
-    <RuleGroupExt 
+    <RuleGroupExt
       {...getProperties(props)}
       id={props.id}
       groupId={props.groupId}
@@ -99,7 +93,7 @@ const typeMap = {
     />
   ),
   switch_group: (props) => (
-    <SwitchGroup 
+    <SwitchGroup
       {...getProperties(props)}
       id={props.id}
       groupId={props.groupId}
@@ -117,7 +111,7 @@ const typeMap = {
     />
   ),
   case_group: (props) => (
-    <CaseGroup 
+    <CaseGroup
       {...getProperties(props)}
       id={props.id}
       groupId={props.groupId}
@@ -134,8 +128,7 @@ const typeMap = {
       parentReordableNodesCnt={props.parentReordableNodesCnt}
     />
   ),
-};
-
+}
 
 class Item extends PureComponent {
   static propTypes = {
@@ -153,16 +146,16 @@ class Item extends PureComponent {
     parentField: PropTypes.string, //from RuleGroup
     isDraggingTempo: PropTypes.bool,
     isParentLocked: PropTypes.bool,
-  };
+  }
 
   render() {
-    const { type, ...props } = this.props;
-    const mode = props.properties.get("mode");
-    const postfix = mode == "array" ? "_ext" : "";
-    const Cmp = typeMap[type + postfix];
-    if (!Cmp) return null;
-    return Cmp(props);
+    const { type, ...props } = this.props
+    const mode = props.properties.get("mode")
+    const postfix = mode == "array" ? "_ext" : ""
+    const Cmp = typeMap[type + postfix]
+    if (!Cmp) return null
+    return Cmp(props)
   }
 }
 
-export { Item };
+export { Item }

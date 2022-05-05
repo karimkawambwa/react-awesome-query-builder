@@ -1,40 +1,45 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   Dropdown,
   DropdownMenu,
   DropdownToggle,
   DropdownItem,
-} from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV } from "@fortawesome/free-solid-svg-icons";
+} from "reactstrap"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faEllipsisV } from "@fortawesome/free-solid-svg-icons"
 
-export default ({config, valueSources, valueSrc, title, setValueSrc, readonly}) => {
-
-  const [isOpen, setIsOpen] = useState(false);
+export default ({
+  config,
+  valueSources,
+  valueSrc,
+  title,
+  setValueSrc,
+  readonly,
+}) => {
+  const [isOpen, setIsOpen] = useState(false)
 
   const stylesDropdownWrapper = {
     lineHeight: "105%",
     minHeight: "1.7rem",
-    paddingBottom: "0.45rem"
-  };
+    paddingBottom: "0.45rem",
+  }
 
   const stylesDropdownMenuWrapper = {
     //minWidth: "100%"
-  };
+  }
 
-  const onChange = e => {
-    if (e.target.value === undefined)
-      return;
-    setValueSrc(e.target.value);
-  };
+  const onChange = (e) => {
+    if (e.target.value === undefined) return
+    setValueSrc(e.target.value)
+  }
 
   const getValueSrcLabel = (valueSrc) => {
     const valueSrcInfo = valueSources
       .filter(([srcKey, _info]) => srcKey == valueSrc)
       .map(([_srcKey, info]) => info)
-      .shift();
-    return valueSrcInfo?.label || valueSrc;
-  };
+      .shift()
+    return valueSrcInfo?.label || valueSrc
+  }
 
   const renderOptions = (valueSources) =>
     valueSources.map(([srcKey, info]) => (
@@ -46,7 +51,7 @@ export default ({config, valueSources, valueSrc, title, setValueSrc, readonly}) 
       >
         {info.label || srcKey}
       </DropdownItem>
-    ));
+    ))
 
   return (
     <Dropdown
@@ -64,12 +69,9 @@ export default ({config, valueSources, valueSrc, title, setValueSrc, readonly}) 
         {/*valueSrc ? getValueSrcLabel(valueSrc) : <span>&nbsp;</span>*/}
         <FontAwesomeIcon icon={faEllipsisV} />
       </DropdownToggle>
-      <DropdownMenu
-        container="body"
-        style={stylesDropdownMenuWrapper}
-      >
+      <DropdownMenu container="body" style={stylesDropdownMenuWrapper}>
         {renderOptions(valueSources)}
       </DropdownMenu>
     </Dropdown>
-  );
-};
+  )
+}

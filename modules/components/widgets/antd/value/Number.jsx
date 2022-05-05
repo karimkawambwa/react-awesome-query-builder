@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { InputNumber, Col } from "antd";
+import React, { PureComponent } from "react"
+import PropTypes from "prop-types"
+import { InputNumber, Col } from "antd"
 
 export default class NumberWidget extends PureComponent {
   static propTypes = {
@@ -16,24 +16,32 @@ export default class NumberWidget extends PureComponent {
     min: PropTypes.number,
     max: PropTypes.number,
     step: PropTypes.number,
-  };
+  }
 
   handleChange = (val) => {
-    if (val === "" || val === null)
-      val = undefined;
-    this.props.setValue(val);
-  };
+    if (val === "" || val === null) val = undefined
+    this.props.setValue(val)
+  }
 
   static defaultProps = {
     min: undefined,
     max: undefined,
     step: undefined,
-  };
+  }
 
   render() {
-    const {config, placeholder, customProps, value,  min, max, step, readonly} = this.props;
-    const {renderSize} = config.settings;
-    const aValue = value != undefined ? value : undefined;
+    const {
+      config,
+      placeholder,
+      customProps,
+      value,
+      min,
+      max,
+      step,
+      readonly,
+    } = this.props
+    const { renderSize } = config.settings
+    const aValue = value != undefined ? value : undefined
 
     return (
       <Col>
@@ -50,6 +58,6 @@ export default class NumberWidget extends PureComponent {
           {...customProps}
         />
       </Col>
-    );
+    )
   }
 }

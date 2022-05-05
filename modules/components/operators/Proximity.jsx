@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import range from "lodash/range";
+import React, { PureComponent } from "react"
+import PropTypes from "prop-types"
+import range from "lodash/range"
 
 export default class Proximity extends PureComponent {
   static propTypes = {
@@ -15,7 +15,7 @@ export default class Proximity extends PureComponent {
     customProps: PropTypes.object,
     readonly: PropTypes.bool,
     //children
-  };
+  }
 
   static defaultProps = {
     customProps: {},
@@ -24,35 +24,44 @@ export default class Proximity extends PureComponent {
     optionPlaceholder: "Select words between",
     optionLabel: "Words between",
     optionTextBefore: null,
-  };
+  }
 
   handleChange = (value) => {
-    this.props.setOption("proximity", parseInt(value));
-  };
+    this.props.setOption("proximity", parseInt(value))
+  }
 
   render() {
     const {
-      defaults, options, config, optionLabel, optionPlaceholder, customProps, 
-      minProximity, maxProximity, optionTextBefore, readonly
-    } = this.props;
-    const {settings, widgets} = config;
-    const defaultProximity = defaults ? defaults.proximity : undefined;
-    const {showLabels} = settings;
-    const selectedProximity = options.get("proximity", defaultProximity);
-    const proxValues = range(minProximity, maxProximity + 1).map((item) => ({title: item, value: item}));
-    const Select = widgets.select.factory;
+      defaults,
+      options,
+      config,
+      optionLabel,
+      optionPlaceholder,
+      customProps,
+      minProximity,
+      maxProximity,
+      optionTextBefore,
+      readonly,
+    } = this.props
+    const { settings, widgets } = config
+    const defaultProximity = defaults ? defaults.proximity : undefined
+    const { showLabels } = settings
+    const selectedProximity = options.get("proximity", defaultProximity)
+    const proxValues = range(minProximity, maxProximity + 1).map((item) => ({
+      title: item,
+      value: item,
+    }))
+    const Select = widgets.select.factory
 
     return (
       <div className="operator--PROXIMITY">
         <div className="operator--options">
-          { showLabels
-            && <label className="rule--label">{optionLabel}</label>
-          }
-          { !showLabels && optionTextBefore
-            && <div className="operator--options--sep">
+          {showLabels && <label className="rule--label">{optionLabel}</label>}
+          {!showLabels && optionTextBefore && (
+            <div className="operator--options--sep">
               <span>{optionTextBefore}</span>
             </div>
-          }
+          )}
           <Select
             config={config}
             value={selectedProximity}
@@ -65,6 +74,6 @@ export default class Proximity extends PureComponent {
         </div>
         <div className="operator--widgets">{this.props.children}</div>
       </div>
-    );
+    )
   }
 }

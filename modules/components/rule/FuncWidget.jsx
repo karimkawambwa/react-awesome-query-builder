@@ -1,17 +1,17 @@
 /** @format */
 
-import PropTypes from "prop-types";
-import React, { PureComponent } from "react";
-import { getFuncConfig } from "react-awesome-query-builder-formatters/dist/utils/configUtils";
+import PropTypes from "prop-types"
+import React, { PureComponent } from "react"
+import { getFuncConfig } from "react-awesome-query-builder-formatters/dist/utils/configUtils"
 import {
   setArgValue,
   setArgValueSrc,
   setFunc,
-} from "react-awesome-query-builder-formatters/dist/utils/funcUtils";
-import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
-import { Col } from "../utils";
-import FuncSelect from "./FuncSelect";
-import Widget from "./Widget";
+} from "react-awesome-query-builder-formatters/dist/utils/funcUtils"
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils"
+import { Col } from "../utils"
+import FuncSelect from "./FuncSelect"
+import Widget from "./Widget"
 
 export default class FuncWidget extends PureComponent {
   static propTypes = {
@@ -25,63 +25,63 @@ export default class FuncWidget extends PureComponent {
     setValue: PropTypes.func.isRequired,
     readonly: PropTypes.bool,
     parentFuncs: PropTypes.array,
-  };
+  }
 
   constructor(props) {
-    super(props);
-    useOnPropsChanged(this);
+    super(props)
+    useOnPropsChanged(this)
 
-    this.onPropsChanged(props);
+    this.onPropsChanged(props)
   }
 
   onPropsChanged(nextProps) {
-    const prevProps = this.props;
-    const keysForMeta = ["config", "field", "operator", "value"];
+    const prevProps = this.props
+    const keysForMeta = ["config", "field", "operator", "value"]
     const needUpdateMeta =
       !this.meta ||
       keysForMeta.map((k) => nextProps[k] !== prevProps[k]).filter((ch) => ch)
-        .length > 0;
+        .length > 0
 
     if (needUpdateMeta) {
-      this.meta = this.getMeta(nextProps);
+      this.meta = this.getMeta(nextProps)
     }
   }
 
   getMeta({ config, field, operator, value }) {
-    const funcKey = value ? value.get("func") : null;
-    const funcDefinition = funcKey ? getFuncConfig(config, funcKey) : null;
+    const funcKey = value ? value.get("func") : null
+    const funcDefinition = funcKey ? getFuncConfig(config, funcKey) : null
 
     return {
       funcDefinition,
       funcKey,
-    };
+    }
   }
 
   setFunc = (funcKey) => {
-    this.props.setValue(setFunc(this.props.value, funcKey, this.props.config));
-  };
+    this.props.setValue(setFunc(this.props.value, funcKey, this.props.config))
+  }
 
   setArgValue = (argKey, argVal) => {
-    const { config } = this.props;
-    const { funcDefinition } = this.meta;
-    const { args } = funcDefinition;
-    const argDefinition = args[argKey];
+    const { config } = this.props
+    const { funcDefinition } = this.meta
+    const { args } = funcDefinition
+    const argDefinition = args[argKey]
 
     this.props.setValue(
       setArgValue(this.props.value, argKey, argVal, argDefinition, config)
-    );
-  };
+    )
+  }
 
   setArgValueSrc = (argKey, argValSrc) => {
-    const { config } = this.props;
-    const { funcDefinition } = this.meta;
-    const { args } = funcDefinition;
-    const argDefinition = args[argKey];
+    const { config } = this.props
+    const { funcDefinition } = this.meta
+    const { args } = funcDefinition
+    const argDefinition = args[argKey]
 
     this.props.setValue(
       setArgValueSrc(this.props.value, argKey, argValSrc, argDefinition, config)
-    );
-  };
+    )
+  }
 
   renderFuncSelect = () => {
     const {
@@ -94,8 +94,8 @@ export default class FuncWidget extends PureComponent {
       parentFuncs,
       id,
       groupId,
-    } = this.props;
-    const funcKey = value ? value.get("func") : null;
+    } = this.props
+    const funcKey = value ? value.get("func") : null
     const selectProps = {
       value: funcKey,
       setValue: this.setFunc,
@@ -107,45 +107,45 @@ export default class FuncWidget extends PureComponent {
       parentFuncs,
       id,
       groupId,
-    };
-    const { showLabels, funcLabel } = config.settings;
+    }
+    const { showLabels, funcLabel } = config.settings
     const widgetLabel = showLabels ? (
       <label className="rule--label">{funcLabel}</label>
-    ) : null;
+    ) : null
 
     return (
       <Col key="func" className="rule--func">
         {widgetLabel}
         <FuncSelect {...selectProps} />
       </Col>
-    );
-  };
+    )
+  }
 
   renderArgLabel = (argKey, argDefinition) => {
-    const { valueSources, type, showPrefix, label } = argDefinition;
-    const { config } = this.props;
+    const { valueSources, type, showPrefix, label } = argDefinition
+    const { config } = this.props
     const isConst =
-      valueSources && valueSources.length == 1 && valueSources[0] == "const";
+      valueSources && valueSources.length == 1 && valueSources[0] == "const"
     const forceShow =
       !config.settings.showLabels &&
       (type == "boolean" || isConst) &&
-      showPrefix;
-    if (!forceShow) return null;
-    return <Col className="rule--func--arg-label">{label || argKey}</Col>;
-  };
+      showPrefix
+    if (!forceShow) return null
+    return <Col className="rule--func--arg-label">{label || argKey}</Col>
+  }
 
   renderArgLabelSep = (argKey, argDefinition) => {
-    const { valueSources, type, showPrefix } = argDefinition;
-    const { config } = this.props;
+    const { valueSources, type, showPrefix } = argDefinition
+    const { config } = this.props
     const isConst =
-      valueSources && valueSources.length == 1 && valueSources[0] == "const";
+      valueSources && valueSources.length == 1 && valueSources[0] == "const"
     const forceShow =
       !config.settings.showLabels &&
       (type == "boolean" || isConst) &&
-      showPrefix;
-    if (!forceShow) return null;
-    return <Col className="rule--func--arg-label-sep">{":"}</Col>;
-  };
+      showPrefix
+    if (!forceShow) return null
+    return <Col className="rule--func--arg-label-sep">{":"}</Col>
+  }
 
   renderArgVal = (funcKey, argKey, argDefinition) => {
     const {
@@ -157,16 +157,16 @@ export default class FuncWidget extends PureComponent {
       parentFuncs,
       id,
       groupId,
-    } = this.props;
-    const arg = value ? value.getIn(["args", argKey]) : null;
-    const argVal = arg ? arg.get("value") : undefined;
+    } = this.props
+    const arg = value ? value.getIn(["args", argKey]) : null
+    const argVal = arg ? arg.get("value") : undefined
     const defaultValueSource =
       argDefinition.valueSources.length == 1
         ? argDefinition.valueSources[0]
-        : undefined;
+        : undefined
     const argValSrc = arg
       ? arg.get("valueSrc") || defaultValueSource || "value"
-      : defaultValueSource;
+      : defaultValueSource
 
     const widgetProps = {
       config,
@@ -185,46 +185,46 @@ export default class FuncWidget extends PureComponent {
       parentFuncs,
       id,
       groupId,
-    };
+    }
     //tip: value & valueSrc will be converted to Immutable.List at <Widget>
 
     return (
       <Col className="rule--func--arg-value">
         <ArgWidget {...widgetProps} />
       </Col>
-    );
-  };
+    )
+  }
 
   renderArgSep = (argKey, argDefinition, argIndex, { renderSeps }) => {
-    if (!argIndex) return null;
+    if (!argIndex) return null
     return (
       <Col className="rule--func--arg-sep">
         {renderSeps ? renderSeps[argIndex - 1] : ", "}
       </Col>
-    );
-  };
+    )
+  }
 
   renderBracketBefore = ({ renderBrackets }) => {
     return (
       <Col key="before_args" className="rule--func--bracket-before">
         {renderBrackets ? renderBrackets[0] : "("}
       </Col>
-    );
-  };
+    )
+  }
 
   renderBracketAfter = ({ renderBrackets }) => {
     return (
       <Col key="after_args" className="rule--func--bracket-after">
         {renderBrackets ? renderBrackets[1] : ")"}
       </Col>
-    );
-  };
+    )
+  }
 
   renderFuncArgs = () => {
-    const { funcDefinition, funcKey } = this.meta;
-    if (!funcKey) return null;
-    const { args } = funcDefinition;
-    if (!args) return null;
+    const { funcDefinition, funcKey } = this.meta
+    if (!funcKey) return null
+    const { args } = funcDefinition
+    if (!args) return null
 
     return (
       <>
@@ -246,8 +246,8 @@ export default class FuncWidget extends PureComponent {
         </Col>
         {this.renderBracketAfter(funcDefinition)}
       </>
-    );
-  };
+    )
+  }
 
   render() {
     return (
@@ -255,7 +255,7 @@ export default class FuncWidget extends PureComponent {
         {this.renderFuncSelect()}
         {this.renderFuncArgs()}
       </Col>
-    );
+    )
   }
 }
 
@@ -269,20 +269,20 @@ class ArgWidget extends PureComponent {
     parentFuncs: PropTypes.array,
     id: PropTypes.string,
     groupId: PropTypes.string,
-  };
+  }
 
   setValue = (_delta, value, _widgetType) => {
-    const { setValue, argKey } = this.props;
-    setValue(argKey, value);
-  };
+    const { setValue, argKey } = this.props
+    setValue(argKey, value)
+  }
 
   setValueSrc = (_delta, valueSrc, _widgetType) => {
-    const { setValueSrc, argKey } = this.props;
-    setValueSrc(argKey, valueSrc);
-  };
+    const { setValueSrc, argKey } = this.props
+    setValueSrc(argKey, valueSrc)
+  }
 
   render() {
-    const { funcKey, parentFuncs } = this.props;
+    const { funcKey, parentFuncs } = this.props
     return (
       <Widget
         {...this.props}
@@ -291,6 +291,6 @@ class ArgWidget extends PureComponent {
         isFuncArg={true}
         parentFuncs={[...(parentFuncs || []), funcKey]}
       />
-    );
+    )
   }
 }

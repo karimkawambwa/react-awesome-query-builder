@@ -1,19 +1,20 @@
 # Contributing
 
-Feel free to open PRs to fix bugs, add new features, add new reusable types/widgets/operators (eg., regex operator/widget, IP type/widget).  
+Feel free to open PRs to fix bugs, add new features, add new reusable types/widgets/operators (eg., regex operator/widget, IP type/widget).
 
-* [Development](#development)
-  * [Directory structure](#directory-structure) 
-  * [Scripts](#scripts)
-  * [Other UI frameworks](#other-ui-frameworks)
-
+- [Development](#development)
+  - [Directory structure](#directory-structure)
+  - [Scripts](#scripts)
+  - [Other UI frameworks](#other-ui-frameworks)
 
 ## Development
-Clone this repo and run `npm start`. 
-Open `http://localhost:3001/` in a browser. 
-You will see demo app with hot reload of demo code and local library code. 
+
+Clone this repo and run `npm start`.
+Open `http://localhost:3001/` in a browser.
+You will see demo app with hot reload of demo code and local library code.
 
 ### Directory structure
+
 - [`modules`](/modules) - Main source code of library
   - [`components`](/modules/components) - Core React components
     - [`widgets`](/modules/components/widgets) - Components to render list of fields, operators, values of different types. Built with UI frameworks
@@ -30,6 +31,7 @@ You will see demo app with hot reload of demo code and local library code.
 - [`tests`](/tests) - All tests are here. Uses Karma, Mocha, Chai, Enzyme
 
 ### Scripts
+
 - `npm run install-all` - Install npm packages in root, examples, sandboxes. **Required for other scripts!**
 - `npm test` - Run tests with Karma and update coverage. Requires Node.js v10+
 - `npm run lint` - Run ESLint and TSC (in root, tests, examples, sandboxes)
@@ -43,7 +45,9 @@ Feel free to open PR to add new reusable types/widgets/operators (eg., regex ope
 Pull Requests are always welcomed :)
 
 ### Other UI frameworks
+
 Currently there are 5 collections of widgets:
+
 - [antdesign widgets](/modules/components/widgets/antd)
 - [material widgets](/modules/components/widgets/material)
 - [mui widgets](/modules/components/widgets/mui)
@@ -54,4 +58,3 @@ Let's say you want to create new collection of Bootstrap widgets to be used in t
 You can use vanilla widgets as skeleton.  
 Then to enable new widgets you need to create config overrides like this:
 [material config](/modules/config/material/index.js)
-

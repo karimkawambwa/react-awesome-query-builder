@@ -1,7 +1,6 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-const classNames = require("classnames");
-
+import React, { PureComponent } from "react"
+import PropTypes from "prop-types"
+const classNames = require("classnames")
 
 export default (className) => (GroupOrRule) =>
   class Draggable extends PureComponent {
@@ -12,47 +11,43 @@ export default (className) => (GroupOrRule) =>
       dragging: PropTypes.object, //{id, x, y, w, h}
       isLocked: PropTypes.bool,
       isTrueLocked: PropTypes.bool,
-    };
+    }
 
     constructor(props) {
-      super(props);
-      this.wrapper = React.createRef();
+      super(props)
+      this.wrapper = React.createRef()
     }
 
     handleDraggerMouseDown = (e) => {
-      var nodeId = this.props.id;
-      var dom = this.wrapper.current;
-        
+      var nodeId = this.props.id
+      var dom = this.wrapper.current
+
       if (this.props.onDragStart) {
-        this.props.onDragStart(nodeId, dom, e);
+        this.props.onDragStart(nodeId, dom, e)
       }
-    };
+    }
 
-    render () {
-      const {
-        isDraggingTempo,
-        isDraggingMe,
-        dragging,
-        ...otherProps
-      } = this.props;
-      const {
-        isTrueLocked,
-      } = otherProps;
+    render() {
+      const { isDraggingTempo, isDraggingMe, dragging, ...otherProps } =
+        this.props
+      const { isTrueLocked } = otherProps
 
-      let styles = {};
+      let styles = {}
       if (isDraggingMe && isDraggingTempo) {
         styles = {
           top: dragging.y,
           left: dragging.x,
-          width: dragging.w
-        };
+          width: dragging.w,
+        }
       }
 
-      const cn = classNames(className, "group-or-rule",
+      const cn = classNames(
+        className,
+        "group-or-rule",
         isDraggingMe && isDraggingTempo ? "qb-draggable" : null,
         isDraggingMe && !isDraggingTempo ? "qb-placeholder" : null,
         isTrueLocked ? "locked" : null
-      );
+      )
 
       return (
         <div
@@ -68,7 +63,6 @@ export default (className) => (GroupOrRule) =>
             {...otherProps}
           />
         </div>
-      );
+      )
     }
-
-  };
+  }

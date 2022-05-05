@@ -1,22 +1,22 @@
 /** @format */
 
-import PropTypes from "prop-types";
-import React from "react";
+import PropTypes from "prop-types"
+import React from "react"
 import {
   getFieldConfig,
   getFieldWidgetConfig,
-} from "react-awesome-query-builder-formatters/dist/utils/configUtils";
-import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
-import Draggable from "../containers/Draggable";
-import GroupContainer from "../containers/GroupContainer";
-import FieldWrapper from "../rule/FieldWrapper";
-import OperatorWrapper from "../rule/OperatorWrapper";
-import Widget from "../rule/Widget";
-import { Col, ConfirmFn, dummyFn } from "../utils";
-import { BasicGroup } from "./Group";
-import { RuleGroupExtActions } from "./RuleGroupExtActions";
+} from "react-awesome-query-builder-formatters/dist/utils/configUtils"
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils"
+import Draggable from "../containers/Draggable"
+import GroupContainer from "../containers/GroupContainer"
+import FieldWrapper from "../rule/FieldWrapper"
+import OperatorWrapper from "../rule/OperatorWrapper"
+import Widget from "../rule/Widget"
+import { Col, ConfirmFn, dummyFn } from "../utils"
+import { BasicGroup } from "./Group"
+import { RuleGroupExtActions } from "./RuleGroupExtActions"
 
-const classNames = require("classnames");
+const classNames = require("classnames")
 
 @GroupContainer
 @Draggable("group rule_group_ext")
@@ -31,22 +31,22 @@ class RuleGroupExt extends BasicGroup {
     setField: PropTypes.func,
     setOperator: PropTypes.func,
     setValue: PropTypes.func,
-  };
+  }
 
   constructor(props) {
-    super(props);
-    useOnPropsChanged(this);
-    this.onPropsChanged(props);
+    super(props)
+    useOnPropsChanged(this)
+    this.onPropsChanged(props)
   }
 
   onPropsChanged(nextProps) {}
 
-  childrenClassName = () => "rule_group_ext--children";
+  childrenClassName = () => "rule_group_ext--children"
 
-  renderFooterWrapper = () => null;
-  canAddGroup = () => false;
-  canAddRule = () => true;
-  canDeleteGroup = () => true;
+  renderFooterWrapper = () => null
+  canAddGroup = () => false
+  canAddRule = () => true
+  canDeleteGroup = () => true
 
   renderHeaderWrapper() {
     return (
@@ -65,7 +65,7 @@ class RuleGroupExt extends BasicGroup {
         {this.renderGroupField()}
         {this.renderActions()}
       </div>
-    );
+    )
   }
 
   renderHeader() {
@@ -74,7 +74,7 @@ class RuleGroupExt extends BasicGroup {
         {this.renderConjs()}
         {this.renderDrag()}
       </div>
-    );
+    )
   }
 
   renderGroupField() {
@@ -84,29 +84,29 @@ class RuleGroupExt extends BasicGroup {
         {this.renderOperator()}
         {this.renderWidget()}
       </div>
-    );
+    )
   }
 
   showNot() {
-    const { config, selectedField, selectedOperator } = this.props;
-    const selectedFieldConfig = getFieldConfig(config, selectedField) || {};
+    const { config, selectedField, selectedOperator } = this.props
+    const selectedFieldConfig = getFieldConfig(config, selectedField) || {}
     return selectedFieldConfig.showNot != undefined
       ? selectedFieldConfig.showNot
-      : config.settings.showNot;
+      : config.settings.showNot
   }
 
   conjunctionOptions() {
-    const { config, selectedField, selectedOperator } = this.props;
-    const selectedFieldConfig = getFieldConfig(config, selectedField) || {};
-    let conjunctionOptions = super.conjunctionOptions();
+    const { config, selectedField, selectedOperator } = this.props
+    const selectedFieldConfig = getFieldConfig(config, selectedField) || {}
+    let conjunctionOptions = super.conjunctionOptions()
     if (selectedFieldConfig.conjunctions) {
-      let filtered = {};
+      let filtered = {}
       for (let k of selectedFieldConfig.conjunctions) {
-        filtered[k] = conjunctionOptions[k];
+        filtered[k] = conjunctionOptions[k]
       }
-      conjunctionOptions = filtered;
+      conjunctionOptions = filtered
     }
-    return conjunctionOptions;
+    return conjunctionOptions
   }
 
   renderField() {
@@ -118,8 +118,8 @@ class RuleGroupExt extends BasicGroup {
       id,
       groupId,
       isLocked,
-    } = this.props;
-    const { immutableFieldsMode } = config.settings;
+    } = this.props
+    const { immutableFieldsMode } = config.settings
     return (
       <FieldWrapper
         key="field"
@@ -132,7 +132,7 @@ class RuleGroupExt extends BasicGroup {
         id={id}
         groupId={groupId}
       />
-    );
+    )
   }
 
   renderOperator() {
@@ -143,16 +143,16 @@ class RuleGroupExt extends BasicGroup {
       setField,
       setOperator,
       isLocked,
-    } = this.props;
-    const { immutableFieldsMode } = config.settings;
+    } = this.props
+    const { immutableFieldsMode } = config.settings
     const selectedFieldWidgetConfig =
-      getFieldWidgetConfig(config, selectedField, selectedOperator) || {};
-    const hideOperator = selectedFieldWidgetConfig.hideOperator;
+      getFieldWidgetConfig(config, selectedField, selectedOperator) || {}
+    const hideOperator = selectedFieldWidgetConfig.hideOperator
     const showOperatorLabel =
       selectedField &&
       hideOperator &&
-      selectedFieldWidgetConfig.operatorInlineLabel;
-    const showOperator = selectedField && !hideOperator;
+      selectedFieldWidgetConfig.operatorInlineLabel
+    const showOperator = selectedField && !hideOperator
 
     return (
       <OperatorWrapper
@@ -171,15 +171,15 @@ class RuleGroupExt extends BasicGroup {
         id={this.props.id}
         groupId={this.props.groupId}
       />
-    );
+    )
   }
 
   renderWidget() {
-    const { config, selectedField, selectedOperator, isLocked } = this.props;
-    const { immutableValuesMode } = config.settings;
-    const isFieldAndOpSelected = selectedField && selectedOperator;
-    const showWidget = isFieldAndOpSelected;
-    if (!showWidget) return null;
+    const { config, selectedField, selectedOperator, isLocked } = this.props
+    const { immutableValuesMode } = config.settings
+    const isFieldAndOpSelected = selectedField && selectedOperator
+    const showWidget = isFieldAndOpSelected
+    if (!showWidget) return null
 
     const widget = (
       <Widget
@@ -197,7 +197,7 @@ class RuleGroupExt extends BasicGroup {
         id={this.props.id}
         groupId={this.props.groupId}
       />
-    );
+    )
 
     return (
       <Col
@@ -206,11 +206,11 @@ class RuleGroupExt extends BasicGroup {
       >
         {widget}
       </Col>
-    );
+    )
   }
 
   renderActions() {
-    const { config, addRule, isLocked, isTrueLocked, id } = this.props;
+    const { config, addRule, isLocked, isTrueLocked, id } = this.props
 
     return (
       <RuleGroupExtActions
@@ -224,20 +224,20 @@ class RuleGroupExt extends BasicGroup {
         isTrueLocked={isTrueLocked}
         id={id}
       />
-    );
+    )
   }
 
   reordableNodesCntForItem(_item) {
-    if (this.props.isLocked) return 0;
-    const { children1 } = this.props;
-    return children1.size;
+    if (this.props.isLocked) return 0
+    const { children1 } = this.props
+    return children1.size
   }
 
   extraPropsForItem(_item) {
     return {
       parentField: this.props.selectedField,
-    };
+    }
   }
 }
 
-export default RuleGroupExt;
+export default RuleGroupExt

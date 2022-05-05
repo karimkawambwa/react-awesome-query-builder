@@ -1,13 +1,13 @@
 /** @format */
 
-import { Divider, Select } from "antd";
-import React, { useMemo } from "react";
+import { Divider, Select } from "antd"
+import React, { useMemo } from "react"
 import {
   calcTextWidth,
   SELECT_WIDTH_OFFSET_RIGHT,
-} from "react-awesome-query-builder-formatters/dist/utils/domUtils";
-import useListValuesAutocomplete from "../../../../hooks/useListValuesAutocomplete";
-const Option = Select.Option;
+} from "react-awesome-query-builder-formatters/dist/utils/domUtils"
+import useListValuesAutocomplete from "../../../../hooks/useListValuesAutocomplete"
+const Option = Select.Option
 
 export default (props) => {
   const {
@@ -19,7 +19,7 @@ export default (props) => {
     readonly,
     multiple,
     useAsyncSearch,
-  } = props;
+  } = props
 
   // hook
   const {
@@ -39,34 +39,33 @@ export default (props) => {
   } = useListValuesAutocomplete(props, {
     debounceTimeout: 100,
     multiple,
-  });
+  })
 
-  const filteredOptions = extendOptions(options);
+  const filteredOptions = extendOptions(options)
 
   const optionsMaxWidth = useMemo(() => {
     return filteredOptions.reduce((max, option) => {
-      return Math.max(max, calcTextWidth(option.title, null));
-    }, 0);
-  }, [options]);
+      return Math.max(max, calcTextWidth(option.title, null))
+    }, 0)
+  }, [options])
 
-  const { defaultSelectWidth, defaultSearchWidth, renderSize } =
-    config.settings;
-  const placeholderWidth = calcTextWidth(placeholder);
-  const aValue = value && value.length ? value : undefined;
-  const width = aValue ? null : placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT;
-  const dropdownWidth = optionsMaxWidth + SELECT_WIDTH_OFFSET_RIGHT;
-  const minWidth = width || defaultSelectWidth;
+  const { defaultSelectWidth, defaultSearchWidth, renderSize } = config.settings
+  const placeholderWidth = calcTextWidth(placeholder)
+  const aValue = value && value.length ? value : undefined
+  const width = aValue ? null : placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT
+  const dropdownWidth = optionsMaxWidth + SELECT_WIDTH_OFFSET_RIGHT
+  const minWidth = width || defaultSelectWidth
 
   const style = {
     width: multiple ? undefined : minWidth,
     minWidth: minWidth,
-  };
+  }
   const dropdownStyle = {
     width: dropdownWidth,
-  };
+  }
 
-  const mode = !multiple ? undefined : allowCustomValues ? "tags" : "multiple";
-  const dynamicPlaceholder = !readonly ? aPlaceholder : "";
+  const mode = !multiple ? undefined : allowCustomValues ? "tags" : "multiple"
+  const dynamicPlaceholder = !readonly ? aPlaceholder : ""
 
   // rendering special 'Load more' option has side effect: on change rc-select will save its title as internal value in own state
   const renderedOptions = filteredOptions
@@ -79,39 +78,43 @@ export default (props) => {
       >
         {getOptionLabel(option)}
       </Option>
-    ));
+    ))
 
   const onSpecialClick = (specialValue) => () => {
     const option = filteredOptions.find(
       (opt) => opt.specialValue == specialValue
-    );
-    onChange(null, option);
-  };
+    )
+    onChange(null, option)
+  }
 
   const specialOptions = filteredOptions
     ?.filter((option) => !!option.specialValue)
     .map((option) => (
       <a
-        style={{ padding: "5px 10px", display: "block", cursor: "pointer" }}
+        style={{
+          padding: "5px 10px",
+          display: "block",
+          cursor: "pointer",
+        }}
         key={option.specialValue}
         disabled={getOptionDisabled(option)}
         onClick={onSpecialClick(option.specialValue)}
       >
         {getOptionLabel(option)}
       </a>
-    ));
+    ))
 
   const aOnSelect = async (label, option) => {
     if (isSpecialValue(option)) {
-      await onChange(label, option);
+      await onChange(label, option)
     }
-  };
+  }
 
   const aOnChange = async (label, option) => {
     if (!isSpecialValue(option)) {
-      await onChange(label, option);
+      await onChange(label, option)
     }
-  };
+  }
 
   const dropdownRender = (menu) => (
     <div>
@@ -125,7 +128,7 @@ export default (props) => {
         </>
       )}
     </div>
-  );
+  )
 
   return (
     <Select
@@ -155,5 +158,5 @@ export default (props) => {
     >
       {renderedOptions}
     </Select>
-  );
-};
+  )
+}

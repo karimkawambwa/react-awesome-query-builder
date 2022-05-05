@@ -1,13 +1,13 @@
 /** @format */
 
-import { Tooltip, TreeSelect } from "antd";
-import PropTypes from "prop-types";
-import React, { PureComponent } from "react";
+import { Tooltip, TreeSelect } from "antd"
+import PropTypes from "prop-types"
+import React, { PureComponent } from "react"
 import {
   calcTextWidth,
   SELECT_WIDTH_OFFSET_RIGHT,
-} from "react-awesome-query-builder-formatters/dist/utils/domUtils";
-import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+} from "react-awesome-query-builder-formatters/dist/utils/domUtils"
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils"
 
 export default class FieldTreeSelect extends PureComponent {
   static propTypes = {
@@ -25,12 +25,12 @@ export default class FieldTreeSelect extends PureComponent {
     readonly: PropTypes.bool,
     //actions
     setField: PropTypes.func.isRequired,
-  };
+  }
 
   constructor(props) {
-    super(props);
-    useOnPropsChanged(this);
-    this.onPropsChanged(props);
+    super(props)
+    useOnPropsChanged(this)
+    this.onPropsChanged(props)
   }
 
   onPropsChanged(props) {
@@ -39,12 +39,12 @@ export default class FieldTreeSelect extends PureComponent {
       config: {
         settings: { fieldSeparator },
       },
-    } = props;
+    } = props
 
-    let optionsMaxWidth = 0;
-    const initialOffset = 24; // arrow + checkbox for leftmost item
-    const offset = 20;
-    const padding = 5 * 2;
+    let optionsMaxWidth = 0
+    const initialOffset = 24 // arrow + checkbox for leftmost item
+    const offset = 20
+    const padding = 5 * 2
     this.treeData = this.getTreeData(items, ({ label, path }) => {
       optionsMaxWidth = Math.max(
         optionsMaxWidth,
@@ -52,9 +52,9 @@ export default class FieldTreeSelect extends PureComponent {
           padding +
           (path.split(fieldSeparator).length - 1) * offset +
           initialOffset
-      );
-    });
-    this.optionsMaxWidth = optionsMaxWidth;
+      )
+    })
+    this.optionsMaxWidth = optionsMaxWidth
   }
 
   getTreeData(fields, fn = null) {
@@ -68,14 +68,14 @@ export default class FieldTreeSelect extends PureComponent {
         altLabel,
         tooltip,
         disabled,
-      } = field;
-      if (fn) fn(field);
-      const pathKey = path || key;
+      } = field
+      if (fn) fn(field)
+      const pathKey = path || key
       const option = tooltip ? (
         <Tooltip title={tooltip}>{label}</Tooltip>
       ) : (
         label
-      );
+      )
 
       if (items) {
         return {
@@ -87,7 +87,7 @@ export default class FieldTreeSelect extends PureComponent {
           fullLabel: fullLabel,
           label: label,
           disabled: disabled,
-        };
+        }
       } else {
         return {
           value: pathKey,
@@ -96,23 +96,23 @@ export default class FieldTreeSelect extends PureComponent {
           fullLabel: fullLabel,
           label: label,
           disabled: disabled,
-        };
+        }
       }
-    });
+    })
   }
 
   onChange = (key) => {
-    this.props.setField(key);
-  };
+    this.props.setField(key)
+  }
 
   filterTreeNode = (input, option) => {
-    const dataForFilter = option;
-    const keysForFilter = ["title", "value", "label", "altLabel", "fullLabel"];
+    const dataForFilter = option
+    const keysForFilter = ["title", "value", "label", "altLabel", "fullLabel"]
     const valueForFilter = keysForFilter
       .map((k) => (typeof dataForFilter[k] == "string" ? dataForFilter[k] : ""))
-      .join("\0");
-    return valueForFilter.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-  };
+      .join("\0")
+    return valueForFilter.toLowerCase().indexOf(input.toLowerCase()) >= 0
+  }
 
   render() {
     const {
@@ -125,30 +125,30 @@ export default class FieldTreeSelect extends PureComponent {
       selectedAltLabel,
       selectedFullLabel,
       readonly,
-    } = this.props;
-    const { renderSize, fieldSeparator } = config.settings;
+    } = this.props
+    const { renderSize, fieldSeparator } = config.settings
 
-    let tooltipText = selectedAltLabel || selectedFullLabel;
-    if (tooltipText == selectedLabel) tooltipText = null;
-    const selectedPath = selectedKey ? selectedKey.split(fieldSeparator) : null;
+    let tooltipText = selectedAltLabel || selectedFullLabel
+    if (tooltipText == selectedLabel) tooltipText = null
+    const selectedPath = selectedKey ? selectedKey.split(fieldSeparator) : null
     const treeDefaultExpandedKeys =
       selectedPath && selectedPath.length > 1
         ? selectedPath
             .slice(0, -1)
             .map((_key, i) => selectedPath.slice(0, i + 1).join(fieldSeparator))
-        : null;
+        : null
 
-    const placeholderWidth = calcTextWidth(placeholder) + 6;
-    const isFieldSelected = !!selectedKey;
+    const placeholderWidth = calcTextWidth(placeholder) + 6
+    const isFieldSelected = !!selectedKey
 
-    const minWidth = placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT;
-    const dropdownMinWidth = 100;
-    const dropdownMaxWidth = 800;
-    const useAutoWidth = true; //tip: "auto" is good, but width will jump on expand/collapse
+    const minWidth = placeholderWidth + SELECT_WIDTH_OFFSET_RIGHT
+    const dropdownMinWidth = 100
+    const dropdownMaxWidth = 800
+    const useAutoWidth = true //tip: "auto" is good, but width will jump on expand/collapse
     const dropdownWidth = Math.max(
       dropdownMinWidth,
       Math.min(dropdownMaxWidth, this.optionsMaxWidth)
-    );
+    )
 
     let res = (
       <TreeSelect
@@ -174,12 +174,12 @@ export default class FieldTreeSelect extends PureComponent {
         disabled={readonly}
         {...customProps}
       />
-    );
+    )
 
     if (tooltipText && !selectedOpts.tooltip) {
-      res = <Tooltip title={tooltipText}>{res}</Tooltip>;
+      res = <Tooltip title={tooltipText}>{res}</Tooltip>
     }
 
-    return res;
+    return res
   }
 }
