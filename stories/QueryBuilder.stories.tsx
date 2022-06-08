@@ -16,6 +16,18 @@ export default {
 const Template: ComponentStory<any> = (args) => {
   const [config] = useState({
     ...MaterialConfig,
+    types: {
+      ...MaterialConfig.types,
+      select: {
+        ...MaterialConfig.types.select,
+        widgets: {
+          ...MaterialConfig.types.select.widgets,
+          text: {
+            operators: ["like", "not_like"],
+          },
+        },
+      },
+    },
     settings: {
       ...MaterialConfig.settings,
       canReorder: true,
