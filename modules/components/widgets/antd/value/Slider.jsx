@@ -1,10 +1,10 @@
 /** @format */
 
-import { Col, InputNumber, Slider } from "antd";
-import PropTypes from "prop-types";
-import React, { PureComponent } from "react";
-import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
-const __isInternal = true; //true to optimize render
+import { Col, InputNumber, Slider } from "antd"
+import PropTypes from "prop-types"
+import React, { PureComponent } from "react"
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils"
+const __isInternal = true //true to optimize render
 
 export default class SliderWidget extends PureComponent {
   static propTypes = {
@@ -21,40 +21,40 @@ export default class SliderWidget extends PureComponent {
     max: PropTypes.number,
     step: PropTypes.number,
     marks: PropTypes.object,
-  };
+  }
 
   static defaultProps = {
     min: 0,
     max: 100,
     step: 1,
     marks: undefined,
-  };
+  }
 
-  state = {};
+  state = {}
 
   constructor(props) {
-    super(props);
-    useOnPropsChanged(this);
+    super(props)
+    useOnPropsChanged(this)
 
-    this.state.internalValue = props.value;
+    this.state.internalValue = props.value
   }
 
   onPropsChanged(nextProps) {
-    this.setState({ internalValue: nextProps.value });
+    this.setState({ internalValue: nextProps.value })
   }
 
   handleChange = (val) => {
-    if (val === "") val = undefined;
-    if (__isInternal) this.setState({ internalValue: val });
-    this.props.setValue(val, undefined, __isInternal);
-  };
+    if (val === "") val = undefined
+    if (__isInternal) this.setState({ internalValue: val })
+    this.props.setValue(val, undefined, __isInternal)
+  }
 
-  tipFormatter = (val) => (val != undefined ? val.toString() : undefined);
+  tipFormatter = (val) => (val != undefined ? val.toString() : undefined)
 
   UNSAFE_componentWillUpdate(nextProps, nextState) {
     // RHL fix
     if (this.props.cacheBusterProp && __isInternal) {
-      nextState.internalValue = this.state.internalValue;
+      nextState.internalValue = this.state.internalValue
     }
   }
 
@@ -70,18 +70,17 @@ export default class SliderWidget extends PureComponent {
       marks,
       readonly,
       valueError,
-    } = this.props;
-    const { renderSize, showErrorMessage, defaultSliderWidth } =
-      config.settings;
-    const { width, ...rest } = customProps || {};
-    const customInputProps = rest.input || {};
-    const customSliderProps = rest.slider || rest;
+    } = this.props
+    const { renderSize, showErrorMessage, defaultSliderWidth } = config.settings
+    const { width, ...rest } = customProps || {}
+    const customInputProps = rest.input || {}
+    const customSliderProps = rest.slider || rest
 
-    const canUseInternal = showErrorMessage ? true : !valueError;
+    const canUseInternal = showErrorMessage ? true : !valueError
     let aValue =
-      __isInternal && canUseInternal ? this.state.internalValue : value;
-    if (aValue == undefined) aValue = null;
-    const sliderValue = aValue == null && min ? min : aValue;
+      __isInternal && canUseInternal ? this.state.internalValue : value
+    if (aValue == undefined) aValue = null
+    const sliderValue = aValue == null && min ? min : aValue
 
     return (
       <Col style={{ display: "inline-flex" }}>
@@ -114,6 +113,6 @@ export default class SliderWidget extends PureComponent {
         </Col>
         <Col style={{ clear: "both" }} />
       </Col>
-    );
+    )
   }
 }

@@ -1,6 +1,6 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { Switch } from "antd";
+import React, { PureComponent } from "react"
+import PropTypes from "prop-types"
+import { Switch } from "antd"
 
 export default class BooleanWidget extends PureComponent {
   static propTypes = {
@@ -13,20 +13,20 @@ export default class BooleanWidget extends PureComponent {
     // from fieldSettings:
     labelYes: PropTypes.string,
     labelNo: PropTypes.string,
-  };
+  }
 
   handleChange = (val) => {
-    this.props.setValue(val);
-  };
+    this.props.setValue(val)
+  }
 
   static defaultProps = {
-    labelYes: null, 
-    labelNo: null, 
-  };
+    labelYes: null,
+    labelNo: null,
+  }
 
   render() {
-    const {customProps, value,  labelYes, labelNo, readonly} = this.props;
-        
+    const { customProps, value, labelYes, labelNo, readonly } = this.props
+
     return (
       <Switch
         checkedChildren={labelYes || null}
@@ -36,6 +36,6 @@ export default class BooleanWidget extends PureComponent {
         disabled={readonly}
         {...customProps}
       />
-    );
+    )
   }
 }

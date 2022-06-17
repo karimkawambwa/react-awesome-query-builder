@@ -1,8 +1,10 @@
-import React from "react";
-import { spelEscape, SqlString } from "react-awesome-query-builder-formatters/dist/utils/export";
-import BasicConfig, { stringifyForDisplay } from "..";
-import MaterialWidgets from "../../components/widgets/material";
-
+import React from "react"
+import {
+  spelEscape,
+  SqlString,
+} from "react-awesome-query-builder-formatters/dist/utils/export"
+import BasicConfig, { stringifyForDisplay } from ".."
+import MaterialWidgets from "../../components/widgets/material"
 
 const {
   MaterialBooleanWidget,
@@ -29,15 +31,17 @@ const {
   MaterialProvider,
   MaterialConfirm,
   MaterialUseConfirm,
-} = MaterialWidgets;
-
+} = MaterialWidgets
 
 const settings = {
   ...BasicConfig.settings,
 
-  renderField: (props) => props?.customProps?.showSearch
-    ? <MaterialFieldAutocomplete {...props} />
-    : <MaterialFieldSelect {...props} />,
+  renderField: (props) =>
+    props?.customProps?.showSearch ? (
+      <MaterialFieldAutocomplete {...props} />
+    ) : (
+      <MaterialFieldSelect {...props} />
+    ),
   renderOperator: (props) => <MaterialFieldSelect {...props} />,
   renderFunc: (props) => <MaterialFieldSelect {...props} />,
   renderConjs: (props) => <MaterialConjs {...props} />,
@@ -48,8 +52,7 @@ const settings = {
   renderProvider: (props) => <MaterialProvider {...props} />,
   renderConfirm: MaterialConfirm,
   useConfirm: MaterialUseConfirm,
-};
-
+}
 
 const widgets = {
   ...BasicConfig.widgets,
@@ -68,17 +71,21 @@ const widgets = {
   multiselect: {
     ...BasicConfig.widgets.multiselect,
     factory: (props) => {
-      return (props.asyncFetch || props.showSearch)
-        ? <MaterialAutocompleteWidget multiple {...props} />
-        : <MaterialMultiSelectWidget {...props} />;
+      return props.asyncFetch || props.showSearch ? (
+        <MaterialAutocompleteWidget multiple {...props} />
+      ) : (
+        <MaterialMultiSelectWidget {...props} />
+      )
     },
   },
   select: {
     ...BasicConfig.widgets.select,
     factory: (props) => {
-      return (props.asyncFetch || props.showSearch)
-        ? <MaterialAutocompleteWidget {...props} />
-        : <MaterialSelectWidget {...props} />;
+      return props.asyncFetch || props.showSearch ? (
+        <MaterialAutocompleteWidget {...props} />
+      ) : (
+        <MaterialSelectWidget {...props} />
+      )
     },
   },
   slider: {
@@ -114,17 +121,16 @@ const widgets = {
       { label: "Number to", placeholder: "Enter number to" },
     ],
     formatValue: (val, fieldDef, wgtDef, isForDisplay) => {
-      return isForDisplay ? stringifyForDisplay(val) : JSON.stringify(val);
+      return isForDisplay ? stringifyForDisplay(val) : JSON.stringify(val)
     },
     sqlFormatValue: (val, fieldDef, wgtDef, op, opDef) => {
-      return SqlString.escape(val);
+      return SqlString.escape(val)
     },
     spelFormatValue: (val) => spelEscape(val),
     singleWidget: "slider",
-    toJS: (val, fieldSettings) => (val),
+    toJS: (val, fieldSettings) => val,
   },
-};
-
+}
 
 const types = {
   ...BasicConfig.types,
@@ -139,22 +145,17 @@ const types = {
           },
           not_between: {
             isSpecialRange: true,
-          }
+          },
         },
-        operators: [
-          "between",
-          "not_between",
-          "is_null",
-          "is_not_null",
-        ],
-      }
+        operators: ["between", "not_between", "is_null", "is_not_null"],
+      },
     },
   },
-};
+}
 
 export default {
   ...BasicConfig,
   types,
   widgets,
   settings,
-};
+}

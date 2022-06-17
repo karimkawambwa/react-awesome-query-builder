@@ -1,12 +1,12 @@
 /** @format */
 
-import PropTypes from "prop-types";
-import React, { Component } from "react";
-import { getFieldConfig } from "react-awesome-query-builder-formatters/dist/utils/configUtils";
-import { pureShouldComponentUpdate } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
-import { connect } from "react-redux";
-import context from "../../stores/context";
-const classNames = require("classnames");
+import PropTypes from "prop-types"
+import React, { Component } from "react"
+import { getFieldConfig } from "react-awesome-query-builder-formatters/dist/utils/configUtils"
+import { pureShouldComponentUpdate } from "react-awesome-query-builder-formatters/dist/utils/reactUtils"
+import { connect } from "react-redux"
+import context from "../../stores/context"
+const classNames = require("classnames")
 
 const createRuleContainer = (Rule) =>
   class RuleContainer extends Component {
@@ -31,35 +31,35 @@ const createRuleContainer = (Rule) =>
       //connected:
       dragging: PropTypes.object, //{id, x, y, w, h}
       isDraggingTempo: PropTypes.bool,
-    };
-
-    constructor(props) {
-      super(props);
-
-      this.dummyFn.isDummyFn = true;
     }
 
-    dummyFn = () => {};
+    constructor(props) {
+      super(props)
+
+      this.dummyFn.isDummyFn = true
+    }
+
+    dummyFn = () => {}
 
     removeSelf = () => {
-      this.props.actions.removeRule(this.props.path);
-    };
+      this.props.actions.removeRule(this.props.path)
+    }
 
     setLock = (lock = null) => {
-      this.props.actions.setLock(this.props.path, lock);
-    };
+      this.props.actions.setLock(this.props.path, lock)
+    }
 
     setField = (field) => {
-      this.props.actions.setField(this.props.path, field);
-    };
+      this.props.actions.setField(this.props.path, field)
+    }
 
     setOperator = (operator) => {
-      this.props.actions.setOperator(this.props.path, operator);
-    };
+      this.props.actions.setOperator(this.props.path, operator)
+    }
 
     setOperatorOption = (name, value) => {
-      this.props.actions.setOperatorOption(this.props.path, name, value);
-    };
+      this.props.actions.setOperatorOption(this.props.path, name, value)
+    }
 
     setValue = (delta, value, type, asyncListValues, __isInternal) => {
       this.props.actions.setValue(
@@ -69,54 +69,54 @@ const createRuleContainer = (Rule) =>
         type,
         asyncListValues,
         __isInternal
-      );
-    };
+      )
+    }
 
     setValueSrc = (delta, srcKey) => {
-      this.props.actions.setValueSrc(this.props.path, delta, srcKey);
-    };
+      this.props.actions.setValueSrc(this.props.path, delta, srcKey)
+    }
 
     shouldComponentUpdate(nextProps, nextState) {
-      let prevProps = this.props;
-      let prevState = this.state;
+      let prevProps = this.props
+      let prevState = this.state
 
-      let should = pureShouldComponentUpdate(this)(nextProps, nextState);
+      let should = pureShouldComponentUpdate(this)(nextProps, nextState)
       if (should) {
         if (prevState == nextState && prevProps != nextProps) {
-          const draggingId = nextProps.dragging.id || prevProps.dragging.id;
-          const isDraggingMe = draggingId == nextProps.id;
-          let chs = [];
+          const draggingId = nextProps.dragging.id || prevProps.dragging.id
+          const isDraggingMe = draggingId == nextProps.id
+          let chs = []
           for (let k in nextProps) {
-            let changed = nextProps[k] != prevProps[k];
+            let changed = nextProps[k] != prevProps[k]
             if (k == "dragging" && !isDraggingMe) {
-              changed = false; //dragging another item -> ignore
+              changed = false //dragging another item -> ignore
             }
             if (changed) {
-              chs.push(k);
+              chs.push(k)
             }
           }
-          if (!chs.length) should = false;
+          if (!chs.length) should = false
         }
       }
-      return should;
+      return should
     }
 
     render() {
-      const isDraggingMe = this.props.dragging.id == this.props.id;
-      const fieldConfig = getFieldConfig(this.props.config, this.props.field);
-      const { showErrorMessage } = this.props.config.settings;
-      const _isGroup = fieldConfig && fieldConfig.type == "!struct";
-      const isInDraggingTempo = !isDraggingMe && this.props.isDraggingTempo;
+      const isDraggingMe = this.props.dragging.id == this.props.id
+      const fieldConfig = getFieldConfig(this.props.config, this.props.field)
+      const { showErrorMessage } = this.props.config.settings
+      const _isGroup = fieldConfig && fieldConfig.type == "!struct"
+      const isInDraggingTempo = !isDraggingMe && this.props.isDraggingTempo
 
-      const valueError = this.props.valueError;
+      const valueError = this.props.valueError
       const oneValueError =
         (valueError &&
           valueError
             .toArray()
             .filter((e) => !!e)
             .shift()) ||
-        null;
-      const hasError = oneValueError != null && showErrorMessage;
+        null
+      const hasError = oneValueError != null && showErrorMessage
 
       return (
         <div
@@ -192,24 +192,24 @@ const createRuleContainer = (Rule) =>
             />,
           ]}
         </div>
-      );
+      )
     }
-  };
+  }
 
 export default (Rule) => {
   const ConnectedRuleContainer = connect(
     (state) => {
       return {
         dragging: state.dragging,
-      };
+      }
     },
     null,
     null,
     {
       context,
     }
-  )(createRuleContainer(Rule));
-  ConnectedRuleContainer.displayName = "ConnectedRuleContainer";
+  )(createRuleContainer(Rule))
+  ConnectedRuleContainer.displayName = "ConnectedRuleContainer"
 
-  return ConnectedRuleContainer;
-};
+  return ConnectedRuleContainer
+}

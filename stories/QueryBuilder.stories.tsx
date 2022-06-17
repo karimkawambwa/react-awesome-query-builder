@@ -84,4 +84,3 @@ const Template: ComponentStory<any> = (args) => {
 }
 
 export const Main = Template.bind({})
-

@@ -1,18 +1,18 @@
 /** @format */
 
-import React from "react";
-import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+import React from "react"
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils"
 import {
   getTotalReordableNodesCountInTree,
   getTotalRulesCountInTree,
-} from "react-awesome-query-builder-formatters/dist/utils/treeUtils";
-import Draggable from "../containers/Draggable";
-import GroupContainer from "../containers/GroupContainer";
-import { ConfirmFn } from "../utils";
-import { BasicGroup } from "./Group";
-import { SwitchGroupActions } from "./SwitchGroupActions";
+} from "react-awesome-query-builder-formatters/dist/utils/treeUtils"
+import Draggable from "../containers/Draggable"
+import GroupContainer from "../containers/GroupContainer"
+import { ConfirmFn } from "../utils"
+import { BasicGroup } from "./Group"
+import { SwitchGroupActions } from "./SwitchGroupActions"
 
-const classNames = require("classnames");
+const classNames = require("classnames")
 
 @GroupContainer
 @Draggable("group switch_group")
@@ -20,66 +20,66 @@ const classNames = require("classnames");
 class SwitchGroup extends BasicGroup {
   static propTypes = {
     ...BasicGroup.propTypes,
-  };
+  }
 
   constructor(props) {
-    super(props);
-    useOnPropsChanged(this);
-    this.onPropsChanged(props);
+    super(props)
+    useOnPropsChanged(this)
+    this.onPropsChanged(props)
   }
 
   onPropsChanged(nextProps) {}
 
-  childrenClassName = () => "switch_group--children";
+  childrenClassName = () => "switch_group--children"
 
-  renderFooterWrapper = () => null;
+  renderFooterWrapper = () => null
   hasDefaultCase = () => {
     return (
       this.props.children1.size &&
       this.props.children1.filter((c) => c.get("children1") == null).size > 0
-    );
-  };
+    )
+  }
   canAddGroup() {
-    const { maxNumberOfCases } = this.props.config.settings;
-    const totalCasesCnt = this.props.children1.size;
+    const { maxNumberOfCases } = this.props.config.settings
+    const totalCasesCnt = this.props.children1.size
     if (maxNumberOfCases) {
-      return totalCasesCnt < maxNumberOfCases;
+      return totalCasesCnt < maxNumberOfCases
     }
-    return true;
+    return true
   }
   canAddRule() {
-    return false;
+    return false
   }
 
   reordableNodesCnt() {
     // result will be passed to each case's `parentReordableNodesCnt` prop
-    const totalCasesCnt = this.props.children1.size;
-    let casesToReorder = totalCasesCnt;
+    const totalCasesCnt = this.props.children1.size
+    let casesToReorder = totalCasesCnt
     if (this.hasDefaultCase()) {
-      casesToReorder--;
+      casesToReorder--
     }
-    return casesToReorder;
+    return casesToReorder
   }
 
   totalRulesCntForItem(item) {
-    return getTotalRulesCountInTree(item);
+    return getTotalRulesCountInTree(item)
   }
 
   reordableNodesCntForItem(item) {
-    if (this.props.isLocked) return 0;
-    const { canLeaveEmptyCase, canRegroupCases } = this.props.config.settings;
+    if (this.props.isLocked) return 0
+    const { canLeaveEmptyCase, canRegroupCases } = this.props.config.settings
 
-    const totalCasesCnt = this.props.children1.size;
-    let casesToReorder = totalCasesCnt;
+    const totalCasesCnt = this.props.children1.size
+    let casesToReorder = totalCasesCnt
     if (this.hasDefaultCase()) {
-      casesToReorder--;
+      casesToReorder--
     }
 
-    const nodesInCase = getTotalReordableNodesCountInTree(item);
-    let cnt = nodesInCase;
+    const nodesInCase = getTotalReordableNodesCountInTree(item)
+    let cnt = nodesInCase
     if (cnt == 1 && canRegroupCases && canLeaveEmptyCase && casesToReorder > 1)
-      cnt = 111;
-    return cnt;
+      cnt = 111
+    return cnt
   }
 
   renderHeaderWrapper() {
@@ -98,7 +98,7 @@ class SwitchGroup extends BasicGroup {
         {this.renderHeader()}
         {this.renderActions()}
       </div>
-    );
+    )
   }
 
   renderHeader() {
@@ -107,16 +107,16 @@ class SwitchGroup extends BasicGroup {
         {this.renderConjs()}
         {this.renderDrag()}
       </div>
-    );
+    )
   }
 
   renderConjs() {
-    const { renderSwitchPrefix } = this.props.config.settings;
-    return renderSwitchPrefix ? renderSwitchPrefix() : null;
+    const { renderSwitchPrefix } = this.props.config.settings
+    return renderSwitchPrefix ? renderSwitchPrefix() : null
   }
 
   showNot() {
-    return false;
+    return false
   }
 
   renderActions() {
@@ -127,7 +127,7 @@ class SwitchGroup extends BasicGroup {
       isLocked,
       isTrueLocked,
       id,
-    } = this.props;
+    } = this.props
 
     return (
       <SwitchGroupActions
@@ -141,8 +141,8 @@ class SwitchGroup extends BasicGroup {
         isTrueLocked={isTrueLocked}
         id={id}
       />
-    );
+    )
   }
 }
 
-export default SwitchGroup;
+export default SwitchGroup

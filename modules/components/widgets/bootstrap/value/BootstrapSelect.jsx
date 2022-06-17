@@ -1,13 +1,13 @@
 /** @format */
 
-import React, { useState } from "react";
-import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff";
+import React, { useState } from "react"
+import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff"
 import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-} from "reactstrap";
+} from "reactstrap"
 
 export default ({
   listValues,
@@ -18,9 +18,9 @@ export default ({
   placeholder,
 }) => {
   const onChange = (e) => {
-    if (e.target.value === undefined) return;
-    setValue(e.target.value);
-  };
+    if (e.target.value === undefined) return
+    setValue(e.target.value)
+  }
 
   const renderOptions = () =>
     mapListValues(listValues, ({ title, value }) => {
@@ -33,33 +33,33 @@ export default ({
         >
           {title}
         </DropdownItem>
-      );
-    });
+      )
+    })
 
   const renderValue = (selectedValue) => {
-    if (!readonly && selectedValue == null) return placeholder;
-    return getListValueTitle(selectedValue);
-  };
+    if (!readonly && selectedValue == null) return placeholder
+    return getListValueTitle(selectedValue)
+  }
 
   const getListValueTitle = (selectedValue) =>
     mapListValues(listValues, ({ title, value }) =>
       value === selectedValue ? title : null
     )
       .filter((v) => v !== null)
-      .shift();
+      .shift()
 
-  const hasValue = selectedValue != null;
-  const [isOpen, setIsOpen] = useState(false);
+  const hasValue = selectedValue != null
+  const [isOpen, setIsOpen] = useState(false)
 
   const stylesDropdownWrapper = {
     lineHeight: "105%",
     minHeight: "1.7rem",
     paddingBottom: "0.45rem",
-  };
+  }
 
   const stylesDropdownMenuWrapper = {
     //minWidth: "100%"
-  };
+  }
 
   return (
     <Dropdown
@@ -81,5 +81,5 @@ export default ({
         {renderOptions()}
       </DropdownMenu>
     </Dropdown>
-  );
-};
+  )
+}

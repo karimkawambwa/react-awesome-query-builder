@@ -1,8 +1,8 @@
 /** @format */
 
-import omit from "lodash/omit";
-import React from "react";
-import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff";
+import omit from "lodash/omit"
+import React from "react"
+import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff"
 
 export default ({
   listValues,
@@ -18,12 +18,12 @@ export default ({
         <option key={value} value={value}>
           {title}
         </option>
-      );
-    });
+      )
+    })
 
-  const onChange = (e) => setValue(e.target.value);
+  const onChange = (e) => setValue(e.target.value)
 
-  const hasValue = value != null;
+  const hasValue = value != null
   return (
     <select
       onChange={onChange}
@@ -34,5 +34,5 @@ export default ({
       {!hasValue && <option disabled value={""}></option>}
       {renderOptions()}
     </select>
-  );
-};
+  )
+}

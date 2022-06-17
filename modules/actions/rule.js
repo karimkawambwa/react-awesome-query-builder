@@ -1,6 +1,5 @@
-import { toImmutableList } from "react-awesome-query-builder-formatters/dist/utils/stuff";
-import * as constants from "../constants";
-
+import { toImmutableList } from "react-awesome-query-builder-formatters/dist/utils/stuff"
+import * as constants from "../constants"
 
 /**
  * @param {object} config
@@ -11,8 +10,8 @@ export const setField = (config, path, field) => ({
   type: constants.SET_FIELD,
   path: toImmutableList(path),
   field: field,
-  config: config
-});
+  config: config,
+})
 
 /**
  * @param {object} config
@@ -23,8 +22,8 @@ export const setOperator = (config, path, operator) => ({
   type: constants.SET_OPERATOR,
   path: toImmutableList(path),
   operator: operator,
-  config: config
-});
+  config: config,
+})
 
 /**
  * @param {object} config
@@ -35,7 +34,15 @@ export const setOperator = (config, path, operator) => ({
  * @param {*} asyncListValues
  * @param {boolean} __isInternal
  */
-export const setValue = (config, path, delta, value, valueType, asyncListValues, __isInternal) => ({
+export const setValue = (
+  config,
+  path,
+  delta,
+  value,
+  valueType,
+  asyncListValues,
+  __isInternal
+) => ({
   type: constants.SET_VALUE,
   path: toImmutableList(path),
   delta: delta,
@@ -43,8 +50,8 @@ export const setValue = (config, path, delta, value, valueType, asyncListValues,
   valueType: valueType,
   asyncListValues: asyncListValues,
   config: config,
-  __isInternal: __isInternal
-});
+  __isInternal: __isInternal,
+})
 
 /**
  * @param {object} config
@@ -57,8 +64,8 @@ export const setValueSrc = (config, path, delta, srcKey) => ({
   path: toImmutableList(path),
   delta: delta,
   srcKey: srcKey,
-  config: config
-});
+  config: config,
+})
 
 /**
  * @param {object} config
@@ -71,5 +78,5 @@ export const setOperatorOption = (config, path, name, value) => ({
   path: toImmutableList(path),
   name: name,
   value: value,
-  config: config
-});
+  config: config,
+})

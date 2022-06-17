@@ -1,8 +1,7 @@
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
-import { DatePicker } from "antd";
-import moment from "moment";
-
+import React, { PureComponent } from "react"
+import PropTypes from "prop-types"
+import { DatePicker } from "antd"
+import moment from "moment"
 
 export default class DateTimeWidget extends PureComponent {
   static propTypes = {
@@ -18,15 +17,15 @@ export default class DateTimeWidget extends PureComponent {
     dateFormat: PropTypes.string,
     valueFormat: PropTypes.string,
     use12Hours: PropTypes.bool,
-  };
+  }
 
   constructor(props) {
-    super(props);
+    super(props)
 
-    const {valueFormat, value, setValue} = props;
-    let mValue = value ? moment(value, valueFormat) : null;
+    const { valueFormat, value, setValue } = props
+    let mValue = value ? moment(value, valueFormat) : null
     if (mValue && !mValue.isValid()) {
-      setValue(null);
+      setValue(null)
     }
   }
 
@@ -35,20 +34,30 @@ export default class DateTimeWidget extends PureComponent {
     dateFormat: "YYYY-MM-DD",
     valueFormat: "YYYY-MM-DD HH:mm:ss",
     use12Hours: false,
-  };
+  }
 
   handleChange = (aValue) => {
-    const {setValue, valueFormat} = this.props;
-    const value = aValue && aValue.isValid() ? aValue.format(valueFormat) : undefined;
-    if (value || aValue === null)
-      setValue(value);
-  };
+    const { setValue, valueFormat } = this.props
+    const value =
+      aValue && aValue.isValid() ? aValue.format(valueFormat) : undefined
+    if (value || aValue === null) setValue(value)
+  }
 
   render() {
-    const {placeholder, customProps, value, valueFormat, dateFormat, timeFormat, use12Hours, config, readonly} = this.props;
-    const {renderSize} = config.settings;
-    const dateValue = value ? moment(value, valueFormat) : null;
-    const dateTimeFrmat = dateFormat + " " + timeFormat;
+    const {
+      placeholder,
+      customProps,
+      value,
+      valueFormat,
+      dateFormat,
+      timeFormat,
+      use12Hours,
+      config,
+      readonly,
+    } = this.props
+    const { renderSize } = config.settings
+    const dateValue = value ? moment(value, valueFormat) : null
+    const dateTimeFrmat = dateFormat + " " + timeFormat
 
     return (
       <DatePicker
@@ -63,6 +72,6 @@ export default class DateTimeWidget extends PureComponent {
         onChange={this.handleChange}
         {...customProps}
       />
-    );
+    )
   }
 }

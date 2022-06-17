@@ -1,23 +1,32 @@
-import React from "react";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
+import React from "react"
+import TextField from "@mui/material/TextField"
+import FormControl from "@mui/material/FormControl"
 
 export default (props) => {
-  const {value, setValue, config, readonly, placeholder, customProps, maxLength, maxRows, fullWidth} = props;
-  const {defaultMaxRows} = config.settings;
+  const {
+    value,
+    setValue,
+    config,
+    readonly,
+    placeholder,
+    customProps,
+    maxLength,
+    maxRows,
+    fullWidth,
+  } = props
+  const { defaultMaxRows } = config.settings
 
-  const onChange = e => {
-    let val = e.target.value;
-    if (val === "")
-      val = undefined; // don't allow empty value
-    setValue(val);
-  };
-  
-  const textValue = value || "";
+  const onChange = (e) => {
+    let val = e.target.value
+    if (val === "") val = undefined // don't allow empty value
+    setValue(val)
+  }
+
+  const textValue = value || ""
 
   return (
     <FormControl fullWidth={fullWidth}>
-      <TextField 
+      <TextField
         variant="standard"
         fullWidth={fullWidth}
         maxRows={maxRows || defaultMaxRows}
@@ -36,5 +45,5 @@ export default (props) => {
         {...customProps}
       />
     </FormControl>
-  );
-};
+  )
+}

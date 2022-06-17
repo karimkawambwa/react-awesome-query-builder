@@ -1,25 +1,30 @@
-import React from "react";
-import DatePicker from "@mui/lab/DatePicker";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
+import React from "react"
+import DatePicker from "@mui/lab/DatePicker"
+import FormControl from "@mui/material/FormControl"
+import TextField from "@mui/material/TextField"
 
 export default (props) => {
-  const {value, setValue, readonly, customProps, dateFormat, valueFormat, placeholder} = props;
+  const {
+    value,
+    setValue,
+    readonly,
+    customProps,
+    dateFormat,
+    valueFormat,
+    placeholder,
+  } = props
 
   const formatSingleValue = (value) => {
-    return value && value.isValid() ? value.format(valueFormat) : undefined;
-  };
+    return value && value.isValid() ? value.format(valueFormat) : undefined
+  }
 
   const handleChange = (value) => {
-    setValue(formatSingleValue(value));
-  };
-  
-  const renderInput = (params) => 
-    <TextField 
-      size="small" 
-      variant="standard"
-      {...params}
-    />;
+    setValue(formatSingleValue(value))
+  }
+
+  const renderInput = (params) => (
+    <TextField size="small" variant="standard" {...params} />
+  )
 
   return (
     <FormControl>
@@ -34,5 +39,5 @@ export default (props) => {
         {...customProps}
       />
     </FormControl>
-  );
-};
+  )
+}

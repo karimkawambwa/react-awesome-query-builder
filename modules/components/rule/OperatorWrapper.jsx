@@ -1,8 +1,8 @@
 /** @format */
 
-import React, { PureComponent } from "react";
-import { Col } from "../utils";
-import Operator from "./Operator";
+import React, { PureComponent } from "react"
+import { Col } from "../utils"
+import Operator from "./Operator"
 
 export default class OperatorWrapper extends PureComponent {
   render() {
@@ -18,7 +18,7 @@ export default class OperatorWrapper extends PureComponent {
       readonly,
       id,
       groupId,
-    } = this.props;
+    } = this.props
     const operator = showOperator && (
       <Col
         key={"operators-for-" + (selectedFieldPartsLabels || []).join("_")}
@@ -38,7 +38,7 @@ export default class OperatorWrapper extends PureComponent {
           groupId={groupId}
         />
       </Col>
-    );
+    )
     const hiddenOperator = showOperatorLabel && (
       <Col
         key={"operators-for-" + (selectedFieldPartsLabels || []).join("_")}
@@ -51,7 +51,7 @@ export default class OperatorWrapper extends PureComponent {
           <span>{selectedFieldWidgetConfig.operatorInlineLabel}</span>
         </div>
       </Col>
-    );
-    return [operator, hiddenOperator];
+    )
+    return [operator, hiddenOperator]
   }
 }

@@ -1,6 +1,6 @@
-import React from "react";
-import BasicConfig from "..";
-import BootstrapWidgets from "../../components/widgets/bootstrap";
+import React from "react"
+import BasicConfig from ".."
+import BootstrapWidgets from "../../components/widgets/bootstrap"
 
 const {
   BootstrapBooleanWidget,
@@ -22,8 +22,7 @@ const {
 
   BootstrapProvider,
   BootstrapConfirm,
-} = BootstrapWidgets;
-
+} = BootstrapWidgets
 
 const settings = {
   ...BasicConfig.settings,
@@ -37,8 +36,7 @@ const settings = {
   renderValueSources: (props) => <BootstrapValueSources {...props} />,
   renderProvider: (props) => <BootstrapProvider {...props} />,
   renderConfirm: BootstrapConfirm,
-};
-
+}
 
 const widgets = {
   ...BasicConfig.widgets,
@@ -82,16 +80,15 @@ const widgets = {
     ...BasicConfig.widgets.datetime,
     factory: (props) => <BootstrapDateTimeWidget {...props} />,
   },
-};
-
+}
 
 const types = {
   ...BasicConfig.types,
-};
+}
 
 export default {
   ...BasicConfig,
   types,
   widgets,
   settings,
-};
+}

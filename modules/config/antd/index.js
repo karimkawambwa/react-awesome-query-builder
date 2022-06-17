@@ -1,10 +1,12 @@
-import en_US from "antd/lib/locale-provider/en_US";
-import React from "react";
-import { spelEscape, SqlString } from "react-awesome-query-builder-formatters/dist/utils/export";
-import { getTitleInListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff";
-import BasicConfig, { stringifyForDisplay } from "..";
-import AntdWidgets from "../../components/widgets/antd";
-
+import en_US from "antd/lib/locale-provider/en_US"
+import React from "react"
+import {
+  spelEscape,
+  SqlString,
+} from "react-awesome-query-builder-formatters/dist/utils/export"
+import { getTitleInListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff"
+import BasicConfig, { stringifyForDisplay } from ".."
+import AntdWidgets from "../../components/widgets/antd"
 
 const {
   FieldSelect,
@@ -19,7 +21,7 @@ const {
 
   Provider,
   confirm,
-} = AntdWidgets;
+} = AntdWidgets
 const {
   TextWidget,
   TextAreaWidget,
@@ -34,8 +36,7 @@ const {
   BooleanWidget,
   TimeWidget,
   DateTimeWidget,
-} = AntdWidgets;
-
+} = AntdWidgets
 
 const settings = {
   ...BasicConfig.settings,
@@ -62,8 +63,7 @@ const settings = {
     ...BasicConfig.settings.locale,
     antd: en_US,
   },
-};
-
+}
 
 const widgets = {
   ...BasicConfig.widgets,
@@ -82,17 +82,21 @@ const widgets = {
   multiselect: {
     ...BasicConfig.widgets.multiselect,
     factory: (props) => {
-      return (props.asyncFetch || props.showSearch)
-        ? <AutocompleteWidget multiple {...props} />
-        : <MultiSelectWidget {...props} />;
+      return props.asyncFetch || props.showSearch ? (
+        <AutocompleteWidget multiple {...props} />
+      ) : (
+        <MultiSelectWidget {...props} />
+      )
     },
   },
   select: {
     ...BasicConfig.widgets.select,
     factory: (props) => {
-      return (props.asyncFetch || props.showSearch)
-        ? <AutocompleteWidget {...props} />
-        : <SelectWidget {...props} />;
+      return props.asyncFetch || props.showSearch ? (
+        <AutocompleteWidget {...props} />
+      ) : (
+        <SelectWidget {...props} />
+      )
     },
   },
   slider: {
@@ -128,14 +132,14 @@ const widgets = {
       { label: "Number to", placeholder: "Enter number to" },
     ],
     formatValue: (val, fieldDef, wgtDef, isForDisplay) => {
-      return isForDisplay ? stringifyForDisplay(val) : JSON.stringify(val);
+      return isForDisplay ? stringifyForDisplay(val) : JSON.stringify(val)
     },
     sqlFormatValue: (val, fieldDef, wgtDef, op, opDef) => {
-      return SqlString.escape(val);
+      return SqlString.escape(val)
     },
     spelFormatValue: (val) => spelEscape(val),
     singleWidget: "slider",
-    toJS: (val, fieldSettings) => (val),
+    toJS: (val, fieldSettings) => val,
   },
   treeselect: {
     type: "treeselect",
@@ -145,14 +149,17 @@ const widgets = {
     valueLabel: "Value",
     valuePlaceholder: "Select value",
     formatValue: (val, fieldDef, wgtDef, isForDisplay) => {
-      let valLabel = getTitleInListValues(fieldDef.fieldSettings.listValues || fieldDef.asyncListValues, val);
-      return isForDisplay ? stringifyForDisplay(valLabel) : JSON.stringify(val);
+      let valLabel = getTitleInListValues(
+        fieldDef.fieldSettings.listValues || fieldDef.asyncListValues,
+        val
+      )
+      return isForDisplay ? stringifyForDisplay(valLabel) : JSON.stringify(val)
     },
     sqlFormatValue: (val, fieldDef, wgtDef, op, opDef) => {
-      return SqlString.escape(val);
+      return SqlString.escape(val)
     },
     spelFormatValue: (val) => spelEscape(val),
-    toJS: (val, fieldSettings) => (val),
+    toJS: (val, fieldSettings) => val,
   },
   treemultiselect: {
     type: "treemultiselect",
@@ -162,17 +169,23 @@ const widgets = {
     valueLabel: "Values",
     valuePlaceholder: "Select values",
     formatValue: (vals, fieldDef, wgtDef, isForDisplay) => {
-      let valsLabels = vals.map(v => getTitleInListValues(fieldDef.fieldSettings.listValues || fieldDef.asyncListValues, v));
-      return isForDisplay ? valsLabels.map(stringifyForDisplay) : vals.map(JSON.stringify);
+      let valsLabels = vals.map((v) =>
+        getTitleInListValues(
+          fieldDef.fieldSettings.listValues || fieldDef.asyncListValues,
+          v
+        )
+      )
+      return isForDisplay
+        ? valsLabels.map(stringifyForDisplay)
+        : vals.map(JSON.stringify)
     },
     sqlFormatValue: (vals, fieldDef, wgtDef, op, opDef) => {
-      return vals.map(v => SqlString.escape(v));
+      return vals.map((v) => SqlString.escape(v))
     },
     spelFormatValue: (val) => spelEscape(val),
-    toJS: (val, fieldSettings) => (val),
+    toJS: (val, fieldSettings) => val,
   },
-};
-
+}
 
 const types = {
   ...BasicConfig.types,
@@ -187,15 +200,10 @@ const types = {
           },
           not_between: {
             isSpecialRange: true,
-          }
+          },
         },
-        operators: [
-          "between",
-          "not_between",
-          "is_null",
-          "is_not_null",
-        ],
-      }
+        operators: ["between", "not_between", "is_null", "is_not_null"],
+      },
     },
   },
   date: {
@@ -211,9 +219,9 @@ const types = {
           not_between: {
             isSpecialRange: true,
             textSeparators: [null, null],
-          }
+          },
         },
-      }
+      },
     },
   },
   treeselect: {
@@ -221,16 +229,10 @@ const types = {
     defaultOperator: "select_equals",
     widgets: {
       treeselect: {
-        operators: [
-          "select_equals",
-          "select_not_equals"
-        ],
+        operators: ["select_equals", "select_not_equals"],
       },
       treemultiselect: {
-        operators: [
-          "select_any_in",
-          "select_not_any_in"
-        ],
+        operators: ["select_any_in", "select_not_any_in"],
       },
     },
   },
@@ -238,18 +240,15 @@ const types = {
     defaultOperator: "multiselect_equals",
     widgets: {
       treemultiselect: {
-        operators: [
-          "multiselect_equals",
-          "multiselect_not_equals",
-        ],
-      }
+        operators: ["multiselect_equals", "multiselect_not_equals"],
+      },
     },
   },
-};
+}
 
 export default {
   ...BasicConfig,
   types,
   widgets,
   settings,
-};
+}

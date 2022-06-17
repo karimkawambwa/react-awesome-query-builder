@@ -1,35 +1,34 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   Dropdown,
   DropdownMenu,
   DropdownToggle,
   DropdownItem,
-} from "reactstrap";
+} from "reactstrap"
 
 export default ({ items, setField, selectedKey, readonly, placeholder }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   const stylesDropdownWrapper = {
     lineHeight: "105%",
     minHeight: "1.7rem",
     paddingBottom: "0.45rem",
-  };
+  }
 
   const stylesDropdownMenuWrapper = {
     overflowY: "auto",
     maxHeight: "400px",
-  };
+  }
 
-  const onChange = e => {
-    if (e.target.value === undefined)
-      return;
-    setField(e.target.value);
-  };
+  const onChange = (e) => {
+    if (e.target.value === undefined) return
+    setField(e.target.value)
+  }
 
   const renderOptions = (fields, isGroupItem = false) =>
     Object.keys(fields).map((fieldKey) => {
-      const field = fields[fieldKey];
-      const { items, path, label, disabled } = field;
+      const field = fields[fieldKey]
+      const { items, path, label, disabled } = field
       if (items) {
         return (
           <div key={`dropdown-itemGroup-${path}`}>
@@ -43,7 +42,7 @@ export default ({ items, setField, selectedKey, readonly, placeholder }) => {
             </DropdownItem>
             {renderOptions(items, true)}
           </div>
-        );
+        )
       } else {
         return (
           <DropdownItem
@@ -56,31 +55,31 @@ export default ({ items, setField, selectedKey, readonly, placeholder }) => {
           >
             {label}
           </DropdownItem>
-        );
+        )
       }
-    });
+    })
 
-  const hasValue = selectedKey != null;
+  const hasValue = selectedKey != null
 
   const renderValue = (selectedValue) => {
-    if (!readonly && !selectedValue) return placeholder;
+    if (!readonly && !selectedValue) return placeholder
     const findLabel = (fields) => {
       return fields.map((field) => {
         if (!field.items)
-          return field.path === selectedValue ? field.label : null;
-        return findLabel(field.items);
-      });
-    };
+          return field.path === selectedValue ? field.label : null
+        return findLabel(field.items)
+      })
+    }
     return findLabel(items)
       .filter((v) => {
         if (Array.isArray(v)) {
-          return v.some((value) => value !== null);
+          return v.some((value) => value !== null)
         } else {
-          return v !== null;
+          return v !== null
         }
       })
-      .pop();
-  };
+      .pop()
+  }
 
   return (
     <Dropdown
@@ -97,13 +96,12 @@ export default ({ items, setField, selectedKey, readonly, placeholder }) => {
       >
         {hasValue ? renderValue(selectedKey) : <span>&nbsp;</span>}
       </DropdownToggle>
-      <DropdownMenu 
-        container="body" 
-        style={stylesDropdownMenuWrapper}
-      >
-        {!hasValue && <DropdownItem key={"body"} disabled value={""}></DropdownItem>}
+      <DropdownMenu container="body" style={stylesDropdownMenuWrapper}>
+        {!hasValue && (
+          <DropdownItem key={"body"} disabled value={""}></DropdownItem>
+        )}
         {renderOptions(items)}
       </DropdownMenu>
     </Dropdown>
-  );
-};
+  )
+}

@@ -1,42 +1,50 @@
-import React, { PureComponent } from "react";
-import map from "lodash/map";
-import { Button, Radio } from "antd";
-const ButtonGroup = Button.Group;
-
+import React, { PureComponent } from "react"
+import map from "lodash/map"
+import { Button, Radio } from "antd"
+const ButtonGroup = Button.Group
 
 class ConjsButton extends PureComponent {
   onClick = (_e) => {
-    const {setConjunction, item} = this.props;
-    const conj = item.key;
-    setConjunction(conj);
-  };
+    const { setConjunction, item } = this.props
+    const conj = item.key
+    setConjunction(conj)
+  }
 
   render() {
-    const {disabled, item} = this.props;
+    const { disabled, item } = this.props
     return (
       <Button
         disabled={disabled}
         type={item.checked ? "primary" : null}
         onClick={this.onClick}
-      >{item.label}</Button>
-    );
+      >
+        {item.label}
+      </Button>
+    )
   }
 }
 
-
 export default class ConjsButtons extends PureComponent {
   setNot = (e) => {
-    const {setNot, not} = this.props;
-    if (setNot)
-      setNot(!not);
-  };
+    const { setNot, not } = this.props
+    if (setNot) setNot(!not)
+  }
 
   render() {
-    const {readonly, disabled, not, conjunctionOptions, config, setConjunction, notLabel, showNot} = this.props;
-    const conjsCount = Object.keys(conjunctionOptions).length;
-    const lessThenTwo = disabled;
-    const {forceShowConj, renderSize} = config.settings;
-    const showConj = forceShowConj || conjsCount > 1 && !lessThenTwo;
+    const {
+      readonly,
+      disabled,
+      not,
+      conjunctionOptions,
+      config,
+      setConjunction,
+      notLabel,
+      showNot,
+    } = this.props
+    const conjsCount = Object.keys(conjunctionOptions).length
+    const lessThenTwo = disabled
+    const { forceShowConj, renderSize } = config.settings
+    const showConj = forceShowConj || (conjsCount > 1 && !lessThenTwo)
 
     return (
       <ButtonGroup
@@ -44,24 +52,29 @@ export default class ConjsButtons extends PureComponent {
         size={renderSize}
         disabled={disabled || readonly}
       >
-        {showNot && (readonly ? not : true)
-          && <Button
+        {showNot && (readonly ? not : true) && (
+          <Button
             key={"group-not"}
             onClick={this.setNot}
             type={not ? "primary" : null}
             disabled={readonly}
-          >{notLabel}</Button>
-        }
-        {showConj && map(conjunctionOptions, (item, _index) => (readonly || disabled) && !item.checked ? null : (
-          <ConjsButton
-            key={item.id}
-            item={item}
-            disabled={disabled || readonly}
-            setConjunction={setConjunction}
-          />
-        ))}
+          >
+            {notLabel}
+          </Button>
+        )}
+        {showConj &&
+          map(conjunctionOptions, (item, _index) =>
+            (readonly || disabled) && !item.checked ? null : (
+              <ConjsButton
+                key={item.id}
+                item={item}
+                disabled={disabled || readonly}
+                setConjunction={setConjunction}
+              />
+            )
+          )}
       </ButtonGroup>
-    );
+    )
   }
 }
 

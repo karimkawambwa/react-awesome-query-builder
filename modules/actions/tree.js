@@ -1,8 +1,11 @@
-import Immutable from "immutable";
-import { defaultGroupProperties, defaultRuleProperties } from "react-awesome-query-builder-formatters/dist/utils/defaultUtils";
-import { toImmutableList } from "react-awesome-query-builder-formatters/dist/utils/stuff";
-import uuid from "react-awesome-query-builder-formatters/dist/utils/uuid";
-import * as constants from "../constants";
+import Immutable from "immutable"
+import {
+  defaultGroupProperties,
+  defaultRuleProperties,
+} from "react-awesome-query-builder-formatters/dist/utils/defaultUtils"
+import { toImmutableList } from "react-awesome-query-builder-formatters/dist/utils/stuff"
+import uuid from "react-awesome-query-builder-formatters/dist/utils/uuid"
+import * as constants from "../constants"
 
 /**
  * @param {object} config
@@ -10,23 +13,29 @@ import * as constants from "../constants";
  */
 export const setTree = (config, tree) => ({
   type: constants.SET_TREE,
-  tree: tree
-});
+  tree: tree,
+})
 
 /**
  * @param {object} config
  * @param {Immutable.List} path
  * @param {Immutable.Map} properties
  */
-export const addRule = (config, path, properties, ruleType = "rule", children = null) => ({
+export const addRule = (
+  config,
+  path,
+  properties,
+  ruleType = "rule",
+  children = null
+) => ({
   type: constants.ADD_RULE,
   ruleType: ruleType,
   children: children,
   path: toImmutableList(path),
   id: uuid(),
   properties: defaultRuleProperties(config).merge(properties || {}),
-  config: config
-});
+  config: config,
+})
 
 /**
  * @param {object} config
@@ -35,15 +44,20 @@ export const addRule = (config, path, properties, ruleType = "rule", children = 
 export const removeRule = (config, path) => ({
   type: constants.REMOVE_RULE,
   path: toImmutableList(path),
-  config: config
-});
+  config: config,
+})
 
 /**
  * @param {object} config
  * @param {Immutable.List} path
  * @param {Immutable.Map} properties
  */
-export const addDefaultCaseGroup = (config, path, properties, children = null) => ({
+export const addDefaultCaseGroup = (
+  config,
+  path,
+  properties,
+  children = null
+) => ({
   type: constants.ADD_CASE_GROUP,
   path: toImmutableList(path),
   children: children,
@@ -51,9 +65,9 @@ export const addDefaultCaseGroup = (config, path, properties, children = null) =
   properties: defaultGroupProperties(config).merge(properties || {}),
   config: config,
   meta: {
-    isDefaultCase: true
-  }
-});
+    isDefaultCase: true,
+  },
+})
 
 /**
  * @param {object} config
@@ -66,8 +80,8 @@ export const addCaseGroup = (config, path, properties, children = null) => ({
   children: children,
   id: uuid(),
   properties: defaultGroupProperties(config).merge(properties || {}),
-  config: config
-});
+  config: config,
+})
 
 /**
  * @param {object} config
@@ -80,8 +94,8 @@ export const addGroup = (config, path, properties, children = null) => ({
   children: children,
   id: uuid(),
   properties: defaultGroupProperties(config).merge(properties || {}),
-  config: config
-});
+  config: config,
+})
 
 /**
  * @param {object} config
@@ -90,8 +104,8 @@ export const addGroup = (config, path, properties, children = null) => ({
 export const removeGroup = (config, path) => ({
   type: constants.REMOVE_GROUP,
   path: toImmutableList(path),
-  config: config
-});
+  config: config,
+})
 
 /**
  * @param {object} config
@@ -105,4 +119,4 @@ export const moveItem = (config, fromPath, toPath, placement) => ({
   toPath: toImmutableList(toPath),
   placement: placement,
   config: config,
-});
+})

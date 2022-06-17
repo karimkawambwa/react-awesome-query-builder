@@ -1,11 +1,11 @@
 /** @format */
 
-import FormControl from "@material-ui/core/FormControl";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import omit from "lodash/omit";
-import React from "react";
-import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff";
+import FormControl from "@material-ui/core/FormControl"
+import MenuItem from "@material-ui/core/MenuItem"
+import Select from "@material-ui/core/Select"
+import omit from "lodash/omit"
+import React from "react"
+import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff"
 
 export default ({
   listValues,
@@ -22,27 +22,27 @@ export default ({
         <MenuItem key={value} value={value}>
           {title}
         </MenuItem>
-      );
-    });
+      )
+    })
 
   const onChange = (e) => {
-    if (e.target.value === undefined) return;
-    setValue(e.target.value);
-  };
+    if (e.target.value === undefined) return
+    setValue(e.target.value)
+  }
 
   const renderValue = (selectedValue) => {
-    if (!readonly && selectedValue == null) return placeholder;
-    return getListValueTitle(selectedValue);
-  };
+    if (!readonly && selectedValue == null) return placeholder
+    return getListValueTitle(selectedValue)
+  }
 
   const getListValueTitle = (selectedValue) =>
     mapListValues(listValues, ({ title, value }) =>
       value === selectedValue ? title : null
     )
       .filter((v) => v !== null)
-      .shift();
+      .shift()
 
-  const hasValue = value != null;
+  const hasValue = value != null
 
   return (
     <FormControl>
@@ -60,5 +60,5 @@ export default ({
         {renderOptions()}
       </Select>
     </FormControl>
-  );
-};
+  )
+}

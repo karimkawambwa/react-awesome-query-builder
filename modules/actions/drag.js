@@ -1,5 +1,4 @@
-import * as constants from "../constants";
-
+import * as constants from "../constants"
 
 /**
  * @param {Object} mousePos
@@ -9,7 +8,7 @@ export const setDragProgress = (mousePos, dragging) => ({
   type: constants.SET_DRAG_PROGRESS,
   mousePos: mousePos,
   dragging: dragging,
-});
+})
 
 /**
  * @param {Object} dragStart
@@ -21,11 +20,11 @@ export const setDragStart = (dragStart, dragging, mousePos) => ({
   dragStart: dragStart,
   dragging: dragging,
   mousePos: mousePos,
-});
+})
 
 /**
  *
  */
 export const setDragEnd = () => ({
   type: constants.SET_DRAG_END,
-});
+})

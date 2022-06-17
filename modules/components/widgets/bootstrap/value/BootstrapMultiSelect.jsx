@@ -1,13 +1,13 @@
 /** @format */
 
-import React, { useState } from "react";
-import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff";
+import React, { useState } from "react"
+import { mapListValues } from "react-awesome-query-builder-formatters/dist/utils/stuff"
 import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-} from "reactstrap";
+} from "reactstrap"
 
 export default ({
   listValues,
@@ -17,14 +17,14 @@ export default ({
   placeholder,
   readonly,
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedValues, setSelectedValues] = useState(value ?? []);
+  const [isOpen, setIsOpen] = useState(false)
+  const [selectedValues, setSelectedValues] = useState(value ?? [])
 
   const onChange = (e) => {
-    let value = getMultiSelectValues(e.target.value, listValues);
-    if (value.length == 0) value = undefined;
-    setValue(value);
-  };
+    let value = getMultiSelectValues(e.target.value, listValues)
+    if (value.length == 0) value = undefined
+    setValue(value)
+  }
 
   const renderOptions = () =>
     mapListValues(listValues, ({ title, value }) => {
@@ -37,43 +37,43 @@ export default ({
         >
           {title}
         </DropdownItem>
-      );
-    });
+      )
+    })
 
   const stylesDropdownWrapper = {
     lineHeight: "105%",
     minHeight: "1.7rem",
     paddingBottom: "0.45rem",
-  };
+  }
 
   const stylesDropdownMenuWrapper = {
     //minWidth: "100%"
-  };
+  }
 
   const renderValue = (selectedValues) => {
-    if (!readonly && !selectedValues.length) return placeholder;
+    if (!readonly && !selectedValues.length) return placeholder
     const selectedTitles = mapListValues(listValues, ({ title, value }) =>
       selectedValues.indexOf(value) > -1 ? title : null
-    ).filter((v) => v !== null);
-    return selectedTitles.join(", ");
-  };
+    ).filter((v) => v !== null)
+    return selectedTitles.join(", ")
+  }
 
   const getMultiSelectValues = (value, options) => {
-    if (!value) return selectedValues;
+    if (!value) return selectedValues
 
-    let isNewSelection = !selectedValues.includes(value);
-    let newSelectedValues = [];
+    let isNewSelection = !selectedValues.includes(value)
+    let newSelectedValues = []
 
     if (isNewSelection) {
-      newSelectedValues = [...selectedValues, value];
-      setSelectedValues(newSelectedValues);
+      newSelectedValues = [...selectedValues, value]
+      setSelectedValues(newSelectedValues)
     } else {
-      newSelectedValues = selectedValues.filter((x) => x !== value);
-      setSelectedValues(newSelectedValues);
+      newSelectedValues = selectedValues.filter((x) => x !== value)
+      setSelectedValues(newSelectedValues)
     }
 
-    return newSelectedValues;
-  };
+    return newSelectedValues
+  }
 
   return (
     <Dropdown
@@ -98,5 +98,5 @@ export default ({
         {renderOptions()}
       </DropdownMenu>
     </Dropdown>
-  );
-};
+  )
+}

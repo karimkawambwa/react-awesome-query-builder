@@ -1,28 +1,35 @@
-import React from "react";
-import omit from "lodash/omit";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import CircularProgress from "@mui/material/CircularProgress";
-import Chip from "@mui/material/Chip";
-import Checkbox from "@mui/material/Checkbox";
-import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank";
-import CheckBoxIcon from "@mui/icons-material/CheckBox";
+import React from "react"
+import omit from "lodash/omit"
+import TextField from "@mui/material/TextField"
+import FormControl from "@mui/material/FormControl"
+import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete"
+import CircularProgress from "@mui/material/CircularProgress"
+import Chip from "@mui/material/Chip"
+import Checkbox from "@mui/material/Checkbox"
+import CheckBoxOutlineBlankIcon from "@mui/icons-material/CheckBoxOutlineBlank"
+import CheckBoxIcon from "@mui/icons-material/CheckBox"
 
-import useListValuesAutocomplete from "../../../../hooks/useListValuesAutocomplete";
+import useListValuesAutocomplete from "../../../../hooks/useListValuesAutocomplete"
 
-const nonCheckedIcon = <CheckBoxOutlineBlankIcon fontSize="small" />;
-const checkedIcon = <CheckBoxIcon fontSize="small" />;
-const defaultFilterOptions = createFilterOptions();
-const emptyArray = [];
-
+const nonCheckedIcon = <CheckBoxOutlineBlankIcon fontSize="small" />
+const checkedIcon = <CheckBoxIcon fontSize="small" />
+const defaultFilterOptions = createFilterOptions()
+const emptyArray = []
 
 export default (props) => {
   const {
-    allowCustomValues, multiple,
-    value: selectedValue, customProps, readonly, config, groupBy, filterOptionsConfig
-  } = props;
-  const filterOptionsFn = filterOptionsConfig ? createFilterOptions(filterOptionsConfig) : defaultFilterOptions;
+    allowCustomValues,
+    multiple,
+    value: selectedValue,
+    customProps,
+    readonly,
+    config,
+    groupBy,
+    filterOptionsConfig,
+  } = props
+  const filterOptionsFn = filterOptionsConfig
+    ? createFilterOptions(filterOptionsConfig)
+    : defaultFilterOptions
 
   // hook
   const {
@@ -42,46 +49,48 @@ export default (props) => {
     getOptionLabel,
   } = useListValuesAutocomplete(props, {
     debounceTimeout: 100,
-    multiple
-  });
+    multiple,
+  })
 
   // setings
-  const {defaultSelectWidth, defaultSearchWidth} = config.settings;
-  const {width, showCheckboxes, ...rest} = customProps || {};
-  let customInputProps = rest.input || {};
-  const inputWidth = customInputProps.width || defaultSearchWidth; // todo: use as min-width for Autocomplete comp
-  customInputProps = omit(customInputProps, ["width"]);
-  const customAutocompleteProps = omit(rest, ["showSearch", "showCheckboxes"]);
+  const { defaultSelectWidth, defaultSearchWidth } = config.settings
+  const { width, showCheckboxes, ...rest } = customProps || {}
+  let customInputProps = rest.input || {}
+  const inputWidth = customInputProps.width || defaultSearchWidth // todo: use as min-width for Autocomplete comp
+  customInputProps = omit(customInputProps, ["width"])
+  const customAutocompleteProps = omit(rest, ["showSearch", "showCheckboxes"])
 
-  const fullWidth = true;
-  const minWidth = width || defaultSelectWidth;
+  const fullWidth = true
+  const minWidth = width || defaultSelectWidth
   const style = {
-    width: (multiple ? undefined : minWidth),
-    minWidth: minWidth
-  };
-  const placeholder = !readonly ? aPlaceholder : "";
-  const hasValue = selectedValue != null;
+    width: multiple ? undefined : minWidth,
+    minWidth: minWidth,
+  }
+  const placeholder = !readonly ? aPlaceholder : ""
+  const hasValue = selectedValue != null
   // should be simple value to prevent re-render!s
-  const value = hasValue ? selectedValue : (multiple ? emptyArray : null);
-  
+  const value = hasValue ? selectedValue : multiple ? emptyArray : null
+
   const filterOptions = (options, params) => {
-    const filtered = filterOptionsFn(options, params);
-    const extended = extendOptions(filtered);
-    return extended;
-  };
+    const filtered = filterOptionsFn(options, params)
+    const extended = extendOptions(filtered)
+    return extended
+  }
 
   // render
   const renderInput = (params) => {
     return (
-      <TextField 
+      <TextField
         variant="standard"
-        {...params} 
+        {...params}
         InputProps={{
           ...params.InputProps,
           readOnly: readonly,
           endAdornment: (
             <React.Fragment>
-              {isLoading ? <CircularProgress color="inherit" size={20}  /> : null}
+              {isLoading ? (
+                <CircularProgress color="inherit" size={20} />
+              ) : null}
               {params.InputProps.endAdornment}
             </React.Fragment>
           ),
@@ -91,40 +100,45 @@ export default (props) => {
         //onChange={onInputChange}
         {...customInputProps}
       />
-    );
-  };
+    )
+  }
 
-  const renderTags = (value, getTagProps) => value.map((option, index) => {
-    return <Chip
-      key={index}
-      label={getOptionLabel(option)}
-      {...getTagProps({ index })}
-    />;
-  });
+  const renderTags = (value, getTagProps) =>
+    value.map((option, index) => {
+      return (
+        <Chip
+          key={index}
+          label={getOptionLabel(option)}
+          {...getTagProps({ index })}
+        />
+      )
+    })
 
   const isOptionEqualToValue = (option, value) => {
-    return option?.value == value;
-  };
+    return option?.value == value
+  }
 
   const renderOption = (props, option) => {
-    const { title, renderTitle, value } = option;
-    const selected = (selectedValue || []).includes(value);
+    const { title, renderTitle, value } = option
+    const selected = (selectedValue || []).includes(value)
     if (option.specialValue) {
-      return <div {...props}>{renderTitle || title}</div>;
+      return <div {...props}>{renderTitle || title}</div>
     } else if (multiple && showCheckboxes != false) {
-      return <div {...props}>
-        <Checkbox
-          icon={nonCheckedIcon}
-          checkedIcon={checkedIcon}
-          style={{ marginRight: 8 }}
-          checked={selected}
-        />
-        {title}
-      </div>;
+      return (
+        <div {...props}>
+          <Checkbox
+            icon={nonCheckedIcon}
+            checkedIcon={checkedIcon}
+            style={{ marginRight: 8 }}
+            checked={selected}
+          />
+          {title}
+        </div>
+      )
     } else {
-      return <div {...props}>{renderTitle || title}</div>;
+      return <div {...props}>{renderTitle || title}</div>
     }
-  };
+  }
 
   return (
     <FormControl fullWidth={fullWidth}>
@@ -158,5 +172,5 @@ export default (props) => {
         {...customAutocompleteProps}
       />
     </FormControl>
-  );
-};
+  )
+}

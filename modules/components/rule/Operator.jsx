@@ -1,15 +1,15 @@
 /** @format */
 
-import keys from "lodash/keys";
-import mapValues from "lodash/mapValues";
-import pickBy from "lodash/pickBy";
-import PropTypes from "prop-types";
-import { PureComponent } from "react";
+import keys from "lodash/keys"
+import mapValues from "lodash/mapValues"
+import pickBy from "lodash/pickBy"
+import PropTypes from "prop-types"
+import { PureComponent } from "react"
 import {
   getFieldConfig,
   getOperatorConfig,
-} from "react-awesome-query-builder-formatters/dist/utils/configUtils";
-import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils";
+} from "react-awesome-query-builder-formatters/dist/utils/configUtils"
+import { useOnPropsChanged } from "react-awesome-query-builder-formatters/dist/utils/reactUtils"
 
 export default class Operator extends PureComponent {
   static propTypes = {
@@ -21,46 +21,46 @@ export default class Operator extends PureComponent {
     readonly: PropTypes.bool,
     //actions
     setOperator: PropTypes.func.isRequired,
-  };
+  }
 
   constructor(props) {
-    super(props);
-    useOnPropsChanged(this);
+    super(props)
+    useOnPropsChanged(this)
 
-    this.onPropsChanged(props);
+    this.onPropsChanged(props)
   }
 
   onPropsChanged(nextProps) {
-    const prevProps = this.props;
-    const keysForMeta = ["config", "selectedField", "selectedOperator"];
+    const prevProps = this.props
+    const keysForMeta = ["config", "selectedField", "selectedOperator"]
     const needUpdateMeta =
       !this.meta ||
       keysForMeta.map((k) => nextProps[k] !== prevProps[k]).filter((ch) => ch)
-        .length > 0;
+        .length > 0
 
     if (needUpdateMeta) {
-      this.meta = this.getMeta(nextProps);
+      this.meta = this.getMeta(nextProps)
     }
   }
 
   getMeta({ config, selectedField, selectedOperator }) {
-    const fieldConfig = getFieldConfig(config, selectedField);
-    const operators = fieldConfig?.operators;
+    const fieldConfig = getFieldConfig(config, selectedField)
+    const operators = fieldConfig?.operators
     const operatorOptions = mapValues(
       pickBy(config.operators, (item, key) => operators?.indexOf(key) !== -1),
       (_opts, op) => getOperatorConfig(config, op, selectedField)
-    );
+    )
 
-    const items = this.buildOptions(config, operatorOptions, operators);
+    const items = this.buildOptions(config, operatorOptions, operators)
 
-    const isOpSelected = !!selectedOperator;
-    const currOp = isOpSelected ? operatorOptions[selectedOperator] : null;
-    const selectedOpts = currOp || {};
-    const placeholder = this.props.config.settings.operatorPlaceholder;
-    const selectedKey = selectedOperator;
-    const selectedKeys = isOpSelected ? [selectedKey] : null;
-    const selectedPath = selectedKeys;
-    const selectedLabel = selectedOpts.label;
+    const isOpSelected = !!selectedOperator
+    const currOp = isOpSelected ? operatorOptions[selectedOperator] : null
+    const selectedOpts = currOp || {}
+    const placeholder = this.props.config.settings.operatorPlaceholder
+    const selectedKey = selectedOperator
+    const selectedKeys = isOpSelected ? [selectedKey] : null
+    const selectedPath = selectedKeys
+    const selectedLabel = selectedOpts.label
 
     return {
       placeholder,
@@ -71,29 +71,29 @@ export default class Operator extends PureComponent {
       selectedLabel,
       selectedOpts,
       fieldConfig,
-    };
+    }
   }
 
   buildOptions(config, fields, ops) {
-    if (!fields || !ops) return null;
+    if (!fields || !ops) return null
 
     return keys(fields)
       .sort((a, b) => ops.indexOf(a) - ops.indexOf(b))
       .map((fieldKey) => {
-        const field = fields[fieldKey];
-        const label = field.label;
+        const field = fields[fieldKey]
+        const label = field.label
         return {
           key: fieldKey,
           path: fieldKey,
           label,
-        };
-      });
+        }
+      })
   }
 
   render() {
     const { config, customProps, setOperator, readonly, id, groupId } =
-      this.props;
-    const { renderOperator } = config.settings;
+      this.props
+    const { renderOperator } = config.settings
     const renderProps = {
       id,
       groupId,
@@ -102,8 +102,8 @@ export default class Operator extends PureComponent {
       readonly,
       setField: setOperator,
       ...this.meta,
-    };
-    if (!renderProps.items) return null;
-    return renderOperator(renderProps);
+    }
+    if (!renderProps.items) return null
+    return renderOperator(renderProps)
   }
 }

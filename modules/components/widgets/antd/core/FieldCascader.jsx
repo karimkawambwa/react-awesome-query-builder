@@ -1,9 +1,9 @@
 /** @format */
 
-import { Cascader, Tooltip } from "antd";
-import PropTypes from "prop-types";
-import React, { PureComponent } from "react";
-import { removePrefixPath } from "react-awesome-query-builder-formatters/dist/utils/stuff";
+import { Cascader, Tooltip } from "antd"
+import PropTypes from "prop-types"
+import React, { PureComponent } from "react"
+import { removePrefixPath } from "react-awesome-query-builder-formatters/dist/utils/stuff"
 
 export default class FieldCascader extends PureComponent {
   static propTypes = {
@@ -21,17 +21,17 @@ export default class FieldCascader extends PureComponent {
     readonly: PropTypes.bool,
     //actions
     setField: PropTypes.func.isRequired,
-  };
+  }
 
   onChange = (keys) => {
-    const { parentField } = this.props;
-    const dotNotationToPath = (str) => str.split(".");
-    const parentPath = parentField ? dotNotationToPath(parentField) : [];
-    this.props.setField([...parentPath, ...keys]);
-  };
+    const { parentField } = this.props
+    const dotNotationToPath = (str) => str.split(".")
+    const parentPath = parentField ? dotNotationToPath(parentField) : []
+    this.props.setField([...parentPath, ...keys])
+  }
 
   filterOption = (inputValue, path) => {
-    const keysForFilter = ["label", "key", "altLabel"];
+    const keysForFilter = ["label", "key", "altLabel"]
     return path.some(
       (option) =>
         keysForFilter
@@ -39,8 +39,8 @@ export default class FieldCascader extends PureComponent {
           .join("\0")
           .toLowerCase()
           .indexOf(inputValue.toLowerCase()) > -1
-    );
-  };
+    )
+  }
 
   render() {
     const {
@@ -56,19 +56,17 @@ export default class FieldCascader extends PureComponent {
       readonly,
       selectedField,
       parentField,
-    } = this.props;
-    let customProps2 = { ...customProps };
+    } = this.props
+    let customProps2 = { ...customProps }
     if (customProps2.showSearch) {
       customProps2.showSearch = {
         filter: this.filterOption,
-      };
+      }
     }
 
-    const { fieldSeparator } = config.settings;
-    const parentFieldPath = parentField
-      ? parentField.split(fieldSeparator)
-      : [];
-    const value = removePrefixPath(selectedPath, parentFieldPath);
+    const { fieldSeparator } = config.settings
+    const parentFieldPath = parentField ? parentField.split(fieldSeparator) : []
+    const value = removePrefixPath(selectedPath, parentFieldPath)
     let res = (
       <Cascader
         fieldNames={{ label: "label", value: "key", children: "items" }}
@@ -81,14 +79,14 @@ export default class FieldCascader extends PureComponent {
         disabled={readonly}
         {...customProps2}
       />
-    );
+    )
 
-    let tooltipText = selectedOpts.tooltip || selectedAltLabel;
-    if (tooltipText == selectedLabel) tooltipText = null;
+    let tooltipText = selectedOpts.tooltip || selectedAltLabel
+    if (tooltipText == selectedLabel) tooltipText = null
     if (tooltipText) {
-      res = <Tooltip title={tooltipText}>{res}</Tooltip>;
+      res = <Tooltip title={tooltipText}>{res}</Tooltip>
     }
 
-    return res;
+    return res
   }
 }

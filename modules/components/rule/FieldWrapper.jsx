@@ -1,8 +1,8 @@
 /** @format */
 
-import React, { PureComponent } from "react";
-import { Col } from "../utils";
-import Field from "./Field";
+import React, { PureComponent } from "react"
+import { Col } from "../utils"
+import Field from "./Field"
 
 export default class FieldWrapper extends PureComponent {
   render() {
@@ -15,7 +15,7 @@ export default class FieldWrapper extends PureComponent {
       readonly,
       id,
       groupId,
-    } = this.props;
+    } = this.props
     return (
       <Col className={classname}>
         {config.settings.showLabels && (
@@ -32,6 +32,6 @@ export default class FieldWrapper extends PureComponent {
           groupId={groupId}
         />
       </Col>
-    );
+    )
   }
 }

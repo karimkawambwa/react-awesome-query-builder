@@ -1,24 +1,32 @@
-import React from "react";
-import TextField from "@mui/material/TextField";
-import FormControl from "@mui/material/FormControl";
+import React from "react"
+import TextField from "@mui/material/TextField"
+import FormControl from "@mui/material/FormControl"
 
 export default (props) => {
-  const {value, setValue, config, readonly, min, max, step, placeholder, customProps} = props;
-  
-  const onChange = e => {
-    let val = e.target.value;
-    if (val === "" || val === null)
-      val = undefined;
-    else
-      val = Number(val);
-    setValue(val);
-  };
+  const {
+    value,
+    setValue,
+    config,
+    readonly,
+    min,
+    max,
+    step,
+    placeholder,
+    customProps,
+  } = props
 
-  const numberValue = value == undefined ? "" : value;
-  
+  const onChange = (e) => {
+    let val = e.target.value
+    if (val === "" || val === null) val = undefined
+    else val = Number(val)
+    setValue(val)
+  }
+
+  const numberValue = value == undefined ? "" : value
+
   return (
     <FormControl>
-      <TextField 
+      <TextField
         variant="standard"
         type="number"
         value={numberValue}
@@ -37,5 +45,5 @@ export default (props) => {
         {...customProps}
       />
     </FormControl>
-  );
-};
+  )
+}
