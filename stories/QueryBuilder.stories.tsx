@@ -55,8 +55,8 @@ const Template: ComponentStory<any> = (args) => {
       },
     },
     fields: {
-      html: {
-        label: "Html",
+      field1: {
+        label: "field1",
         type: "select",
         valueSources: ["value"],
         operators: ["like", "not_like", "contains_any_in", "contains_none_in"],
@@ -65,6 +65,28 @@ const Template: ComponentStory<any> = (args) => {
           showSearch: true,
           allowCustomValues: true,
           listValues: [{ value: `lang=["']en["']`, title: "English" }],
+        },
+      },
+      field2: {
+        label: "field2",
+        type: "select",
+        valueSources: ["value"],
+        operators: ["contains_any_in", "contains_none_in"],
+        fieldSettings: {
+          multiple: true,
+          showSearch: true,
+          listValues: [{ value: `lang=["']en["']`, title: "English" }],
+        },
+      },
+      field3: {
+        label: "field3",
+        type: "select",
+        valueSources: ["value"],
+        operators: ["contains_any_in", "contains_none_in"],
+        fieldSettings: {
+          multiple: true,
+          showSearch: true,
+          listValues: [],
         },
       },
     },
