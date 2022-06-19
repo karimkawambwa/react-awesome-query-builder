@@ -81,7 +81,6 @@ export default (props) => {
   const renderInput = (params) => {
     return (
       <TextField
-        variant="standard"
         {...params}
         InputProps={{
           ...params.InputProps,

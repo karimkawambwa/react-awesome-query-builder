@@ -27,9 +27,7 @@ export default (props) => {
   const hasSeconds = timeFormat.indexOf(":ss") != -1
   const timeValue = value ? moment(value, timeFormat) : null
 
-  const renderInput = (params) => (
-    <TextField size="small" variant="standard" {...params} />
-  )
+  const renderInput = (params) => <TextField size="small" {...params} />
 
   return (
     <FormControl>

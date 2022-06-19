@@ -47,7 +47,6 @@ export default ({
   return (
     <FormControl>
       <Select
-        variant="standard"
         autoWidth
         displayEmpty
         placeholder={!readonly ? placeholder : ""}

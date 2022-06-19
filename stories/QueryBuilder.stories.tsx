@@ -1,4 +1,5 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react"
+import { createTheme, Grid } from "@mui/material"
 import React, { useCallback, useState } from "react"
 import * as Export from "react-awesome-query-builder-formatters/dist/export/sql"
 import * as Import from "react-awesome-query-builder-formatters/dist/import/tree"
@@ -36,6 +37,22 @@ const Template: ComponentStory<any> = (args) => {
       showNot: false,
       canLeaveEmptyGroup: false,
       showLabels: false,
+      theme: {
+        mui: createTheme({
+          components: {
+            MuiTextField: {
+              defaultProps: {
+                variant: "outlined",
+              },
+            },
+            MuiSelect: {
+              defaultProps: {
+                variant: "outlined",
+              },
+            },
+          },
+        }),
+      },
     },
     fields: {
       html: {
@@ -67,19 +84,19 @@ const Template: ComponentStory<any> = (args) => {
   }, [])
 
   return (
-    <>
-      <QueryContainer
-        {...config}
-        value={tree}
-        onChange={onChange}
-        renderBuilder={(props) => (
-          <div className="query-builder">
-            <Builder {...props} />
-          </div>
-        )}
-      />
-      {Export.sqlFormat(Import.loadTree(tree), config, "d")}
-    </>
+    <Grid container spacing={2}>
+      <Grid item xs={12}>
+        <QueryContainer
+          {...config}
+          value={tree}
+          onChange={onChange}
+          renderBuilder={(props) => <Builder {...props} />}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        {Export.sqlFormat(Import.loadTree(tree), config, "d")}
+      </Grid>
+    </Grid>
   )
 }
 

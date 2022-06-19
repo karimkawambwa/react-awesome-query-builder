@@ -47,7 +47,6 @@ export default ({
     <FormControl>
       <Select
         multiple
-        variant="standard"
         autoWidth
         displayEmpty
         label={!readonly ? placeholder : ""}

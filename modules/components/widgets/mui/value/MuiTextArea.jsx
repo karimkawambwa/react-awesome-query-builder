@@ -27,7 +27,6 @@ export default (props) => {
   return (
     <FormControl fullWidth={fullWidth}>
       <TextField
-        variant="standard"
         fullWidth={fullWidth}
         maxRows={maxRows || defaultMaxRows}
         multiline={true}
